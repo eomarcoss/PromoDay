@@ -47,12 +47,12 @@ export function LoginCard() {
 
             {/* Ações de Entrada */}
             <div className="flex flex-col gap-2 pt-2 items-center">
-              <Button className="rounded-full bg-black hover:bg-neutral-800 text-white w-32 h-9 font-bold text-sm transition-all">
+              <Button className="rounded-full bg-black hover:bg-neutral-800 cursor-pointer text-white w-32 h-9 font-bold text-sm transition-all">
                 Entrar
               </Button>
               <Button
                 variant="link"
-                className="text-black font-bold text-xs hover:underline p-0 h-auto"
+                className="text-black font-bold text-xs hover:underline p-0 h-auto cursor-pointer"
               >
                 Entrar como convidado
               </Button>
@@ -66,7 +66,7 @@ export function LoginCard() {
         <p className="text-sm font-medium text-neutral-600">Não tem conta?</p>
         <Button
           variant="outline"
-          className="rounded-full border-black bg-transparent text-black hover:bg-black hover:text-white px-6 h-9 font-bold text-sm transition-all"
+          className="rounded-full border-black bg-transparent cursor-pointer text-black hover:bg-black hover:text-white px-6 h-9 font-bold text-sm transition-all"
         >
           Criar conta
         </Button>

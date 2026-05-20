@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 
 export function UserTypeSelector() {
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8 text-center flex flex-col items-center justify-center">
+    <div className="w-full max-w-2xl mx-auto space-y-3 text-center flex flex-col items-center justify-center">
       {/* Título Principal */}
       <h1 className="text-4xl font-black text-black tracking-tight">Você é</h1>
 
