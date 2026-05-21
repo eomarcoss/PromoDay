@@ -5,6 +5,8 @@ import { PromoCard } from "@/components/shared/PromoCard";
 import { SearchBar } from "@/components/shared/SearchBar";
 import { BottomNav } from "@/components/shared/BottomNav";
 import { CreateAdForm } from "@/components/shared/CreateAdForm";
+import { RedeemedProductBadge } from "@/components/shared/RedeemedProductBadge";
+import { RedemptionCodeCard } from "@/components/shared/RedemptionCodeCard";
 
 export default function Playground() {
   return (
@@ -15,8 +17,19 @@ export default function Playground() {
       {/* <RegisterStepperForm /> */}
       {/* <PromoCard /> */}
       {/* <SearchBar /> */}
-      <BottomNav />
-      <CreateAdForm />
+      {/* <BottomNav />
+      <CreateAdForm /> */}
+      <RedeemedProductBadge
+        imageUrl=""
+        productName="Produto Exemplo"
+        quantity={5}
+      />
+      <RedemptionCodeCard
+        imageUrl=""
+        productName="Produto Exemplo"
+        quantity={5}
+        code="ABC123"
+      />
     </div>
   );
 }
