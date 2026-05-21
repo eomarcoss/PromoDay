@@ -6,6 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
+import {
+  stepOneSchema,
+  stepTwoSchema,
+  stepThreeSchema,
+} from "../../schemas/register-schema";
 
 export function RegisterStepperForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +21,19 @@ export function RegisterStepperForm() {
     phone: "",
     email: "",
     password: "",
+    fullAddress: "",
+    category: "",
+    avatarFile: null as File | null, // Para guardar o arquivo selecionado no input de avatar
     // Deixei esses campos prontos para as suas próximas etapas:
+    businessHours: {
+      segunda: { aberto: true, inicio: "08:00", fim: "18:00" },
+      terca: { aberto: true, inicio: "08:00", fim: "18:00" },
+      quarta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      quinta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      sexta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      sabado: { aberto: false, inicio: "09:00", fim: "13:00" }, // Começa fechado por padrão
+      domingo: { aberto: false, inicio: "00:00", fim: "00:00" }, // Começa fechado por padrão
+    },
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -33,13 +50,83 @@ export function RegisterStepperForm() {
     }));
   };
 
+  const handleFinalSubmit = () => {
+    console.log("Dados blindados e prontos para o NestJS:", formData);
+
+    // Aqui no futuro você chamará o seu Service:
+    // authService.register(formData)
+
+    alert("Cadastro realizado com sucesso!");
+  };
+
   const nextStep = (e: React.FormEvent) => {
     e.preventDefault();
+    // --- VALIDAÇÃO DA ETAPA 1 ---
+    if (currentStep === 1) {
+      const validacao = stepOneSchema.safeParse(formData);
+
+      if (!validacao.success) {
+        // Pega a primeira mensagem de erro que o Zod encontrar
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro); // Depois podemos trocar esse alert por um estado de erro bonitinho na tela
+        return; // Trava o fluxo aqui! O usuário não avança.
+      }
+    }
+
+    // --- VALIDAÇÃO DA ETAPA 2 ---
+    if (currentStep === 2) {
+      const validacao = stepTwoSchema.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro);
+        return; // Trava o fluxo aqui!
+      }
+    }
+
+    // --- VALIDAÇÃO FINAL (ETAPA 3) ---
+    if (currentStep === 3) {
+      const validacao = stepThreeSchema.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro);
+        return; // Trava o fluxo aqui!
+      }
+
+      // Se chegou aqui, TODOS os dados do formulário passaram com sucesso pelo Zod!
+      handleFinalSubmit();
+      return;
+    }
     if (currentStep < 3) setCurrentStep((prev) => prev + 1);
   };
 
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep((prev) => prev - 1);
+  };
+
+  // Atualiza o estado de um dia específico (se está aberto, hora de início ou fim)
+  const handleHoursChange = (
+    dia: keyof typeof formData.businessHours,
+    campo: "aberto" | "inicio" | "fim",
+    valor: any,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      businessHours: {
+        ...prev.businessHours,
+        [dia]: {
+          ...prev.businessHours[dia],
+          [campo]: valor,
+        },
+      },
+    }));
   };
 
   return (
@@ -94,6 +181,7 @@ export function RegisterStepperForm() {
                   </Label>
                   <Input
                     id="companyName"
+                    placeholder="Digite o nome da sua empresa"
                     required
                     value={formData.companyName} // 3. Vincula o valor ao estado
                     onChange={handleChange} // 4. Dispara a atualização ao digitar
@@ -111,6 +199,7 @@ export function RegisterStepperForm() {
                     id="phone"
                     type="tel"
                     required
+                    placeholder="(00) 99999-9999"
                     value={formData.phone}
                     onChange={handleChange}
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
@@ -127,6 +216,7 @@ export function RegisterStepperForm() {
                     id="email"
                     type="email"
                     required
+                    placeholder="seu@email.com"
                     value={formData.email}
                     onChange={handleChange}
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
@@ -206,6 +296,7 @@ export function RegisterStepperForm() {
                         const file = e.target.files?.[0];
                         if (file) {
                           setAvatarPreview(URL.createObjectURL(file));
+
                           // Aqui você guardaria o arquivo em um estado se fosse enviar como FormData
                         }
                       }}
@@ -226,7 +317,7 @@ export function RegisterStepperForm() {
                   </Label>
                   <Input
                     id="fullAddress"
-                    placeholder="Rua Exemplo, 123 - Apt 42"
+                    placeholder="Rua Exemplo, 123 - Bairro, Cidade"
                     required
                     value={formData.fullAddress}
                     onChange={handleChange}
@@ -235,21 +326,83 @@ export function RegisterStepperForm() {
                 </div>
 
                 {/* CAMPO: Horário de Funcionamento */}
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="businessHours"
-                    className="text-neutral-700 font-bold ml-1 text-sm"
-                  >
-                    Horario de funcionamento:
+                {/* SELETOR SEMANAL DE HORÁRIOS */}
+                <div className="space-y-3 bg-neutral-50 p-4 rounded-3xl border border-neutral-200">
+                  <Label className="text-neutral-700 font-black ml-1 text-sm block border-b border-neutral-200 pb-2">
+                    Horários de Funcionamento:
                   </Label>
-                  <Input
-                    id="businessHours"
-                    placeholder="Seg a Sex das 08:00 às 18:00"
-                    required
-                    value={formData.businessHours}
-                    onChange={handleChange}
-                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
-                  />
+
+                  <div className="space-y-2 max-h-auto overflow-y-auto pr-1">
+                    {(
+                      Object.keys(formData.businessHours) as Array<
+                        keyof typeof formData.businessHours
+                      >
+                    ).map((dia) => {
+                      const infoDia = formData.businessHours[dia];
+                      return (
+                        <div
+                          key={dia}
+                          className="flex items-center justify-between text-sm py-1 border-b border-neutral-100 last:border-none"
+                        >
+                          {/* Nome do dia capitalizado + Switch Simples */}
+                          <div className="flex items-center space-x-3 w-28">
+                            <input
+                              type="checkbox"
+                              id={`check-${dia}`}
+                              checked={infoDia.aberto}
+                              onChange={(e) =>
+                                handleHoursChange(
+                                  dia,
+                                  "aberto",
+                                  e.target.checked,
+                                )
+                              }
+                              className="w-4 h-4 accent-black cursor-pointer"
+                            />
+                            <Label
+                              htmlFor={`check-${dia}`}
+                              className="capitalize font-bold text-neutral-800 cursor-pointer text-xs"
+                            >
+                              {dia}
+                            </Label>
+                          </div>
+
+                          {/* Inputs de Hora (Só aparecem se o dia estiver ativo/marcado) */}
+                          {infoDia.aberto ? (
+                            <div className="flex items-center space-x-2 animate-in fade-in duration-150">
+                              <input
+                                type="time"
+                                value={infoDia.inicio}
+                                onChange={(e) =>
+                                  handleHoursChange(
+                                    dia,
+                                    "inicio",
+                                    e.target.value,
+                                  )
+                                }
+                                className="bg-neutral-200 text-black text-xs font-bold rounded-full px-2 py-1 border-none focus:outline-none focus:ring-1 focus:ring-black"
+                              />
+                              <span className="text-neutral-400 text-xs">
+                                às
+                              </span>
+                              <input
+                                type="time"
+                                value={infoDia.fim}
+                                onChange={(e) =>
+                                  handleHoursChange(dia, "fim", e.target.value)
+                                }
+                                className="bg-neutral-200 text-black text-xs font-bold rounded-full px-2 py-1 border-none focus:outline-none focus:ring-1 focus:ring-black"
+                              />
+                            </div>
+                          ) : (
+                            <span className="text-xs font-bold text-neutral-400 pr-8 animate-in fade-in duration-150">
+                              Fechado
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* CAMPO: Categoria (Usando select nativo estilizado no padrão pílula) */}

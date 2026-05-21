@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+FORM DE CADASTRO DE USER
+Ajustar o setDataForm para receber o input de image do user ( de acordo como o nest deve receber)
+Mudar o alert de erro do form de cadastro de user(vendedor) para um metodo melhor
 
 ## Getting Started
 
