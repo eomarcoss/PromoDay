@@ -34,7 +34,7 @@ export function BottomNav() {
 
   return (
     // Container externo fixado no rodapé, visível apenas em telas menores (mobile-first)
-    <div className="fixed bottom-0 left-0 right-0 z-50  bg-black border-t border-neutral-800 px-4 pb-safe">
+    <div className="sticky bottom-0 left-0 right-0 z-50  bg-black border-t border-neutral-800 px-4 pb-safe">
       {/* Menu de navegação */}
       <nav className="flex justify-around items-center h-16 max-w-md mx-auto bg-black">
         {navItems.map((item) => {

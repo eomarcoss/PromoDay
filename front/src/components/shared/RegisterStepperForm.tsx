@@ -130,7 +130,7 @@ export function RegisterStepperForm() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6 text-center">
+    <div className="w-full max-w-2xl mx-auto space-y-6 text-center ">
       {/* Cabeçalho */}
       <div className="space-y-2">
         <h1 className="text-3xl font-black text-black tracking-tight">
@@ -139,24 +139,24 @@ export function RegisterStepperForm() {
         <p className="text-sm font-bold text-neutral-800">
           Preencha os dados abaixo para continuar:
         </p>
-      </div>
 
-      {/* Stepper */}
-      <div className="relative flex items-center justify-between w-48 mx-auto py-4">
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-200 z-0 rounded-full" />
-        <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black z-0 transition-all duration-300 rounded-full"
-          style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
-        />
-        <div
-          className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 1 ? "bg-neutral-800 border-neutral-800" : "bg-neutral-200 border-neutral-200"}`}
-        />
-        <div
-          className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 2 ? "bg-neutral-500 border-neutral-500" : "bg-neutral-200 border-neutral-200"}`}
-        />
-        <div
-          className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep === 3 ? "bg-neutral-400 border-neutral-400" : "bg-neutral-200 border-neutral-200"}`}
-        />
+        {/* Stepper */}
+        <div className="relative flex items-center justify-between w-48 mx-auto py-4">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-200 z-0 rounded-full" />
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black z-0 transition-all duration-300 rounded-full"
+            style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 1 ? "bg-neutral-800 border-neutral-800" : "bg-neutral-200 border-neutral-200"}`}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 2 ? "bg-neutral-500 border-neutral-500" : "bg-neutral-200 border-neutral-200"}`}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep === 3 ? "bg-neutral-400 border-neutral-400" : "bg-neutral-200 border-neutral-200"}`}
+          />
+        </div>
       </div>
 
       {/* Card do Formulário */}

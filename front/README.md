@@ -1,6 +1,7 @@
 FORM DE CADASTRO DE USER
 Ajustar o setDataForm para receber o input de image do user ( de acordo como o nest deve receber)
 Mudar o alert de erro do form de cadastro de user(vendedor) para um metodo melhor
+Button de avancar para a proxima etapa do form nao funciona no mobile
 
 ## Getting Started
 

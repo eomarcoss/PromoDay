@@ -34,9 +34,9 @@ export function PromoCard({
   };
 
   return (
-    <div className="bg-[#FFE4E6] p-10 flex justify-center items-center font-sans">
-      <Card className="w-md bg-[#E2D6D6] rounded-[32px] p-6 border-none shadow-md flex flex-col items-center">
-        <CardHeader className="w-full p-0  relative aspect-[4/3] bg-[#3B2A2A] rounded-[24px] overflow-hidden flex items-center justify-center">
+    <div className="p-0 flex justify-center items-center font-sans">
+      <Card className="w-md bg-[#c5c5c5] rounded-[32px] p-6 border-none shadow-md flex flex-col items-center">
+        <CardHeader className="w-full p-0  relative aspect-[4/3] bg-[#1e1e1e] rounded-[24px] overflow-hidden flex items-center justify-center">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -47,7 +47,7 @@ export function PromoCard({
             <div className="w-full h-full" />
           )}
 
-          <div className="absolute top-4 right-4 w-14 h-14 bg-[#E0D0D0] rounded-full flex flex-col items-center justify-center shadow-inner border border-[#C6B0B0]">
+          <div className="absolute top-4 right-4 w-14 h-14 bg-[#c7c7c7] rounded-full flex flex-col items-center justify-center shadow-inner border border-[#C6B0B0]">
             <span className="text-[#3B2A2A] text-lg font-extrabold leading-none">
               {discountPercentage}%
             </span>
@@ -90,7 +90,7 @@ export function PromoCard({
         </CardContent>
 
         <CardFooter className="w-full p-0">
-          <Button className="cursor-pointer w-full bg-[#604D4D] hover:bg-[#4A3B3B] text-white text-xl font-bold py-7 rounded-full transition-colors">
+          <Button className="cursor-pointer w-full bg-[#101010] hover:bg-[#2e2e2e] text-white text-xl font-bold py-7 rounded-full transition-colors">
             Resgatar
           </Button>
         </CardFooter>

@@ -51,7 +51,8 @@ export function SearchBar({
   };
 
   return (
-    <div className="bg-neutral-100 p-8 flex justify-center items-center">
+    <div className="bg-white p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
+      <h1 className="text-2xl font-bold text-black">Promoday</h1>
       <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
         {/* Área do Input */}
         <div className="relative flex-1 h-full flex items-center">

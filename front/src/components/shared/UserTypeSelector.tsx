@@ -1,4 +1,6 @@
-import { Card } from "@/src/components/ui/card";
+"use client";
+
+import { Card } from "@/components/ui/card";
 
 export function UserTypeSelector() {
   return (
