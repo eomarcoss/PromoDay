@@ -12,22 +12,22 @@ export function BottomNav() {
   const navItems = [
     {
       label: "Promoções",
-      href: "/promocoes",
+      href: "/promotions",
       icon: ShoppingBag,
     },
     {
       label: "Lojas",
-      href: "/lojas",
+      href: "/stores",
       icon: Store,
     },
     {
       label: "Resgatados",
-      href: "/resgatados",
+      href: "/redeems",
       icon: Ticket,
     },
     {
       label: "Conta",
-      href: "/perfil",
+      href: "/profile",
       icon: User,
     },
   ];
