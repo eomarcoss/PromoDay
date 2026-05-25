@@ -7,6 +7,7 @@ import { BottomNav } from "@/components/shared/BottomNav";
 import { CreateAdForm } from "@/components/shared/CreateAdForm";
 import { RedeemedProductBadge } from "@/components/shared/RedeemedProductBadge";
 import { RedemptionCodeCard } from "@/components/shared/RedemptionCodeCard";
+import { UserProfileCard } from "@/components/shared/UserProfileCard";
 
 export default function Playground() {
   return (
@@ -29,6 +30,12 @@ export default function Playground() {
         productName="Produto Exemplo"
         quantity={5}
         code="ABC123"
+      />
+
+      <UserProfileCard
+        name="Marcos César Marinho"
+        email="marcos.marinho@email.com"
+        phone="(11) 99999-9999"
       />
     </div>
   );
