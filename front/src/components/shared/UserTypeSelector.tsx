@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 export function UserTypeSelector() {
   return (
@@ -21,11 +22,13 @@ export function UserTypeSelector() {
         <span className="text-lg font-bold text-neutral-800 px-2">ou</span>
 
         {/* Opção Vendedor(a) */}
-        <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
-          <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
-            Vendedor(a)
-          </span>
-        </Card>
+        <Link href="/register/store" className="w-full sm:w-64 h-36">
+          <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
+            <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
+              Vendedor(a)
+            </span>
+          </Card>
+        </Link>
       </div>
     </div>
   );

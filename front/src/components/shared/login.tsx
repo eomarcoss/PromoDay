@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function LoginCard() {
   return (
@@ -66,12 +67,14 @@ export function LoginCard() {
       {/* Rodapé: Criar Conta */}
       <div className="space-y-2 pt-2">
         <p className="text-sm font-medium text-neutral-600">Não tem conta?</p>
-        <Button
-          variant="outline"
-          className="rounded-full border-black bg-transparent cursor-pointer text-black hover:bg-black hover:text-white px-6 h-9 font-bold text-sm transition-all"
-        >
-          Criar conta
-        </Button>
+        <Link href="/register">
+          <Button
+            variant="outline"
+            className="rounded-full border-black bg-transparent cursor-pointer text-black hover:bg-black hover:text-white px-6 h-9 font-bold text-sm transition-all"
+          >
+            Criar conta
+          </Button>
+        </Link>
       </div>
     </div>
   );
