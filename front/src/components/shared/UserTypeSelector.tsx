@@ -12,11 +12,14 @@ export function UserTypeSelector() {
       {/* Grid de Escolha */}
       <div className="flex flex-col sm:flex-row items-center gap-6 w-full justify-center">
         {/* Opção Cliente */}
-        <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
-          <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
-            Cliente
-          </span>
-        </Card>
+        <Link href="/register/client" className="w-full sm:w-64 h-36">
+          {" "}
+          <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
+            <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
+              Cliente
+            </span>
+          </Card>
+        </Link>
 
         {/* Texto Intermediário "ou" */}
         <span className="text-lg font-bold text-neutral-800 px-2">ou</span>

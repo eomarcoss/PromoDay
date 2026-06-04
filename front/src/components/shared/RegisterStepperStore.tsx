@@ -12,7 +12,7 @@ import {
   stepThreeSchema,
 } from "../../schemas/register-schema";
 
-export function RegisterStepperForm() {
+export function RegisterStepperFormStore() {
   const [currentStep, setCurrentStep] = useState(1);
 
   // 1. Criamos um único estado para armazenar todos os dados do formulário

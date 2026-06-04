@@ -1,6 +1,6 @@
 import { LoginCard } from "@/components/shared/login";
 import { UserTypeSelector } from "@/components/shared/UserTypeSelector";
-import { RegisterStepperForm } from "@/components/shared/RegisterStepperForm";
+import { RegisterStepperForm } from "@/components/shared/RegisterStepperStore";
 import { PromoCard } from "@/components/shared/PromoCard";
 import { SearchBar } from "@/components/shared/SearchBar";
 import { BottomNav } from "@/components/shared/BottomNav";
@@ -9,6 +9,9 @@ import { RedeemedProductBadge } from "@/components/shared/RedeemedProductBadge";
 import { RedemptionCodeCard } from "@/components/shared/RedemptionCodeCard";
 import { UserProfileCard } from "@/components/shared/UserProfileCard";
 import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
+import { RegisterStepperFormClient } from "@/components/shared/RegisterStepperClient";
+import { RegisterStepperFormStore } from "@/components/shared/RegisterStepperStore";
+
 export default function Playground() {
   return (
     <div>
@@ -38,7 +41,7 @@ export default function Playground() {
         phone="(11) 99999-9999"
       /> */}
 
-      <PromotionDetailCard
+      {/* <PromotionDetailCard
         imageUrl="https://images.unsplash.com/photo-1622445262465-2481c4574875?w=800&q=80" // Imagem mock do Unsplash (Carregador)
         badgeDiscount="20% off"
         title="Carregador tipo C"
@@ -52,7 +55,10 @@ export default function Playground() {
         storeLocation="Rua Principal, 123 - Centro"
         originalPrice="R$ 49,90"
         discountPrice="R$ 39,90"
-      />
+      /> */}
+
+      {/* <RegisterStepperFormStore /> */}
+      <RegisterStepperFormClient />
     </div>
   );
 }
