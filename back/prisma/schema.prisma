@@ -11,3 +11,32 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// 1. Tabela dos Clientes (Usuários finais)
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  password  String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+}
+
+// 2. Tabela dos Vendedores / Lojas (Sellers)
+model Seller {
+  id          String   @id @default(uuid())
+  companyName String   // Nome da Loja / Empresa
+  cnpj        String   @unique // Lojas geralmente precisam de documento fiscal
+  email       String   @unique
+  phone       String
+  password    String
+  logoUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sellers")
+}
