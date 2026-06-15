@@ -95,15 +95,35 @@ export class CostomersService {
     }
   }
 
+  async remove(id: string) {
+    try {
+      // Deleta o cliente no banco baseado no ID do token
+      await this.prisma.customer.delete({
+        where: { id },
+      });
+
+      // Retornamos uma mensagem de sucesso para o front-end
+      return {
+        success: true,
+        message: 'Sua conta foi deletada com sucesso.',
+      };
+    } catch (error) {
+      // Se por algum motivo o ID não existir mais no banco (erro P2025 do Prisma)
+      if (error.code === 'P2025') {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+      throw new HttpException(
+        'Erro ao tentar deletar a conta.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findAll() {
     return `This action returns all costomers`;
   }
 
   findOne(id: string) {
     return `This action returns a #${id} costomer`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} costomer`;
   }
 }

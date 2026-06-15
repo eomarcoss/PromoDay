@@ -43,6 +43,15 @@ export class CostomersController {
     return this.costomersService.update(userId, updateCostomerDto);
   }
 
+  @Delete('profile') // 👈 Rota: DELETE costomers/account (sem expor ID na URL)
+  @UseGuards(JwtAuthGuard) // 🔒 Apenas usuários logados podem acessar
+  remove(@Request() req) {
+    // Pegamos o ID do usuário de dentro do token decodificado
+    const userId = req.user.sub;
+
+    return this.costomersService.remove(userId);
+  }
+
   @Get()
   findAll() {
     return this.costomersService.findAll();
@@ -51,10 +60,5 @@ export class CostomersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.costomersService.findOne(id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.costomersService.remove(id);
   }
 }
