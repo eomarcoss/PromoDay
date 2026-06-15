@@ -6,6 +6,7 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -30,7 +31,7 @@ model Customer {
 model Seller {
   id          String   @id @default(uuid())
   companyName String   // Nome da Loja / Empresa
-  cnpj        String   @unique // Lojas geralmente precisam de documento fiscal
+  // cnpj        String   @unique // Lojas geralmente precisam de documento fiscal
   email       String   @unique
   phone       String
   password    String
