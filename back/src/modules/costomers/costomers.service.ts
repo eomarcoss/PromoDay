@@ -1,4 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreateCostomerDto } from './dto/create-costomer.dto';
 import { UpdateCostomerDto } from './dto/update-costomer.dto';
 import { PrismaService } from 'prisma/prisma.service';
@@ -55,16 +61,46 @@ export class CostomersService {
     return customerWithoutPassword;
   }
 
+  async findByEmail(email: string) {
+    // Busca no banco um cliente onde o e-mail seja exatamente o digitado
+    const customer = await this.prisma.customer.findUnique({
+      where: { email },
+    });
+
+    return customer;
+  }
+
+  async update(id: string, updateCostomerDto: UpdateCostomerDto) {
+    try {
+      const costomerAtualizado = await this.prisma.customer.update({
+        where: { id },
+        data: {
+          name: updateCostomerDto.name,
+          phone: updateCostomerDto.phone,
+          avatarUrl: updateCostomerDto.avatarUrl,
+        },
+      });
+
+      // Remove a senha do retorno por segurança
+      const { password, ...result } = costomerAtualizado;
+      return result;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+      throw new HttpException(
+        'Erro ao atualizar o perfil.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findAll() {
     return `This action returns all costomers`;
   }
 
   findOne(id: string) {
     return `This action returns a #${id} costomer`;
-  }
-
-  update(id: string, updateCostomerDto: UpdateCostomerDto) {
-    return `This action updates a #${id} costomer`;
   }
 
   remove(id: string) {

@@ -8,11 +8,14 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { CostomersService } from './costomers.service';
 import { CreateCostomerDto } from './dto/create-costomer.dto';
 import { UpdateCostomerDto } from './dto/update-costomer.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('costomers')
 export class CostomersController {
@@ -27,6 +30,19 @@ export class CostomersController {
     return this.costomersService.create(createCostomerDto, file);
   }
 
+  @Patch('profile') // 👈 fica apenas 'costomers/profile'
+  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota com o teu Guard
+  update(
+    @Request() req, // 👈 Captura a requisição para ler o token decodificado
+    @Body() updateCostomerDto: UpdateCostomerDto,
+  ) {
+    // O teu JwtAuthGuard injeta o payload do token dentro de req.user
+    // No passo anterior, configuramos o ID do utilizador no campo 'sub'
+    const userId = req.user.sub;
+
+    return this.costomersService.update(userId, updateCostomerDto);
+  }
+
   @Get()
   findAll() {
     return this.costomersService.findAll();
@@ -35,14 +51,6 @@ export class CostomersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.costomersService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCostomerDto: UpdateCostomerDto,
-  ) {
-    return this.costomersService.update(id, updateCostomerDto);
   }
 
   @Delete(':id')
