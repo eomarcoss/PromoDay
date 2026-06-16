@@ -13,6 +13,12 @@ datasource db {
   provider = "postgresql"
 }
 
+// Criamos o Enum com as regras de tipos de usuários
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
 // 1. Tabela dos Clientes (Usuários finais)
 model Customer {
   id        String   @id @default(uuid())
@@ -21,6 +27,7 @@ model Customer {
   phone     String
   password  String
   avatarUrl String?
+  role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -29,15 +36,25 @@ model Customer {
 
 // 2. Tabela dos Vendedores / Lojas (Sellers)
 model Seller {
-  id          String   @id @default(uuid())
-  companyName String   // Nome da Loja / Empresa
-  // cnpj        String   @unique // Lojas geralmente precisam de documento fiscal
-  email       String   @unique
-  phone       String
-  password    String
-  logoUrl     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String      @id @default(uuid())
+  name             String
+  phone            String
+  email            String      @unique
+  password         String
+  avatarUrl        String?
+  address          String      
+  businessHours    Json        
+  category         String      
+  role          Role        @default(SELLER)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  promotions       Promotion[] // Relacionamento com as futuras promoções
+}
 
-  @@map("sellers")
+model Promotion {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  sellerId    String
+  seller      Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 }
