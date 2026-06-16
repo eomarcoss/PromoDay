@@ -52,9 +52,25 @@ model Seller {
 }
 
 model Promotion {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  sellerId    String
-  seller      Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  id              String   @id @default(uuid())
+  name            String
+  description     String?  // 👈 Opcional (?)
+  requirements    String?  // 👈 Requisitos da oferta (ex: "Apenas para primeira compra") - Opcional (?)
+  stock           Int      // Estoque disponível da promoção
+  limitPerUser    Int      // Limite que cada cliente pode resgatar
+  
+  startTime       DateTime // Horário de início da oferta
+  endTime         DateTime // Horário de fim da oferta
+  
+  originalPrice   Float    // O famoso preço "De"
+  promoPrice      Float    // O preço promocional "Por"
+  
+  images          String[] // 👈 Array de strings para suportar múltiplas fotos do produto!
+
+  // Relacionamento com o Vendedor
+  sellerId        String
+  seller          Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

@@ -40,9 +40,11 @@ export class SellersController {
     const sellerId = req.user.sub;
     return this.sellersService.update(sellerId, updateSellerDto);
   }
-  z;
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sellersService.remove(+id);
+
+  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT
+  @Delete('profile') // 👈 Rota: DELETE /sellers/profile
+  remove(@Request() req: any) {
+    const sellerId = req.user.sub;
+    return this.sellersService.remove(sellerId);
   }
 }

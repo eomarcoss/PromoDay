@@ -94,7 +94,30 @@ export class SellersService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} seller`;
+  async remove(id: string) {
+    try {
+      // 1. Verifica se o vendedor realmente existe antes de tentar deletar
+      const seller = await this.prisma.seller.findUnique({ where: { id } });
+      if (!seller) {
+        throw new NotFoundException('Vendedor não encontrado.');
+      }
+
+      // 2. Deleta o registro do banco
+      await this.prisma.seller.delete({
+        where: { id },
+      });
+
+      // 3. Retorna uma mensagem de sucesso clara
+      return {
+        message:
+          'A conta do vendedor e todos os seus anúncios foram removidos com sucesso.',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new HttpException(
+        'Erro ao tentar remover a conta do vendedor.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
