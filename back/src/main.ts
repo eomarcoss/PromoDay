@@ -12,6 +12,7 @@ async function bootstrap() {
       transform: true, // Converte automaticamente os tipos dos dados para o que definimos no DTO
     }),
   );
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

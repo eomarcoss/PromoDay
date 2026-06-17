@@ -30,7 +30,7 @@ model Customer {
   role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  claims Claim[]
   @@map("customers")
 }
 
@@ -45,7 +45,7 @@ model Seller {
   address          String      
   businessHours    Json        
   category         String      
-  role          Role        @default(SELLER)
+  role             Role        @default(SELLER)
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
   promotions       Promotion[] // Relacionamento com as futuras promoções
@@ -66,11 +66,36 @@ model Promotion {
   promoPrice      Float    // O preço promocional "Por"
   
   images          String[] // 👈 Array de strings para suportar múltiplas fotos do produto!
-
+  isActive        Boolean  @default(true)
   // Relacionamento com o Vendedor
   sellerId        String
   seller          Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-
+  claims          Claim[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Claim {
+  id          String    @id @default(uuid())
+  code        String    @unique // Código legível para o balcão (ex: PD-X8Y2Z)
+  status      String    @default("PENDING") // PENDING, USED, EXPIRED
+  quantity    Int       @default(1)
+  // Relacionamento com o Cliente (Quem está resgatando)
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  // Relacionamento com a Promoção
+  promotionId String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+  claimedAt   DateTime  @default(now())
+  usedAt      DateTime? // Gravado apenas quando o lojista validar o código
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // 🔒 A REGRA DE OURO DO SEU MODELO:
+  // Cria uma chave primária composta fictícia. Isso impede que exista mais de um registro PENDING para o mesmo Customer na mesma Promotion.
+  // É graças a isso que o comando `this.prisma.claim.findUnique({ where: { customerId_promotionId: { ... } } })` funciona no seu Service!
+  @@unique([customerId, promotionId])
 }

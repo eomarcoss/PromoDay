@@ -25,7 +25,7 @@ export class CreatePromotionDto {
   stock: number;
 
   @IsInt()
-  @Min(1)
+  @Min(0)
   limitPerUser: number;
 
   @IsDateString()

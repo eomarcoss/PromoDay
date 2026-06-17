@@ -28,9 +28,9 @@ export class PromotionsController {
     return this.promotionsService.create(createPromotionDto, sellerId);
   }
 
-  @Get()
-  findAll() {
-    return this.promotionsService.findAll();
+  @Get() // 👈 GET /promotions
+  async getFeed() {
+    return this.promotionsService.findAllActive();
   }
 
   @Get(':id')
@@ -38,16 +38,21 @@ export class PromotionsController {
     return this.promotionsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id') // PATCH /promotions/:id
   update(
     @Param('id') id: string,
+    @Request() req: any,
     @Body() updatePromotionDto: UpdatePromotionDto,
   ) {
-    return this.promotionsService.update(+id, updatePromotionDto);
+    const sellerId = req.user.sub; // Garante a identidade do lojista
+    return this.promotionsService.update(id, sellerId, updatePromotionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.promotionsService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id') // DELETE /promotions/:id
+  remove(@Param('id') id: string, @Request() req: any) {
+    const sellerId = req.user.sub; // ID do lojista logado
+    return this.promotionsService.remove(id, sellerId);
   }
 }

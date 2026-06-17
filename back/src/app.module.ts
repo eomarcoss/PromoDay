@@ -5,9 +5,16 @@ import { CostomersModule } from './modules/costomers/costomers.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SellersModule } from './modules/sellers/sellers.module';
 import { PromotionsModule } from './modules/promotions/promotions.module';
+import { ClaimsModule } from './modules/claims/claims.module';
 
 @Module({
-  imports: [CostomersModule, AuthModule, SellersModule, PromotionsModule],
+  imports: [
+    CostomersModule,
+    AuthModule,
+    SellersModule,
+    PromotionsModule,
+    ClaimsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
