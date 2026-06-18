@@ -10,9 +10,13 @@ import {
   stepOneSchemaClient,
   stepTwoSchemaClient,
 } from "../../schemas/register-client-schema";
+import { useRouter } from "next/navigation";
+import { registerCustomerAction } from "@/app/actions/auth";
 
 export function RegisterStepperFormClient() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // 1. Estado limpo focado puramente nos dados do Cliente comprador
   const [formData, setFormData] = useState({
@@ -35,10 +39,35 @@ export function RegisterStepperFormClient() {
     }));
   };
 
-  const handleFinalSubmit = () => {
-    console.log("Dados do cliente prontos para o NestJS:", formData);
-    // Aqui conectamos com a sua rota do back-end: POST /customers
-    alert("Cadastro do cliente realizado com sucesso!");
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+
+    // 1. Criamos o objeto FormData nativo do navegador
+    const data = new FormData();
+
+    // 2. Anexamos os textos usando as chaves exatas que o seu NestJS espera no DTO
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("password", formData.password);
+
+    // 3. Se o usuário escolheu uma foto, anexamos o arquivo bruto
+    // Mude o primeiro parâmetro ("avatar") para o nome exato que o seu NestJS @UploadedFile('campo') espera!
+    if (formData.avatarFile) {
+      data.append("avatar", formData.avatarFile);
+    }
+
+    // 4. Envia o FormData para a Server Action
+    const result = await registerCustomerAction(data);
+
+    setLoading(false);
+
+    if (result.success) {
+      alert("Cadastro do cliente realizado com sucesso!");
+      router.push("/login"); // 🔀 Redireciona o cliente para fazer o primeiro login
+    } else {
+      alert(result.error || "Erro ao efetuar o cadastro.");
+    }
   };
 
   const nextStep = (e: React.FormEvent) => {

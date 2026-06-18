@@ -100,7 +100,7 @@ export class PromotionsService {
       select: {
         id: true,
         name: true,
-        imageUrl: true,
+        images: true,
         originalPrice: true,
         promoPrice: true,
         stock: true,

@@ -1,6 +1,6 @@
 import { api } from "./api";
 import { LoginPayload, AuthResponse } from "@/types/auth";
-import { RegisterCustomerPayload } from "@/types/customer";
+// import { RegisterCustomerPayload } from "@/types/customer";
 import { RegisterSellerPayload } from "@/types/seller";
 
 export const authService = {
@@ -12,8 +12,13 @@ export const authService = {
   },
 
   // 👤 Cadastro de Cliente
-  registerCustomer: async (payload: RegisterCustomerPayload) => {
-    const { data } = await api.post("/customers", payload);
+  registerCustomer: async (formData: FormData) => {
+    const { data } = await api.post("/costomers", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+      },
+    });
+
     return data;
   },
 
