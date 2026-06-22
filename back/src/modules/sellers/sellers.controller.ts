@@ -8,19 +8,26 @@ import {
   Delete,
   Request,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { SellersService } from './sellers.service';
 import { CreateSellerDto } from './dto/create-seller.dto';
 import { UpdateSellerDto } from './dto/update-seller.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('sellers') // 👈 Todas as rotas aqui começam com /sellers
 export class SellersController {
   constructor(private readonly sellersService: SellersService) {}
 
   @Post() // 👈 Rota: POST /sellers (Cadastro público do vendedor)
-  create(@Body() createSellerDto: CreateSellerDto) {
-    return this.sellersService.create(createSellerDto);
+  @UseInterceptors(FileInterceptor('avatar'))
+  create(
+    @Body() createSellerDto: CreateSellerDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.sellersService.create(createSellerDto, file);
   }
 
   @Get()

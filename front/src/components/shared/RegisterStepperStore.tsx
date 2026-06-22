@@ -11,17 +11,21 @@ import {
   stepTwoSchema,
   stepThreeSchema,
 } from "../../schemas/register-schema";
+import { registerSellerAction } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
 
 export function RegisterStepperFormStore() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // 1. Criamos um único estado para armazenar todos os dados do formulário
   const [formData, setFormData] = useState({
-    companyName: "",
+    name: "",
     phone: "",
     email: "",
     password: "",
-    fullAddress: "",
+    address: "",
     category: "",
     avatarFile: null as File | null, // Para guardar o arquivo selecionado no input de avatar
     // Deixei esses campos prontos para as suas próximas etapas:
@@ -37,8 +41,6 @@ export function RegisterStepperFormStore() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  // Estado extra para guardar o preview da imagem selecionada
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   // 2. Função genérica para atualizar o estado quando o usuário digita
@@ -50,12 +52,31 @@ export function RegisterStepperFormStore() {
     }));
   };
 
-  const handleFinalSubmit = () => {
-    console.log("Dados blindados e prontos para o NestJS:", formData);
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+    const data = new FormData();
 
-    // Aqui no futuro você chamará o seu Service:
-    // authService.register(formData)
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("password", formData.password);
+    data.append("address", formData.address);
+    data.append("category", formData.category);
+    data.append("businessHours", JSON.stringify(formData.businessHours)); // Enviamos os horários como string JSON
+    if (formData.avatarFile) {
+      data.append("avatar", formData.avatarFile);
+    }
 
+    // 4. Envia o FormData para a Server Action
+    const result = await registerSellerAction(data);
+
+    setLoading(false);
+    if (result.success) {
+      alert("Cadastro do vendedor realizado com sucesso!");
+      router.push("/login"); // 🔀 Redireciona o vendedor para fazer o primeiro login
+    } else {
+      alert(result.error || "Erro ao efetuar o cadastro.");
+    }
     alert("Cadastro realizado com sucesso!");
   };
 
@@ -63,7 +84,12 @@ export function RegisterStepperFormStore() {
     e.preventDefault();
     // --- VALIDAÇÃO DA ETAPA 1 ---
     if (currentStep === 1) {
-      const validacao = stepOneSchema.safeParse(formData);
+      const validacao = stepOneSchema.safeParse({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+      });
 
       if (!validacao.success) {
         // Pega a primeira mensagem de erro que o Zod encontrar
@@ -174,16 +200,16 @@ export function RegisterStepperFormStore() {
               <div className="space-y-4 animate-in fade-in duration-200">
                 <div className="space-y-1.5">
                   <Label
-                    htmlFor="companyName"
+                    htmlFor="name"
                     className="text-neutral-700 font-bold ml-1 text-sm"
                   >
                     Nome da empresa:
                   </Label>
                   <Input
-                    id="companyName"
+                    id="name"
                     placeholder="Digite o nome da sua empresa"
                     required
-                    value={formData.companyName} // 3. Vincula o valor ao estado
+                    value={formData.name} // 3. Vincula o valor ao estado
                     onChange={handleChange} // 4. Dispara a atualização ao digitar
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
                   />
@@ -296,8 +322,10 @@ export function RegisterStepperFormStore() {
                         const file = e.target.files?.[0];
                         if (file) {
                           setAvatarPreview(URL.createObjectURL(file));
-
-                          // Aqui você guardaria o arquivo em um estado se fosse enviar como FormData
+                          setFormData((prev) => ({
+                            ...prev,
+                            avatarFile: file,
+                          }));
                         }
                       }}
                     />
@@ -310,16 +338,16 @@ export function RegisterStepperFormStore() {
                 {/* CAMPO: Endereço Detalhado */}
                 <div className="space-y-1.5">
                   <Label
-                    htmlFor="fullAddress"
+                    htmlFor="address"
                     className="text-neutral-700 font-bold ml-1 text-sm"
                   >
                     Endereço:
                   </Label>
                   <Input
-                    id="fullAddress"
+                    id="address"
                     placeholder="Rua Exemplo, 123 - Bairro, Cidade"
                     required
-                    value={formData.fullAddress}
+                    value={formData.address}
                     onChange={handleChange}
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
                   />

@@ -9,12 +9,16 @@ import { CreateSellerDto } from './dto/create-seller.dto';
 import { UpdateSellerDto } from './dto/update-seller.dto';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { StorageService } from 'src/shared/storage.service';
 
 @Injectable()
 export class SellersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private StorageService: StorageService,
+  ) {}
 
-  async create(createSellerDto: CreateSellerDto) {
+  async create(createSellerDto: CreateSellerDto, file: Express.Multer.File) {
     const { email, password } = createSellerDto;
 
     try {
@@ -28,20 +32,26 @@ export class SellersService {
         );
       }
 
+      let avatarUrl: string | null = null;
+      if (file) {
+        avatarUrl = await this.StorageService.uploadFile(file, 'Avatars');
+      }
+
       // 2. Criptografa a senha do parceiro
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // 3. Salva no banco de dados
-      const newSeller = await this.prisma.seller.create({
+      const sellerData = await this.prisma.seller.create({
         data: {
           ...createSellerDto,
+          avatarUrl,
           password: hashedPassword,
         },
       });
 
       // 4. Remove a senha do retorno por segurança
-      const { password: _, ...result } = newSeller;
-      return result;
+      const { password: _, ...sellerWithPassword } = sellerData;
+      return sellerWithPassword;
     } catch (error) {
       if (error instanceof ConflictException) throw error;
       throw new HttpException(

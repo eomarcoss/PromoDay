@@ -4,7 +4,7 @@ import { z } from "zod";
 // VALIDAÇÕES DA ETAPA 1: Dados Principais
 // ==========================================
 export const stepOneSchema = z.object({
-  companyName: z
+  name: z
     .string()
     .min(3, "O nome da empresa deve ter pelo menos 3 caracteres")
     .max(50, "Nome longo demais"),
@@ -45,7 +45,7 @@ export const stepTwoSchema = z.object({
   //       ),
   //     "Formato inválido. Use apenas JPG, JPEG, PNG ou WEBP",
   //   ),
-  fullAddress: z
+  address: z
     .string()
     .min(5, "Por favor, insira o endereço completo da sua empresa"),
   category: z
@@ -55,31 +55,34 @@ export const stepTwoSchema = z.object({
     .record(
       z.object({
         aberto: z.boolean(),
-        inicio: z.string(),
-        fim: z.string(),
+        // 🚀 Ajuste: Permite que venha vazio ou undefined caso o dia esteja fechado
+        inicio: z.string().optional().or(z.literal("")),
+        fim: z.string().optional().or(z.literal("")),
       }),
     )
     .refine(
       (hours) => {
         // Regra 1: A loja precisa abrir pelo menos um dia na semana
         const temDiaAberto = Object.values(hours).some((dia) => dia.aberto);
-        if (!temDiaAberto) return false;
-        return true;
+        return temDiaAberto;
       },
       {
         message: "Você precisa selecionar pelo menos um dia de funcionamento!",
       },
     )
-
     .refine(
       (hours) => {
         // Regra 2: Se o dia está aberto, a hora de término não pode ser menor ou igual à inicial
         for (const dia in hours) {
           if (hours[dia].aberto) {
-            const [horaInicio, minInicio] = hours[dia].inicio
+            // Se por acaso vier undefined mesmo aberto, joga um fallback "00:00" para não quebrar o split
+            const horaInicioStr = hours[dia].inicio || "00:00";
+            const horaFimStr = hours[dia].fim || "00:00";
+
+            const [horaInicio, minInicio] = horaInicioStr
               .split(":")
               .map(Number);
-            const [horaFim, minFim] = hours[dia].fim.split(":").map(Number);
+            const [horaFim, minFim] = horaFimStr.split(":").map(Number);
 
             const totalMinInicio = horaInicio * 60 + minInicio;
             const totalMinFim = horaFim * 60 + minFim;

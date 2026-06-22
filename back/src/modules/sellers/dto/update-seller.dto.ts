@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateSellerDto } from './create-seller.dto';
-import { IsOptional, IsString, IsUrl, IsArray } from 'class-validator';
+import { IsOptional, IsString, IsUrl, IsNotEmpty } from 'class-validator';
 
 // O PartialType herda automaticamente os campos do CreateCostomerDto como opcionais
 export class UpdateSellerDto extends PartialType(CreateSellerDto) {
@@ -21,9 +21,13 @@ export class UpdateSellerDto extends PartialType(CreateSellerDto) {
   @IsString()
   address?: string;
 
-  @IsOptional()
-  @IsArray({ message: 'O horário de funcionamento deve ser um array' })
-  businessHours?: any[];
+  // No seu create-seller.dto.ts
+
+  @IsNotEmpty({ message: 'O horário de funcionamento é obrigatório' })
+  @IsString({
+    message: 'O horário de funcionamento deve ser uma string JSON válida',
+  })
+  businessHours: string; // 🚀 Agora aceita a string vinda do FormData
 
   @IsOptional()
   @IsString()

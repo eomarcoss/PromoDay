@@ -35,8 +35,10 @@ export class CreateSellerDto {
   address: string;
 
   @IsNotEmpty({ message: 'O horário de funcionamento é obrigatório' })
-  @IsArray({ message: 'O horário de funcionamento deve ser um array' })
-  businessHours: any[]; // Aceita o array de objetos vindo do front
+  @IsString({
+    message: 'O horário de funcionamento deve ser uma string JSON válida',
+  })
+  businessHours: string; // 🚀 Agora aceita a string vinda do FormData
 
   @IsNotEmpty({ message: 'A categoria é obrigatória' })
   @IsString()

@@ -13,12 +13,12 @@ import { AxiosError } from "axios";
 export async function signInAction(credentials: LoginPayload) {
   try {
     // Chama o serviço HTTP mapeado acima
-    const data = await authService.login(credentials);
+    const { data } = await authService.login(credentials);
 
     const cookieStore = await cookies();
 
     // Grava o cookie httpOnly blindado contra XSS
-    cookieStore.set("@Preguify:token", data.access_token, {
+    cookieStore.set("@PromoDay:token", data.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -28,6 +28,7 @@ export async function signInAction(credentials: LoginPayload) {
 
     return { success: true, user: data.user };
   } catch (error) {
+    console.error("ERRO COMPLETO NA ACTION DE LOGIN:", error);
     const axiosError = error as AxiosError<{ message: string }>;
     return {
       success: false,
@@ -55,9 +56,9 @@ export async function registerCustomerAction(formdata: FormData) {
 /**
  * Action para registrar um Vendedor (Seller)
  */
-export async function registerSellerAction(payload: RegisterSellerPayload) {
+export async function registerSellerAction(formdata: FormData) {
   try {
-    await authService.registerSeller(payload);
+    await authService.registerSeller(formdata);
     return { success: true };
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;

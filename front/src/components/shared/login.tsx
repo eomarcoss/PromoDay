@@ -1,5 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signInAction } from "@/app/actions/auth"; // 👈 Importa a Action que acabamos de ajustar
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +11,39 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export function LoginCard() {
+  const router = useRouter();
+  const { setUser } = useAuth(); // Função do contexto para atualizar o usuário globalmente
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    // 🚀 Chama a Server Action passando as credenciais puras (aqui usamos JSON normal)
+    const result = await signInAction({ email, password });
+
+    setLoading(false);
+
+    if (result.success && result.user) {
+      // 1. Salva o usuário no Contexto para o Front-end renderizar o nome/foto dele na tela
+      setUser(result.user);
+
+      // 2. Redirecionamento inteligente baseado no Role que veio do seu NestJS
+      if (result.user.role === "SELLER") {
+        router.push("/dashboard-seller");
+      } else {
+        router.push("/promotions");
+      }
+    } else {
+      // Exibe na tela o erro exato retornado pelo NestJS
+      setError(result.error || "Falha ao tentar entrar.");
+    }
+  };
   return (
     <div className="w-full max-w-md mx-auto space-y-6 text-center">
       {/* Título */}
@@ -18,7 +55,7 @@ export function LoginCard() {
       <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
         <CardContent className="p-0 space-y-5">
           {/* Campo Email */}
-          <form action="/login" method="POST">
+          <form onSubmit={handleLogin} method="POST">
             <div className="space-y-1.5">
               <Label
                 htmlFor="email"
@@ -29,6 +66,10 @@ export function LoginCard() {
               <Input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
                 className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
               />
             </div>
@@ -44,14 +85,22 @@ export function LoginCard() {
               <Input
                 id="senha"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
                 className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
               />
             </div>
 
             {/* Ações de Entrada */}
             <div className="flex flex-col gap-2 pt-2 items-center">
-              <Button className="rounded-full bg-black hover:bg-neutral-800 cursor-pointer text-white w-32 h-9 font-bold text-sm transition-all">
-                Entrar
+              <Button
+                type="submit"
+                disabled={loading}
+                className="rounded-full bg-black hover:bg-neutral-800 cursor-pointer text-white w-32 h-9 font-bold text-sm transition-all"
+              >
+                {loading ? "Entrando..." : "Entrar"}
               </Button>
               <Button
                 variant="link"
