@@ -31,4 +31,10 @@ export const authService = {
     });
     return data;
   },
+
+  getPromotions: async () => {
+    // Faz a chamada GET para o endpoint do NestJS
+    const { data } = await api.get("/promotions");
+    return data;
+  },
 };

@@ -7,20 +7,18 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-interface PromoCardProps {
-  product: {
-    productName?: string;
-    storeName?: string;
-    originalPrice?: number;
-    discountPrice?: number;
-    discountPercentage?: number;
-    timeLeft?: string;
-    imageUrl?: string;
-  };
+interface Product {
+  name: string;
+  storeName: string;
+  originalPrice: number;
+  promoPrice: number;
+  discountPercentage: number;
+  timeLeft: string;
+  imageUrl: string;
 }
 
 // 1. Mudança aqui: Trocamos 'const' por 'export function' e ajustamos a sintaxe das Props
-export function PromoCard({ product }: PromoCardProps) {
+export function PromoCard({ product }: { product: Product }) {
   // <-- A tipagem das props vem aqui no final do parêntese
 
   const formatPrice = (price?: number) => {
@@ -34,7 +32,7 @@ export function PromoCard({ product }: PromoCardProps) {
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
-              alt={product.productName}
+              alt={product.name}
               className="object-cover w-full h-full"
             />
           ) : (
