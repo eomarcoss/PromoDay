@@ -35,7 +35,7 @@ export class PromotionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.promotionsService.findOne(+id);
+    return this.promotionsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)

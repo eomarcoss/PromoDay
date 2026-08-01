@@ -38,6 +38,10 @@ export class AuthService {
         name: user.name,
         email: user.email,
         role: user.role,
+        imageUrl: user.imageUrl,
+        businessHours: user.businessHours,
+        address: user.address,
+        phone: user.phone,
       },
     };
   }

@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-interface Product {
+// 1. Tipagem unificada das propriedades recebidas
+export interface PromoCardProps {
   name: string;
   storeName: string;
   originalPrice: number;
@@ -17,18 +18,21 @@ interface Product {
   imageUrl: string;
 }
 
-// 1. Mudança aqui: Trocamos 'const' por 'export function' e ajustamos a sintaxe das Props
-export function PromoCard({ product }: { product: Product }) {
-  // <-- A tipagem das props vem aqui no final do parêntese
-
+export function PromoCard({ product }: { product: PromoCardProps }) {
+  // Formatação de preço no padrão brasileiro (R$ 0,00)
   const formatPrice = (price?: number) => {
-    return price?.toFixed(2).replace(".", ",") || "Preço não disponível";
+    if (price === undefined || price === null) return "R$ --";
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(price);
   };
 
   return (
-    <div className="p-0 flex justify-center items-center font-sans">
-      <Card className="w-md bg-[#c5c5c5] rounded-[32px] p-4 border-none shadow-md flex flex-col items-center h-full">
-        <CardHeader className="w-full p-0  relative aspect-[4/3] bg-[#1e1e1e] rounded-[24px] overflow-hidden flex items-center justify-center">
+    <div className="p-0 flex justify-center items-center font-sans h-full">
+      <Card className="w-full max-w-md bg-[#c5c5c5] rounded-[32px] p-4 border-none shadow-md flex flex-col items-center justify-between h-full">
+        {/* Imagem do Produto */}
+        <CardHeader className="w-full p-0 relative aspect-[4/3] bg-[#1e1e1e] rounded-[24px] overflow-hidden flex items-center justify-center">
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
@@ -36,9 +40,12 @@ export function PromoCard({ product }: { product: Product }) {
               className="object-cover w-full h-full"
             />
           ) : (
-            <div className="lg:w-xs lg:-xs" />
+            <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-xs text-neutral-400">
+              Sem Imagem
+            </div>
           )}
 
+          {/* Badge de % Desconto */}
           <div className="absolute top-4 right-4 w-14 h-14 bg-[#c7c7c7] rounded-full flex flex-col items-center justify-center shadow-inner border border-[#C6B0B0]">
             <span className="text-[#3B2A2A] text-lg font-extrabold leading-none">
               {product.discountPercentage}%
@@ -49,40 +56,46 @@ export function PromoCard({ product }: { product: Product }) {
           </div>
         </CardHeader>
 
-        <CardContent className="w-full p-0 text-center my-0 space-y-3">
-          <h3 className="text-[#000000] text-lg font-extrabold tracking-tight">
-            {product.productName}
+        {/* Informações da Promoção */}
+        <CardContent className="w-full p-0 text-center my-4 space-y-3 flex-1 flex flex-col justify-between">
+          {/* 🚀 Ajustado: Usando product.name em vez de product.productName */}
+          <h3 className="text-[#000000] text-lg font-extrabold tracking-tight text-left line-clamp-1">
+            {product.name}
           </h3>
 
-          <div className="flex items-center  space-x-2">
-            <div className="w-10 h-10 rounded-full bg-[#3B2A2A]" />
-            <span className="text-[#3B2A2A] text-lg font-medium">
+          {/* Loja parceira */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-[#3B2A2A] flex-shrink-0" />
+            <span className="text-[#3B2A2A] text-sm font-bold truncate">
               {product.storeName}
             </span>
           </div>
 
-          <div className="flex  space-x-8 items-baseline">
-            <div className="flex items-start">
-              <span className="text-[#3B2A2A] text-base font-bold">De:</span>
-              <span className="text-[#3B2A2A] text-base font-semibold line-through decoration-2">
+          {/* Preços */}
+          <div className="flex space-x-4 items-baseline justify-start">
+            <div className="flex items-center space-x-1">
+              <span className="text-[#3B2A2A] text-xs font-bold">De:</span>
+              <span className="text-[#3B2A2A] text-xs font-semibold line-through decoration-2">
                 {formatPrice(product.originalPrice)}
               </span>
             </div>
-            <div className="flex items-start">
-              <span className="text-[#3B2A2A] text-base font-bold">Por:</span>
+            <div className="flex items-center space-x-1">
+              <span className="text-[#3B2A2A] text-xs font-bold">Por:</span>
+              {/* 🚀 Ajustado: Usando product.promoPrice em vez de product.discountPrice */}
               <span className="text-[#3B2A2A] text-base font-black text-black">
-                {formatPrice(product.discountPrice)}
+                {formatPrice(product.promoPrice)}
               </span>
             </div>
           </div>
 
-          <p className="text-[#3B2A2A] text-start text-base font-bold">
-            Duração: {product.timeLeft}
+          <p className="text-[#3B2A2A] text-start text-xs font-bold">
+            Término: {new Date(product.timeLeft).toLocaleDateString("pt-BR")}
           </p>
         </CardContent>
 
-        <CardFooter className="w-full p-0">
-          <Button className="cursor-pointer w-full bg-[#101010] hover:bg-[#2e2e2e] text-white text-base font-bold py-7 rounded-full transition-colors">
+        {/* Botão de Ação */}
+        <CardFooter className="w-full p-0 mt-2">
+          <Button className="cursor-pointer w-full bg-[#101010] hover:bg-[#2e2e2e] text-white text-base font-bold py-6 rounded-full transition-colors">
             Resgatar
           </Button>
         </CardFooter>

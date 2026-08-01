@@ -64,15 +64,52 @@ export class SellersService {
   async findByEmail(email: string) {
     return this.prisma.seller.findUnique({
       where: { email },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        avatarUrl: true,
+        businessHours: true,
+        promotions: true,
+      },
     });
   }
 
-  findAll() {
-    return `This action returns all sellers`;
+  async findAll() {
+    return this.prisma.seller.findMany({
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        avatarUrl: true,
+        // Traz a contagem de promoções ativas para cada loja
+        _count: {
+          select: {
+            promotions: true,
+          },
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} seller`;
+  async findOne(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        avatarUrl: true,
+        businessHours: true,
+        promotions: true,
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado.');
+    }
+
+    return seller;
   }
 
   async update(id: string, updateSellerDto: UpdateSellerDto) {

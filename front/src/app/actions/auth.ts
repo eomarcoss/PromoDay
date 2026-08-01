@@ -6,7 +6,7 @@ import { LoginPayload } from "@/types/auth";
 // import { RegisterCustomerPayload } from "@/types/customer";
 import { RegisterSellerPayload } from "@/types/seller";
 import { AxiosError } from "axios";
-
+import { redirect } from "next/navigation";
 /**
  * Action para realizar o login e salvar o cookie seguro
  */
@@ -75,5 +75,6 @@ export async function registerSellerAction(formdata: FormData) {
  */
 export async function signOutAction() {
   const cookieStore = await cookies();
-  cookieStore.delete("@Preguify:token");
+  cookieStore.delete("@PromoDay:token");
+  redirect("/auth/login");
 }

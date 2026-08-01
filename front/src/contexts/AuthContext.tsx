@@ -15,6 +15,10 @@ interface User {
   email: string;
   role: "CUSTOMER" | "SELLER";
   avatarUrl?: string;
+  phone?: string;
+  imageUrl?: string;
+  businessHours?: string;
+  address?: string;
 }
 
 // 2. Defina o formato dos dados que o Contexto vai compartilhar com o app

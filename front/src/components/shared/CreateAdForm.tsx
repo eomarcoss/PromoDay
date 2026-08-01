@@ -1,16 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useForm, Controller } from "react-hook-form";
-import { Upload, Clock, MapPin, Plus, Minus } from "lucide-react";
+import { Upload, Clock, MapPin, Plus, Minus, Store } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
-// IMPORTANTE: Assim que você mover para o arquivo de schema separado, mude o import abaixo:
-// import { adFormSchema, AdFormValues } from "@/schemas/ad.schema";
-// import { zodResolver } from "@hookform/resolvers/zod";
 
 interface AdFormValues {
   productName: string;
@@ -27,17 +24,20 @@ interface AdFormValues {
 export function CreateAdForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUnlimitedUser, setIsUnlimitedUser] = useState(false);
-  // Inicialização clássica do React Hook Form (Pronto para receber o zodResolver no futuro)
+
+  // 2. EXTRAIA O USUÁRIO/LOJA DO SEU CONTEXTO:
+  // Substiua `useAuth()` pelo hook real que você utiliza na aplicação
+  const { user } = useAuth();
+
+  // Objeto de demonstração (Remova e use o do seu contexto acima):
   const {
     register,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-    watch,
     setValue,
   } = useForm<AdFormValues>({
-    // resolver: zodResolver(adFormSchema),
     defaultValues: {
       productName: "",
       description: "",
@@ -50,13 +50,21 @@ export function CreateAdForm() {
       discountPrice: "",
     },
   });
-  // Use o watch para monitorar os valores atuais para os botões de + e - funcionarem
-  const currentStock = watch("stock");
-  const currentUserLimit = watch("userLimit");
 
   function onSubmit(data: AdFormValues) {
     console.log("Dados prontos para envio:", data);
   }
+
+  // Função auxiliar para gerar as iniciais caso não exista imagem cadastrada
+  const getInitials = (name?: string) => {
+    if (!name) return "LJ";
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  };
 
   return (
     <div className="bg-neutral-100 min-h-screen p-4 md:p-8 flex justify-center items-center">
@@ -80,7 +88,7 @@ export function CreateAdForm() {
                   <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer p-4 space-y-3">
                     <Upload className="w-8 h-8 text-neutral-400 group-hover:text-white transition-colors" />
                     <span className="text-base font-medium group-hover:text-white transition-colors">
-                      Enviar imagem
+                      Enviar imagem do produto
                     </span>
                     <input
                       type="file"
@@ -95,25 +103,37 @@ export function CreateAdForm() {
                 )}
               </div>
 
-              {/* Informações da Loja */}
+              {/* Informações Dinâmicas da Loja (Contexto) */}
               <div className="space-y-4 pt-2">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-white font-bold">
-                    SC
-                  </div>
-                  <span className="text-xl font-bold text-black">
-                    Super Cell
+                  {user?.imageUrl ? (
+                    <img
+                      src={user.imageUrl}
+                      alt={user.name || "Loja"}
+                      className="w-10 h-10 rounded-full object-cover border border-neutral-200"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-white font-bold text-sm">
+                      {getInitials(user?.name)}
+                    </div>
+                  )}
+                  <span className="text-xl font-bold text-black truncate">
+                    {user?.name || "Nome da Loja"}
                   </span>
                 </div>
 
-                <div className="space-y-2 text-neutral-500 text-sm font-medium">
+                <div className="space-y-2 text-neutral-600 text-sm font-medium">
                   <div className="flex items-center space-x-2">
-                    <Clock className="w-4 h-4" />
-                    <span>Horário funcionamento</span>
+                    <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
+                    <span>
+                      {user?.businessHours || "Horário não informado"}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4" />
-                    <span>Localização</span>
+                    <MapPin className="w-4 h-4 text-neutral-400 shrink-0" />
+                    <span className="truncate">
+                      {user?.address || "Endereço não informado"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -172,9 +192,9 @@ export function CreateAdForm() {
                 )}
               </div>
 
-              {/* Linha Dupla: Estoque com Stepper e Limite por Usuário Condicional */}
+              {/* Linha Dupla: Estoque e Limite por Usuário */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* CAMPO: ESTOQUE (Apenas números com incrementadores) */}
+                {/* CAMPO: ESTOQUE */}
                 <div className="flex flex-col space-y-2">
                   <label className="text-black font-bold text-base">
                     Estoque total disponível:
@@ -186,9 +206,10 @@ export function CreateAdForm() {
                       <div className="flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none">
                         <button
                           type="button"
-                          onClick={() =>
-                            field.onChange(Math.max(1, (currentStock || 1) - 1))
-                          }
+                          onClick={() => {
+                            const current = Number(field.value) || 1;
+                            field.onChange(String(Math.max(1, current - 1)));
+                          }}
                           className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
                         >
                           <Minus className="w-4 h-4" />
@@ -198,16 +219,18 @@ export function CreateAdForm() {
                           type="number"
                           className="flex-1 text-center bg-transparent border-none text-black font-bold focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           value={field.value}
-                          onChange={(e) =>
-                            field.onChange(parseInt(e.target.value) || 1)
-                          }
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            field.onChange(isNaN(val) ? "" : String(val));
+                          }}
                         />
 
                         <button
                           type="button"
-                          onClick={() =>
-                            field.onChange((currentStock || 1) + 1)
-                          }
+                          onClick={() => {
+                            const current = Number(field.value) || 0;
+                            field.onChange(String(current + 1));
+                          }}
                           className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
                         >
                           <Plus className="w-4 h-4" />
@@ -222,7 +245,7 @@ export function CreateAdForm() {
                   )}
                 </div>
 
-                {/* CAMPO: LIMITE POR USUÁRIO (Com opção de "Sem Limite") */}
+                {/* CAMPO: LIMITE POR USUÁRIO */}
                 <div className="flex flex-col space-y-2">
                   <label className="text-black font-bold text-base">
                     Limite por usuário:
@@ -232,18 +255,20 @@ export function CreateAdForm() {
                     name="userLimit"
                     render={({ field }) => (
                       <div className="flex flex-col space-y-2">
-                        {/* Stepper de Limite */}
                         <div
-                          className={`flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none transition-opacity ${isUnlimitedUser ? "opacity-40 pointer-events-none" : ""}`}
+                          className={`flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none transition-opacity ${
+                            isUnlimitedUser
+                              ? "opacity-40 pointer-events-none"
+                              : ""
+                          }`}
                         >
                           <button
                             type="button"
                             disabled={isUnlimitedUser}
-                            onClick={() =>
-                              field.onChange(
-                                Math.max(1, (currentUserLimit || 1) - 1),
-                              )
-                            }
+                            onClick={() => {
+                              const current = Number(field.value) || 1;
+                              field.onChange(String(Math.max(1, current - 1)));
+                            }}
                             className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
                           >
                             <Minus className="w-4 h-4" />
@@ -255,24 +280,25 @@ export function CreateAdForm() {
                             className="flex-1 text-center bg-transparent border-none text-black font-bold focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             value={isUnlimitedUser ? "" : field.value}
                             placeholder={isUnlimitedUser ? "∞" : "1"}
-                            onChange={(e) =>
-                              field.onChange(parseInt(e.target.value) || 1)
-                            }
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value, 10);
+                              field.onChange(isNaN(val) ? "" : String(val));
+                            }}
                           />
 
                           <button
                             type="button"
                             disabled={isUnlimitedUser}
-                            onClick={() =>
-                              field.onChange((currentUserLimit || 1) + 1)
-                            }
+                            onClick={() => {
+                              const current = Number(field.value) || 0;
+                              field.onChange(String(current + 1));
+                            }}
                             className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
                         </div>
 
-                        {/* Checkbox minimalista para Sem Limite */}
                         <label className="flex items-center space-x-2 cursor-pointer select-none pl-2">
                           <input
                             type="checkbox"
@@ -281,9 +307,9 @@ export function CreateAdForm() {
                               const checked = e.target.checked;
                               setIsUnlimitedUser(checked);
                               if (checked) {
-                                setValue("userLimit", 0); // Define 0 ou null no formulário quando for sem limite
+                                setValue("userLimit", "0");
                               } else {
-                                setValue("userLimit", 1); // Volta para o padrão de 1 unidade ao desmarcar
+                                setValue("userLimit", "1");
                               }
                             }}
                             className="w-4 h-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900 accent-black"

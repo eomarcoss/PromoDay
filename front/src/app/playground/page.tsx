@@ -59,6 +59,7 @@ export default function Playground() {
 
       {/* <RegisterStepperFormStore /> */}
       <RegisterStepperFormClient />
+      <CreateAdForm />
     </div>
   );
 }

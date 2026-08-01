@@ -37,7 +37,7 @@ export class SellersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.sellersService.findOne(+id);
+    return this.sellersService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor

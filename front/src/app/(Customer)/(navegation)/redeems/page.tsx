@@ -1,5 +1,5 @@
 "use client";
-import RedeemsList from "../../../components/shared/RedeemsList";
+import RedeemsList from "../../../../components/shared/RedeemsList";
 
 export default function Redeems() {
   return (

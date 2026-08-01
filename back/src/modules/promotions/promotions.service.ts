@@ -119,8 +119,26 @@ export class PromotionsService {
       },
     });
   }
-  findOne(id: number) {
-    return `This action returns a #${id} promotion`;
+  async findOne(id: string) {
+    const promotion = await this.prisma.promotion.findUnique({
+      where: { id },
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            businessHours: true,
+          },
+        },
+      },
+    });
+  
+    if (!promotion) {
+      throw new BadRequestException('Promoção não encontrada.');
+    }
+  
+    return promotion;
   }
 
   async update(

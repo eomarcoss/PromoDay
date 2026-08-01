@@ -1,16 +1,49 @@
-"use-client";
 import React from "react";
-
 import { StoreCard } from "../shared/StoreCard";
 
-export default function StoreListPage() {
-  return (
-    <div className="h-auto text-white p-3 flex flex-col gap-4 items-center max-w-2xl mx-auto">
-      {/* Exemplo 1: Loja Aberta */}
-      <StoreCard name="Bc Supermercados" offersCount={5} isOpen={true} />
+// Tipagem da loja que vem da API
+export interface Store {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  _count?: {
+    promotions: number;
+  };
+  offersCount?: number;
+  isOpen?: boolean;
+}
 
-      {/* Exemplo 2: Outra loja para teste */}
-      <StoreCard name="PromoDay Modas" offersCount={12} isOpen={false} />
+interface StoreListProps {
+  stores: Store[];
+}
+
+export function StoreList({ stores }: StoreListProps) {
+  if (!stores || stores.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-zinc-400 font-medium">
+          Nenhuma loja encontrada no momento.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4 w-full items-center">
+      {stores.map((store) => {
+        const count = store.offersCount ?? store._count?.promotions ?? 0;
+
+        return (
+          <StoreCard
+            key={store.id}
+            id={store.id}
+            name={store.name}
+            imageUrl={store.imageUrl}
+            offersCount={count}
+            isOpen={store.isOpen ?? true}
+          />
+        );
+      })}
     </div>
   );
 }
