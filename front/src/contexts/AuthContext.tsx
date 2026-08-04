@@ -17,7 +17,7 @@ interface User {
   avatarUrl?: string;
   phone?: string;
   imageUrl?: string;
-  businessHours?: string;
+  businessh?: string;
   address?: string;
 }
 
@@ -39,7 +39,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedUser = localStorage.getItem("@PromoDay:user");
     if (storedUser) {
       try {
+        // const user = JSON.parse(storedUser);
         setUser(JSON.parse(storedUser));
+        // console.log(user);
       } catch (e) {
         localStorage.removeItem("@PromoDay:user");
       }

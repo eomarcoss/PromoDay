@@ -12,6 +12,15 @@ import { PrismaService } from 'prisma/prisma.service';
 export class PromotionsService {
   constructor(private readonly prisma: PrismaService) {}
   async create(createPromotionDto: CreatePromotionDto, sellerId: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id: sellerId }, // ou 'id: userId' / 'userId: userId', dependendo do seu schema.prisma
+    });
+
+    if (!seller) {
+      throw new BadRequestException(
+        'Perfil de vendedor não encontrado para este usuário.',
+      );
+    }
     // 1. Desestruturando os dados do DTO
     const {
       startTime,
@@ -133,11 +142,11 @@ export class PromotionsService {
         },
       },
     });
-  
+
     if (!promotion) {
       throw new BadRequestException('Promoção não encontrada.');
     }
-  
+
     return promotion;
   }
 

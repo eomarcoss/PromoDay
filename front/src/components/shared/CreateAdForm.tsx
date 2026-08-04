@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useForm, Controller } from "react-hook-form";
-import { Upload, Clock, MapPin, Plus, Minus, Store } from "lucide-react";
+import { Upload, Clock, MapPin, Plus, Minus, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { formatBusinessHours } from "@/utils/formatHours";
+import { createPromotionAction } from "@/app/actions/promotions";
 
 interface AdFormValues {
   productName: string;
@@ -24,12 +26,12 @@ interface AdFormValues {
 export function CreateAdForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUnlimitedUser, setIsUnlimitedUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // 2. EXTRAIA O USUÁRIO/LOJA DO SEU CONTEXTO:
-  // Substiua `useAuth()` pelo hook real que você utiliza na aplicação
   const { user } = useAuth();
 
-  // Objeto de demonstração (Remova e use o do seu contexto acima):
   const {
     register,
     handleSubmit,
@@ -51,11 +53,52 @@ export function CreateAdForm() {
     },
   });
 
-  function onSubmit(data: AdFormValues) {
-    console.log("Dados prontos para envio:", data);
+  async function onSubmit(data: AdFormValues) {
+    setLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      // Tratamento de conversão de preço (troca vírgula por ponto)
+      const parseCurrency = (value: string) => {
+        if (!value) return 0;
+        return Number(value.replace(/\./g, "").replace(",", "."));
+      };
+
+      const payload = {
+        name: data.productName,
+        description: data.description || undefined,
+        requirements: data.requirements || undefined,
+        stock: Number(data.stock),
+        limitPerUser: isUnlimitedUser ? 0 : Number(data.userLimit),
+        startTime: new Date(data.startDate).toISOString(),
+        endTime: new Date(data.endDate).toISOString(),
+        originalPrice: parseCurrency(data.originalPrice),
+        promoPrice: parseCurrency(data.discountPrice),
+        // O DTO exige um array de strings para as imagens
+        images: imagePreview ? [imagePreview] : [],
+      };
+
+      const result = await createPromotionAction(payload);
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      setSuccessMessage("Promoção cadastrada com sucesso! 🎉");
+
+      // Reseta os campos do formulário
+      reset();
+      setImagePreview(null);
+      setIsUnlimitedUser(false);
+    } catch (err: any) {
+      console.error("Erro ao cadastrar promoção:", err);
+      setErrorMessage(err.message || "Ocorreu um erro ao criar a promoção.");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  // Função auxiliar para gerar as iniciais caso não exista imagem cadastrada
   const getInitials = (name?: string) => {
     if (!name) return "LJ";
     return name
@@ -70,6 +113,19 @@ export function CreateAdForm() {
     <div className="bg-neutral-100 min-h-screen p-4 md:p-8 flex justify-center items-center">
       <Card className="w-full max-w-5xl bg-white border border-neutral-200 rounded-[32px] shadow-sm overflow-hidden">
         <CardContent className="p-6 md:p-10">
+          {/* Alertas de Feedback */}
+          {errorMessage && (
+            <div className="mb-6 p-4 text-sm font-medium text-red-700 bg-red-100 rounded-2xl border border-red-200">
+              {errorMessage}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="mb-6 p-4 text-sm font-medium text-green-700 bg-green-100 rounded-2xl border border-green-200">
+              {successMessage}
+            </div>
+          )}
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-1 md:grid-cols-12 gap-8"
@@ -103,7 +159,7 @@ export function CreateAdForm() {
                 )}
               </div>
 
-              {/* Informações Dinâmicas da Loja (Contexto) */}
+              {/* Informações Dinâmicas da Loja */}
               <div className="space-y-4 pt-2">
                 <div className="flex items-center space-x-3">
                   {user?.imageUrl ? (
@@ -126,7 +182,8 @@ export function CreateAdForm() {
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
                     <span>
-                      {user?.businessHours || "Horário não informado"}
+                      {formatBusinessHours(user?.businessHours) ||
+                        "Horário não informado"}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -148,7 +205,7 @@ export function CreateAdForm() {
                 </label>
                 <Input
                   placeholder="Nome do produto"
-                  {...register("productName")}
+                  {...register("productName", { required: "Nome obrigatório" })}
                   className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black pl-4"
                 />
                 {errors.productName && (
@@ -168,11 +225,6 @@ export function CreateAdForm() {
                   {...register("description")}
                   className="rounded-2xl bg-neutral-100 border-none min-h-[80px] text-black focus-visible:ring-2 focus-visible:ring-black p-4 resize-none"
                 />
-                {errors.description && (
-                  <p className="text-sm font-medium text-destructive">
-                    {errors.description.message}
-                  </p>
-                )}
               </div>
 
               {/* Campo: Requisitos */}
@@ -185,11 +237,6 @@ export function CreateAdForm() {
                   {...register("requirements")}
                   className="rounded-2xl bg-neutral-100 border-none min-h-[80px] text-black focus-visible:ring-2 focus-visible:ring-black p-4 resize-none"
                 />
-                {errors.requirements && (
-                  <p className="text-sm font-medium text-destructive">
-                    {errors.requirements.message}
-                  </p>
-                )}
               </div>
 
               {/* Linha Dupla: Estoque e Limite por Usuário */}
@@ -238,11 +285,6 @@ export function CreateAdForm() {
                       </div>
                     )}
                   />
-                  {errors.stock && (
-                    <p className="text-sm font-medium text-destructive">
-                      {errors.stock.message}
-                    </p>
-                  )}
                 </div>
 
                 {/* CAMPO: LIMITE POR USUÁRIO */}
@@ -321,11 +363,6 @@ export function CreateAdForm() {
                       </div>
                     )}
                   />
-                  {errors.userLimit && (
-                    <p className="text-sm font-medium text-destructive">
-                      {errors.userLimit.message}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -337,14 +374,9 @@ export function CreateAdForm() {
                   </label>
                   <Input
                     type="datetime-local"
-                    {...register("startDate")}
+                    {...register("startDate", { required: true })}
                     className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
                   />
-                  {errors.startDate && (
-                    <p className="text-sm font-medium text-destructive">
-                      {errors.startDate.message}
-                    </p>
-                  )}
                 </div>
 
                 <div className="flex flex-col space-y-2">
@@ -353,14 +385,9 @@ export function CreateAdForm() {
                   </label>
                   <Input
                     type="datetime-local"
-                    {...register("endDate")}
+                    {...register("endDate", { required: true })}
                     className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
                   />
-                  {errors.endDate && (
-                    <p className="text-sm font-medium text-destructive">
-                      {errors.endDate.message}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -375,15 +402,10 @@ export function CreateAdForm() {
                       De:
                     </label>
                     <Input
-                      placeholder="R$ 0,00"
-                      {...register("originalPrice")}
+                      placeholder="35,00"
+                      {...register("originalPrice", { required: true })}
                       className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
                     />
-                    {errors.originalPrice && (
-                      <p className="text-sm font-medium text-destructive">
-                        {errors.originalPrice.message}
-                      </p>
-                    )}
                   </div>
 
                   <div className="flex flex-col space-y-1">
@@ -391,15 +413,10 @@ export function CreateAdForm() {
                       Por:
                     </label>
                     <Input
-                      placeholder="R$ 0,00"
-                      {...register("discountPrice")}
+                      placeholder="25,00"
+                      {...register("discountPrice", { required: true })}
                       className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
                     />
-                    {errors.discountPrice && (
-                      <p className="text-sm font-medium text-destructive">
-                        {errors.discountPrice.message}
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
@@ -412,6 +429,9 @@ export function CreateAdForm() {
                   onClick={() => {
                     reset();
                     setImagePreview(null);
+                    setIsUnlimitedUser(false);
+                    setErrorMessage(null);
+                    setSuccessMessage(null);
                   }}
                   className="rounded-full cursor-pointer h-12 border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-100 font-bold text-base transition-colors"
                 >
@@ -420,9 +440,17 @@ export function CreateAdForm() {
 
                 <Button
                   type="submit"
-                  className="rounded-full cursor-pointer h-12 bg-neutral-900 hover:bg-black text-white font-bold text-base transition-colors border-none"
+                  disabled={loading}
+                  className="rounded-full cursor-pointer h-12 bg-neutral-900 hover:bg-black text-white font-bold text-base transition-colors border-none flex items-center justify-center gap-2"
                 >
-                  Anunciar
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Anunciando...
+                    </>
+                  ) : (
+                    "Anunciar"
+                  )}
                 </Button>
               </div>
             </div>

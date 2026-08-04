@@ -67,6 +67,8 @@ export class SellersService {
       select: {
         id: true,
         name: true,
+        email: true,
+        password: true,
         address: true,
         avatarUrl: true,
         businessHours: true,
