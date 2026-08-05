@@ -24,6 +24,7 @@ interface AdFormValues {
 }
 
 export function CreateAdForm() {
+  const [imageFile, setImageFile] = useState<File | null>(null); // 👈 Guardar o arquivo real
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUnlimitedUser, setIsUnlimitedUser] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,26 +66,32 @@ export function CreateAdForm() {
         return Number(value.replace(/\./g, "").replace(",", "."));
       };
 
-      const payload = {
-        name: data.productName,
-        description: data.description || undefined,
-        requirements: data.requirements || undefined,
-        stock: Number(data.stock),
-        limitPerUser: isUnlimitedUser ? 0 : Number(data.userLimit),
-        startTime: new Date(data.startDate).toISOString(),
-        endTime: new Date(data.endDate).toISOString(),
-        originalPrice: parseCurrency(data.originalPrice),
-        promoPrice: parseCurrency(data.discountPrice),
-        // O DTO exige um array de strings para as imagens
-        images: imagePreview ? [imagePreview] : [],
-      };
+      const formData = new FormData();
+      if (imageFile) {
+        formData.append("file", imageFile); // 👈 Envia o arquivo de imagem
+      }
 
-      const result = await createPromotionAction(payload);
+      formData.append("name", data.productName);
+      if (data.description) formData.append("description", data.description);
+      if (data.requirements) formData.append("requirements", data.requirements);
+      formData.append("stock", String(data.stock));
+      formData.append(
+        "limitPerUser",
+        String(isUnlimitedUser ? 0 : data.userLimit),
+      );
+      formData.append("startTime", new Date(data.startDate).toISOString());
+      formData.append("endTime", new Date(data.endDate).toISOString());
+      formData.append(
+        "originalPrice",
+        String(parseCurrency(data.originalPrice)),
+      );
+      formData.append("promoPrice", String(parseCurrency(data.discountPrice)));
+
+      const result = await createPromotionAction(formData);
 
       if (!result.success) {
         throw new Error(result.error);
       }
-
       setSuccessMessage("Promoção cadastrada com sucesso! 🎉");
 
       // Reseta os campos do formulário
@@ -152,7 +159,10 @@ export function CreateAdForm() {
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) setImagePreview(URL.createObjectURL(file));
+                        if (file) {
+                          setImageFile(file); // 👈 Salva o arquivo File
+                          setImagePreview(URL.createObjectURL(file)); // Apenas para mostrar na tela
+                        }
                       }}
                     />
                   </label>

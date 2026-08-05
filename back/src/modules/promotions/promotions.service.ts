@@ -11,9 +11,10 @@ import { PrismaService } from 'prisma/prisma.service';
 @Injectable()
 export class PromotionsService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(createPromotionDto: CreatePromotionDto, sellerId: string) {
     const seller = await this.prisma.seller.findUnique({
-      where: { id: sellerId }, // ou 'id: userId' / 'userId: userId', dependendo do seu schema.prisma
+      where: { id: sellerId },
     });
 
     if (!seller) {
@@ -21,6 +22,7 @@ export class PromotionsService {
         'Perfil de vendedor não encontrado para este usuário.',
       );
     }
+
     // 1. Desestruturando os dados do DTO
     const {
       startTime,
@@ -29,27 +31,43 @@ export class PromotionsService {
       promoPrice,
       stock,
       limitPerUser,
+      images,
       ...rest
     } = createPromotionDto;
+
+    // 2. Coerção explícita para tipos primitivos (Garante que strings vindas de FormData sejam convertidas)
+    const numOriginalPrice = Number(originalPrice);
+    const numPromoPrice = Number(promoPrice);
+    const numStock = Number(stock);
+    const numLimitPerUser = Number(limitPerUser);
 
     const dataInicio = new Date(startTime);
     const dataFim = new Date(endTime);
     const agora = new Date();
 
     // 🛑 REGRA 1 & 2: Validações de Valores (Preços válidos e desconto real)
-    if (originalPrice <= 0 || promoPrice <= 0) {
+    if (
+      isNaN(numOriginalPrice) ||
+      isNaN(numPromoPrice) ||
+      numOriginalPrice <= 0 ||
+      numPromoPrice <= 0
+    ) {
       throw new BadRequestException(
-        'Os preços original e promocional devem ser maiores que zero.',
+        'Os preços original e promocional devem ser números válidos maiores que zero.',
       );
     }
 
-    if (promoPrice >= originalPrice) {
+    if (numPromoPrice >= numOriginalPrice) {
       throw new BadRequestException(
         'O preço promocional deve ser menor do que o preço original.',
       );
     }
 
-    // 🛑 REGRA 3 & 4: Validações de Cronograma (Lógica do relógio)
+    // 🛑 REGRA 3 & 4: Validações de Cronograma
+    if (isNaN(dataInicio.getTime()) || isNaN(dataFim.getTime())) {
+      throw new BadRequestException('Formato de data inválido.');
+    }
+
     if (dataInicio >= dataFim) {
       throw new BadRequestException(
         'A data de início não pode ser maior ou igual à data de término.',
@@ -62,27 +80,31 @@ export class PromotionsService {
       );
     }
 
-    // 🛑 REGRA 5: Lógica de Estoque vs Limite por Usuário (Considerando o 0 como ilimitado)
-    if (limitPerUser > 0 && limitPerUser > stock) {
+    // 🛑 REGRA 5: Lógica de Estoque vs Limite por Usuário
+    if (isNaN(numStock) || isNaN(numLimitPerUser)) {
+      throw new BadRequestException(
+        'Estoque e limite por usuário devem ser números válidos.',
+      );
+    }
+
+    if (numLimitPerUser > 0 && numLimitPerUser > numStock) {
       throw new BadRequestException(
         'O limite de resgate por usuário não pode ser maior do que o estoque total disponível.',
       );
     }
 
-    // -------------------------------------------------------------------------
-    // Passou em todas as travas do MVP? Salva no banco de dados com segurança!
-    // -------------------------------------------------------------------------
     try {
       const promotion = await this.prisma.promotion.create({
         data: {
           ...rest,
-          stock,
-          limitPerUser,
-          originalPrice,
-          promoPrice,
+          stock: numStock,
+          limitPerUser: numLimitPerUser,
+          originalPrice: numOriginalPrice,
+          promoPrice: numPromoPrice,
           startTime: dataInicio,
           endTime: dataFim,
-          sellerId: sellerId, // Vinculado automaticamente pelo token do Seller
+          images: images || [], // 👈 URLs retornadas pelo Supabase
+          sellerId: sellerId,
         },
       });
 
@@ -101,10 +123,10 @@ export class PromotionsService {
 
     return this.prisma.promotion.findMany({
       where: {
-        isActive: true, // Só o que o lojista não desativou
-        stock: { gte: 1 }, // Só o que tem 1 ou mais unidades no estoque
-        startTime: { lte: agora }, // Onde a data de início já passou ou é agora
-        endTime: { gte: agora }, // Onde a data de término ainda não chegou
+        isActive: true,
+        stock: { gte: 1 },
+        startTime: { lte: agora },
+        endTime: { gte: agora },
       },
       select: {
         id: true,
@@ -115,7 +137,6 @@ export class PromotionsService {
         stock: true,
         limitPerUser: true,
         endTime: true,
-        // 🏪 Traz os dados da loja para renderizar no card do feed
         seller: {
           select: {
             id: true,
@@ -124,10 +145,11 @@ export class PromotionsService {
         },
       },
       orderBy: {
-        createdAt: 'desc', // Novidades aparecem primeiro no topo do feed
+        createdAt: 'desc',
       },
     });
   }
+
   async findOne(id: string) {
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },
@@ -155,7 +177,6 @@ export class PromotionsService {
     sellerId: string,
     updatePromotionDto: UpdatePromotionDto,
   ) {
-    // 1. Busca a promoção existente e garante que ela pertence ao vendedor logado
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },
     });
@@ -170,26 +191,38 @@ export class PromotionsService {
       );
     }
 
-    // 2. Mescla os dados atuais do banco com os novos dados que vieram no DTO
-    // Se o campo veio no DTO, usa o novo. Se não veio, mantém o que já estava no banco.
+    // Mescla dados atuais com os dados enviados
     const originalPrice =
-      updatePromotionDto.originalPrice ?? promotion.originalPrice;
-    const promoPrice = updatePromotionDto.promoPrice ?? promotion.promoPrice;
-    const stock = updatePromotionDto.stock ?? promotion.stock;
+      updatePromotionDto.originalPrice !== undefined
+        ? Number(updatePromotionDto.originalPrice)
+        : promotion.originalPrice;
+
+    const promoPrice =
+      updatePromotionDto.promoPrice !== undefined
+        ? Number(updatePromotionDto.promoPrice)
+        : promotion.promoPrice;
+
+    const stock =
+      updatePromotionDto.stock !== undefined
+        ? Number(updatePromotionDto.stock)
+        : promotion.stock;
+
     const limitPerUser =
-      updatePromotionDto.limitPerUser ?? promotion.limitPerUser;
+      updatePromotionDto.limitPerUser !== undefined
+        ? Number(updatePromotionDto.limitPerUser)
+        : promotion.limitPerUser;
 
     const dataInicio = updatePromotionDto.startTime
       ? new Date(updatePromotionDto.startTime)
       : promotion.startTime;
+
     const dataFim = updatePromotionDto.endTime
       ? new Date(updatePromotionDto.endTime)
       : promotion.endTime;
+
     const agora = new Date();
 
-    // 🛑 APLICANDO AS MESMAS 5 REGRAS DE NEGÓCIO
-
-    // Regra 1 & 2: Validações de Valores
+    // Validações
     if (originalPrice <= 0 || promoPrice <= 0) {
       throw new BadRequestException(
         'Os preços original e promocional devem ser maiores que zero.',
@@ -202,7 +235,6 @@ export class PromotionsService {
       );
     }
 
-    // Regra 3 & 4: Validações de Cronograma
     if (dataInicio >= dataFim) {
       throw new BadRequestException(
         'A data de início não pode ser maior ou igual à data de término.',
@@ -215,14 +247,12 @@ export class PromotionsService {
       );
     }
 
-    // Regra 5: Estoque vs Limite por Usuário
     if (limitPerUser > 0 && limitPerUser > stock) {
       throw new BadRequestException(
         'O limite de resgate por usuário não pode ser maior do que o estoque total disponível.',
       );
     }
 
-    // 3. Tudo validado? Agora isolamos as datas do resto do DTO para atualizar
     const { startTime, endTime, ...rest } = updatePromotionDto;
 
     try {
@@ -250,7 +280,6 @@ export class PromotionsService {
   }
 
   async remove(id: string, sellerId: string) {
-    // 1. Busca a promoção para verificar se ela existe e se pertence ao vendedor
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },
     });
@@ -266,7 +295,6 @@ export class PromotionsService {
     }
 
     try {
-      // 2. Faz o Soft Delete desativando a promoção
       await this.prisma.promotion.update({
         where: { id },
         data: { isActive: false },

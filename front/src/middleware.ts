@@ -1,41 +1,80 @@
 import { NextResponse, NextRequest } from "next/server";
 
-// 1. Liste aqui todas as rotas que precisam de login obrigatório
-const rotasProtegidas = ["/promotions", "/stores", "/redeems", "/profile"];
+// 1. Rotas comuns que exigem apenas autenticação (acessíveis por CUSTOMER e SELLER)
+// Adicionamos /promotions aqui para que Sellers também vejam os detalhes das promoções
+const rotasProtegidasComuns = [
+  "/profile",
+  "/redeems",
+  "/promotions",
+  "/promotions/:path*",
+];
+
+// 2. Rotas exclusivas por perfil
+const rotasExclusivasSeller = ["/seller", "/stores"];
+
+// 3. Deixe aqui apenas páginas estritamente exclusivas do Cliente (se houver)
+const rotasExclusivasCustomer: string[] = [
+  // Exemplo: "/checkout", "/my-orders" (se existirem no seu app)
+];
 
 export function middleware(request: NextRequest) {
-  // 2. Tenta recuperar o cookie de autenticação que salvamos no login
   const token = request.cookies.get("@PromoDay:token")?.value;
+  const userRole = request.cookies.get("@PromoDay:role")?.value;
 
   const { pathname } = request.nextUrl;
 
-  // 3. Se o usuário tentar acessar uma rota protegida E não tiver o token...
-  const urlPrecisaDeLogin = rotasProtegidas.some((rota) =>
-    pathname.startsWith(rota),
+  const isComunRoute = rotasProtegidasComuns.some((r) =>
+    pathname.startsWith(r),
+  );
+  const isSellerRoute = rotasExclusivasSeller.some((r) =>
+    pathname.startsWith(r),
+  );
+  const isCustomerRoute = rotasExclusivasCustomer.some((r) =>
+    pathname.startsWith(r),
   );
 
-  if (urlPrecisaDeLogin && !token) {
-    // 🔀 Redireciona ele na marra para a tela de login
-    return NextResponse.redirect(new URL("auth/login", request.url));
+  const isProtectedRoute = isComunRoute || isSellerRoute || isCustomerRoute;
+  const isAuthRoute = pathname === "/login" || pathname.startsWith("/register");
+
+  // REGRA 1: Não autenticado tentando acessar qualquer rota protegida
+  if (isProtectedRoute && !token) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirectTo", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  // 4. Se o usuário já estiver logado e tentar ir para o /login ou /register, manda pro /feed
-  if ((pathname === "/login" || pathname.startsWith("/register")) && token) {
+  // REGRA 2: Logado tentando acessar Login/Registro
+  if (isAuthRoute && token) {
+    if (userRole === "SELLER") {
+      return NextResponse.redirect(new URL("/seller/promotions", request.url));
+    }
     return NextResponse.redirect(new URL("/promotions", request.url));
   }
 
-  // Se estiver tudo OK, deixa a requisição continuar normalmente
+  // REGRA 3: Bloqueio de acesso cruzado
+  if (token && userRole) {
+    // CUSTOMER tentando acessar área do Vendedor
+    if (isSellerRoute && userRole !== "SELLER") {
+      return NextResponse.redirect(new URL("/promotions", request.url));
+    }
+
+    // SELLER tentando acessar rotas EXCLUSIVAS de Cliente
+    if (isCustomerRoute && userRole === "SELLER") {
+      return NextResponse.redirect(new URL("/seller/promotions", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
-// 5. Configura o Next.js para rodar o middleware apenas nas nossas rotas, ignorando arquivos estáticos (imagens, etc)
 export const config = {
   matcher: [
     "/promotions/:path*",
+    "/seller/:path*",
     "/stores/:path*",
     "/redeems/:path*",
-    "/login",
-    // "/register/:path*",
     "/profile/:path*",
+    "/login",
+    "/register/:path*",
   ],
 };

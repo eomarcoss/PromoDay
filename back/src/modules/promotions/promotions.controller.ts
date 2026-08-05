@@ -8,27 +8,51 @@ import {
   UseGuards,
   Request,
   Param,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { StorageService } from 'src/shared/storage.service';
 
 @Controller('promotions')
 export class PromotionsController {
-  constructor(private readonly promotionsService: PromotionsService) {}
+  constructor(
+    private readonly promotionsService: PromotionsService,
+    private readonly storageService: StorageService,
+  ) {}
 
-  @UseGuards(JwtAuthGuard) // 🔒 Apenas vendedores logados criam promoções
-  @Post() // POST /promotions
-  create(@Request() req: any, @Body() createPromotionDto: CreatePromotionDto) {
-    // Pegamos o ID do vendedor direto do token
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  @Post()
+  async create(
+    @Request() req: any,
+    @UploadedFile() file: Express.Multer.File, // 👈 Injeção do arquivo
+    @Body() createPromotionDto: CreatePromotionDto,
+  ) {
     const sellerId = req.user.sub;
+    const imageUrls: string[] = [];
 
-    // Passamos os dados da promoção e o ID do dono para o Service
-    return this.promotionsService.create(createPromotionDto, sellerId);
+    // 1. Faz upload do arquivo se ele estiver presente
+    if (file) {
+      const publicUrl = await this.storageService.uploadFile(file, 'Avatars');
+      imageUrls.push(publicUrl);
+    }
+
+    // 2. Unifica o DTO com as URLs de imagem tratadas
+    return this.promotionsService.create(
+      {
+        ...createPromotionDto,
+        images: imageUrls,
+      },
+      sellerId,
+    );
   }
 
-  @Get() // 👈 GET /promotions
+  @Get()
   async getFeed() {
     return this.promotionsService.findAllActive();
   }
@@ -39,20 +63,20 @@ export class PromotionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id') // PATCH /promotions/:id
+  @Patch(':id')
   update(
     @Param('id') id: string,
     @Request() req: any,
     @Body() updatePromotionDto: UpdatePromotionDto,
   ) {
-    const sellerId = req.user.sub; // Garante a identidade do lojista
+    const sellerId = req.user.sub;
     return this.promotionsService.update(id, sellerId, updatePromotionDto);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id') // DELETE /promotions/:id
+  @Delete(':id')
   remove(@Param('id') id: string, @Request() req: any) {
-    const sellerId = req.user.sub; // ID do lojista logado
+    const sellerId = req.user.sub;
     return this.promotionsService.remove(id, sellerId);
   }
 }

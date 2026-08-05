@@ -8,6 +8,7 @@ import { LogOut } from "lucide-react";
 export default function Profile() {
   // 1. Resgata os dados reais do usuário logado
   const { user } = useAuth();
+  console.log("Dados do usuário logado:", user);
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
@@ -18,6 +19,7 @@ export default function Profile() {
         name={user?.name || "Usuário"}
         email={user?.email || "Email não informado"}
         phone={user?.phone || "(00) 00000-0000"}
+        avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
       />
 
       <button

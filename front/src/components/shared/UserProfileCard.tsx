@@ -5,14 +5,14 @@ interface UserProfileCardProps {
   avatarUrl?: string;
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
 }
 
 export function UserProfileCard({
   avatarUrl,
   name,
   email,
-  phone = "Não informado",
+  phone,
 }: UserProfileCardProps) {
   return (
     <Card className="w-full max-w-4xl bg-neutral-100 border border-neutral-200 rounded-[28px] shadow-sm overflow-hidden">

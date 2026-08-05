@@ -8,6 +8,8 @@ import {
   Min,
 } from 'class-validator';
 
+import { Type } from 'class-transformer';
+
 export class CreatePromotionDto {
   @IsString()
   name: string;
@@ -20,10 +22,12 @@ export class CreatePromotionDto {
   @IsString()
   requirements?: string;
 
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   stock: number;
 
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   limitPerUser: number;
@@ -34,14 +38,17 @@ export class CreatePromotionDto {
   @IsDateString()
   endTime: string;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   originalPrice: number;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   promoPrice: number;
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
   images: string[];

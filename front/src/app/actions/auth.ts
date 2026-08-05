@@ -7,24 +7,38 @@ import { LoginPayload } from "@/types/auth";
 import { RegisterSellerPayload } from "@/types/seller";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
+
 /**
- * Action para realizar o login e salvar o cookie seguro
+ * Action para realizar o login e salvar os cookies seguros
  */
 export async function signInAction(credentials: LoginPayload) {
   try {
-    // Chama o serviço HTTP mapeado acima
+    // Chama o serviço HTTP que retorna access_token e os dados do usuário (incluindo a role)
     const { data } = await authService.login(credentials);
 
     const cookieStore = await cookies();
 
-    // Grava o cookie httpOnly blindado contra XSS
-    cookieStore.set("@PromoDay:token", data.access_token, {
-      httpOnly: true,
+    // Configurações padrão dos cookies para reuso
+    const cookieOptions = {
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "strict" as const,
       maxAge: 60 * 60 * 24 * 7, // 7 dias
       path: "/",
+    };
+
+    // 1. Grava o token blindado contra XSS
+    cookieStore.set("@PromoDay:token", data.access_token, {
+      ...cookieOptions,
+      httpOnly: true,
     });
+
+    // 2. 👈 NOVO: Grava a Role para o middleware ler instantaneamente
+    if (data.user?.role) {
+      cookieStore.set("@PromoDay:role", data.user.role, {
+        ...cookieOptions,
+        httpOnly: true,
+      });
+    }
 
     return { success: true, user: data.user };
   } catch (error) {
@@ -75,6 +89,10 @@ export async function registerSellerAction(formdata: FormData) {
  */
 export async function signOutAction() {
   const cookieStore = await cookies();
+
+  // Limpa ambos os cookies na saída
   cookieStore.delete("@PromoDay:token");
+  cookieStore.delete("@PromoDay:role"); // 👈 NOVO: Deleta o cookie da role
+
   redirect("/auth/login");
 }

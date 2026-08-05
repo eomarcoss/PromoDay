@@ -16,6 +16,7 @@ import { CreateSellerDto } from './dto/create-seller.dto';
 import { UpdateSellerDto } from './dto/update-seller.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { RolesGuard } from '../guards/roles.guard';
 
 @Controller('sellers') // 👈 Todas as rotas aqui começam com /sellers
 export class SellersController {
@@ -40,7 +41,7 @@ export class SellersController {
     return this.sellersService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor
+  @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor
   @Patch('profile') // 👈 Rota: PATCH /sellers/profile
   update(@Request() req: any, @Body() updateSellerDto: UpdateSellerDto) {
     // Pegamos o ID direto do token descriptografado pelo Guard
@@ -48,7 +49,7 @@ export class SellersController {
     return this.sellersService.update(sellerId, updateSellerDto);
   }
 
-  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT
+  @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT
   @Delete('profile') // 👈 Rota: DELETE /sellers/profile
   remove(@Request() req: any) {
     const sellerId = req.user.sub;

@@ -28,14 +28,14 @@ export function LoginCard() {
     const result = await signInAction({ email, password });
 
     setLoading(false);
-
+    console.log("Resultado da Action:", result.user);
     if (result.success && result.user) {
       // 1. Salva o usuário no Contexto para o Front-end renderizar o nome/foto dele na tela
       setUser(result.user);
 
       // 2. Redirecionamento inteligente baseado no Role que veio do seu NestJS
       if (result.user.role === "SELLER") {
-        router.push("/dashboard-seller");
+        router.push("/seller/announce");
       } else {
         router.push("/promotions");
       }

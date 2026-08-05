@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function createPromotionAction(payload: any) {
+export async function createPromotionAction(formData: FormData) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("@PromoDay:token")?.value;
@@ -17,10 +17,9 @@ export async function createPromotionAction(payload: any) {
     const response = await fetch("http://localhost:3001/promotions", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     const result = await response.json();

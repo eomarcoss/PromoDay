@@ -73,6 +73,7 @@ export class SellersService {
         avatarUrl: true,
         businessHours: true,
         promotions: true,
+        phone: true,
       },
     });
   }
@@ -84,6 +85,7 @@ export class SellersService {
         name: true,
         address: true,
         avatarUrl: true,
+        phone: true,
         // Traz a contagem de promoções ativas para cada loja
         _count: {
           select: {
@@ -104,6 +106,7 @@ export class SellersService {
         avatarUrl: true,
         businessHours: true,
         promotions: true,
+        phone: true,
       },
     });
 
