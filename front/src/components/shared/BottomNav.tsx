@@ -17,9 +17,9 @@ export function BottomNav() {
   const basePath = isSeller ? "/seller" : "";
 
   // Estrutura de rotas base
-  const navItems = [
+  const baseItems = [
     {
-      label: "Promoções",
+      label: isSeller ? "Minhas Ofertas" : "Promoções",
       path: "/promotions",
       icon: ShoppingBag,
     },
@@ -29,7 +29,7 @@ export function BottomNav() {
       icon: Store,
     },
     {
-      label: "Resgatados",
+      label: isSeller ? "Validar Cupom" : "Resgates",
       path: "/redeems",
       icon: Ticket,
     },
@@ -40,6 +40,11 @@ export function BottomNav() {
     },
   ];
 
+  // 2. Filtra a aba "Lojas" se for Seller
+  let navItems = isSeller
+    ? baseItems.filter((item) => item.path !== "/stores")
+    : baseItems;
+
   if (isSeller) {
     navItems.splice(0, 0, {
       label: "Anunciar",
@@ -47,6 +52,7 @@ export function BottomNav() {
       icon: PlusCircle,
     });
   }
+
   return (
     <div className="sticky bottom-0 left-0 right-0 z-50 bg-black border-t border-neutral-800 px-4 pb-safe">
       <nav className="flex justify-around items-center h-16 max-w-md mx-auto bg-black">
@@ -72,7 +78,7 @@ export function BottomNav() {
               />
 
               <span
-                className={`text-xs font-semibold tracking-wide transition-all
+                className={`text-xs font-semibold tracking-wide transition-all whitespace-nowrap text-center
                 ${isActive ? "font-bold text-white" : "text-neutral-500"}`}
               >
                 {item.label}

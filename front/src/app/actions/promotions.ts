@@ -14,7 +14,7 @@ export async function createPromotionAction(formData: FormData) {
       };
     }
 
-    const response = await fetch("http://localhost:3001/promotions", {
+    const response = await fetch("http://localhost:3001/seller/promotions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -7,10 +7,11 @@ const rotasProtegidasComuns = [
   "/redeems",
   "/promotions",
   "/promotions/:path*",
+  "/stores",
 ];
 
 // 2. Rotas exclusivas por perfil
-const rotasExclusivasSeller = ["/seller", "/stores"];
+const rotasExclusivasSeller = ["/seller"];
 
 // 3. Deixe aqui apenas páginas estritamente exclusivas do Cliente (se houver)
 const rotasExclusivasCustomer: string[] = [

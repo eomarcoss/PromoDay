@@ -150,6 +150,25 @@ export class PromotionsService {
     });
   }
 
+  async findAllBySeller(sellerId: string) {
+    return this.prisma.promotion.findMany({
+      where: {
+        sellerId: sellerId, // 👈 Busca direta pela chave estrangeira
+      },
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
   async findOne(id: string) {
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },

@@ -33,6 +33,7 @@ export function CreateAdForm() {
 
   const { user } = useAuth();
 
+  console.log("User data in CreateAdForm:", user); // Log para depuração
   const {
     register,
     handleSubmit,
@@ -172,9 +173,9 @@ export function CreateAdForm() {
               {/* Informações Dinâmicas da Loja */}
               <div className="space-y-4 pt-2">
                 <div className="flex items-center space-x-3">
-                  {user?.imageUrl ? (
+                  {user?.avatarUrl ? (
                     <img
-                      src={user.imageUrl}
+                      src={user?.avatarUrl}
                       alt={user.name || "Loja"}
                       className="w-10 h-10 rounded-full object-cover border border-neutral-200"
                     />
