@@ -14,18 +14,37 @@ export async function createPromotionAction(formData: FormData) {
       };
     }
 
+    const payload = new FormData();
+
+    // 1. Copia todos os campos de texto ignorando 'files'
+    formData.forEach((value, key) => {
+      if (key !== "files") {
+        payload.append(key, value);
+      }
+    });
+
+    // 2. Obtém todos os arquivos enviados sob a chave 'files'
+    const files = formData.getAll("files");
+
+    // 3. Re-anexa no payload apenas arquivos válidos e com conteúdo
+    files.forEach((file) => {
+      if (file instanceof File && file.size > 0) {
+        payload.append("files", file);
+      }
+    });
+
+    // 4. Envia o payload para o NestJS
     const response = await fetch("http://localhost:3001/seller/promotions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: formData,
+      body: payload,
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      // Pega a mensagem tratada do NestJS (ou array de validações)
       const errorMsg = Array.isArray(result.message)
         ? result.message.join(", ")
         : result.message || "Erro ao cadastrar a promoção.";

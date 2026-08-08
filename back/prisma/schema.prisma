@@ -19,6 +19,13 @@ enum Role {
   SELLER
 }
 
+enum ClaimStatus {
+  PENDING
+  USED
+  EXPIRED
+  CANCELLED
+}
+
 // 1. Tabela dos Clientes (Usuários finais)
 model Customer {
   id        String   @id @default(uuid())
@@ -78,7 +85,7 @@ model Promotion {
 model Claim {
   id          String    @id @default(uuid())
   code        String    @unique // Código legível para o balcão (ex: PD-X8Y2Z)
-  status      String    @default("PENDING") // PENDING, USED, EXPIRED
+  status      ClaimStatus @default(PENDING) // PENDING, USED, EXPIRED
   quantity    Int       @default(1)
   // Relacionamento com o Cliente (Quem está resgatando)
   customerId  String

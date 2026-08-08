@@ -13,6 +13,7 @@ export interface PromotionFromBackend {
   seller?: {
     id: string;
     name: string;
+    avatarUrl?: string;
   };
 }
 
@@ -49,6 +50,7 @@ export default function PromoGrid({ products }: PromoGridProps) {
               product={{
                 name: promo.name,
                 storeName: promo.seller?.name || "Loja Parceira",
+                avatarUrl: promo.seller?.avatarUrl || "",
                 originalPrice: promo.originalPrice,
                 promoPrice: promo.promoPrice,
                 discountPercentage: calcDiscount(

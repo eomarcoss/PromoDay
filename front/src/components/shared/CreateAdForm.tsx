@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useForm, Controller } from "react-hook-form";
-import { Upload, Clock, MapPin, Plus, Minus, Loader2 } from "lucide-react";
+import { Upload, Clock, MapPin, Plus, Minus, Loader2, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,8 +24,10 @@ interface AdFormValues {
 }
 
 export function CreateAdForm() {
-  const [imageFile, setImageFile] = useState<File | null>(null); // 👈 Guardar o arquivo real
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // Alterado para suporte a até 3 imagens
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
   const [isUnlimitedUser, setIsUnlimitedUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,7 +35,6 @@ export function CreateAdForm() {
 
   const { user } = useAuth();
 
-  console.log("User data in CreateAdForm:", user); // Log para depuração
   const {
     register,
     handleSubmit,
@@ -55,22 +56,49 @@ export function CreateAdForm() {
     },
   });
 
+  // Função para adicionar novas imagens
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (!selectedFiles.length) return;
+
+    const availableSlots = 3 - imageFiles.length;
+    const newFiles = selectedFiles.slice(0, availableSlots);
+
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+    setImageFiles((prev) => [...prev, ...newFiles]);
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+
+    // Reseta o input para permitir selecionar o mesmo arquivo novamente se desejar
+    e.target.value = "";
+  };
+
+  // Função para remover uma imagem específica
+  const handleRemoveImage = (index: number) => {
+    // Revoga a URL criada para evitar leak de memória
+    URL.revokeObjectURL(imagePreviews[index]);
+
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   async function onSubmit(data: AdFormValues) {
     setLoading(true);
     setErrorMessage(null);
     setSuccessMessage(null);
 
     try {
-      // Tratamento de conversão de preço (troca vírgula por ponto)
       const parseCurrency = (value: string) => {
         if (!value) return 0;
         return Number(value.replace(/\./g, "").replace(",", "."));
       };
 
       const formData = new FormData();
-      if (imageFile) {
-        formData.append("file", imageFile); // 👈 Envia o arquivo de imagem
-      }
+
+      // Envia todas as imagens anexadas no FormData
+      imageFiles.forEach((file) => {
+        formData.append("files", file);
+      });
 
       formData.append("name", data.productName);
       if (data.description) formData.append("description", data.description);
@@ -95,9 +123,11 @@ export function CreateAdForm() {
       }
       setSuccessMessage("Promoção cadastrada com sucesso! 🎉");
 
-      // Reseta os campos do formulário
+      // Reseta os campos e libera a memória das URLs
       reset();
-      setImagePreview(null);
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+      setImageFiles([]);
+      setImagePreviews([]);
       setIsUnlimitedUser(false);
     } catch (err: any) {
       console.error("Erro ao cadastrar promoção:", err);
@@ -121,7 +151,6 @@ export function CreateAdForm() {
     <div className="bg-neutral-100 min-h-screen p-4 md:p-8 flex justify-center items-center">
       <Card className="w-full max-w-5xl bg-white border border-neutral-200 rounded-[32px] shadow-sm overflow-hidden">
         <CardContent className="p-6 md:p-10">
-          {/* Alertas de Feedback */}
           {errorMessage && (
             <div className="mb-6 p-4 text-sm font-medium text-red-700 bg-red-100 rounded-2xl border border-red-200">
               {errorMessage}
@@ -138,36 +167,66 @@ export function CreateAdForm() {
             onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-1 md:grid-cols-12 gap-8"
           >
-            {/* COLUNA DA ESQUERDA: Imagem e Dados da Loja */}
+            {/* COLUNA DA ESQUERDA: Uploads de Imagens e Dados da Loja */}
             <div className="md:col-span-5 flex flex-col space-y-6">
-              {/* Área de Upload de Imagem */}
-              <div className="relative aspect-4/3 w-full bg-neutral-900 rounded-[24px] overflow-hidden flex flex-col items-center justify-center border border-neutral-800 text-neutral-400 group hover:border-neutral-500 transition-colors">
-                {imagePreview ? (
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer p-4 space-y-3">
-                    <Upload className="w-8 h-8 text-neutral-400 group-hover:text-white transition-colors" />
-                    <span className="text-base font-medium group-hover:text-white transition-colors">
-                      Enviar imagem do produto
-                    </span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          setImageFile(file); // 👈 Salva o arquivo File
-                          setImagePreview(URL.createObjectURL(file)); // Apenas para mostrar na tela
-                        }
-                      }}
-                    />
-                  </label>
-                )}
+              {/* Seção de Gerenciamento de Imagens */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-black">
+                    Imagens do produto
+                  </span>
+                  <span className="text-xs font-medium text-neutral-500">
+                    {imageFiles.length}/3 selecionadas
+                  </span>
+                </div>
+
+                {/* Grid para Exibição das Imagens Fixadas e do Botão de Upload */}
+                <div className="grid grid-cols-3 gap-3">
+                  {/* Pré-visualização das Imagens Adicionadas */}
+                  {imagePreviews.map((preview, index) => (
+                    <div
+                      key={index}
+                      className="relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 group"
+                    >
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-1.5 right-1.5 p-1 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-colors"
+                        title="Remover imagem"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Botão de Upload Visível se Houver Vagas (Menos de 3 Imagens) */}
+                  {imageFiles.length < 3 && (
+                    <label
+                      className={`relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-neutral-800 text-neutral-400 group hover:border-neutral-500 transition-colors cursor-pointer p-2 ${
+                        imageFiles.length === 0 ? "col-span-3 aspect-4/3" : ""
+                      }`}
+                    >
+                      <Upload className="w-6 h-6 text-neutral-400 group-hover:text-white transition-colors" />
+                      <span className="text-xs font-medium text-center mt-2 group-hover:text-white transition-colors">
+                        {imageFiles.length === 0
+                          ? "Enviar imagens do produto"
+                          : "Adicionar"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  )}
+                </div>
               </div>
 
               {/* Informações Dinâmicas da Loja */}
@@ -252,7 +311,6 @@ export function CreateAdForm() {
 
               {/* Linha Dupla: Estoque e Limite por Usuário */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* CAMPO: ESTOQUE */}
                 <div className="flex flex-col space-y-2">
                   <label className="text-black font-bold text-base">
                     Estoque total disponível:
@@ -298,7 +356,6 @@ export function CreateAdForm() {
                   />
                 </div>
 
-                {/* CAMPO: LIMITE POR USUÁRIO */}
                 <div className="flex flex-col space-y-2">
                   <label className="text-black font-bold text-base">
                     Limite por usuário:
@@ -439,7 +496,9 @@ export function CreateAdForm() {
                   variant="outline"
                   onClick={() => {
                     reset();
-                    setImagePreview(null);
+                    imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+                    setImageFiles([]);
+                    setImagePreviews([]);
                     setIsUnlimitedUser(false);
                     setErrorMessage(null);
                     setSuccessMessage(null);

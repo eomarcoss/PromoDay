@@ -38,7 +38,7 @@ export class CostomersService {
 
     let avatarUrl: string | null = null;
     if (file) {
-      avatarUrl = await this.StorageService.uploadFile(file, 'Avatars');
+      avatarUrl = await this.StorageService.uploadFile(file);
     }
 
     // 3. Segurança: Criptografar a senha do usuário

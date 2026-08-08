@@ -7,12 +7,20 @@ import {
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
 
 @Injectable()
 export class PromotionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storageService: StorageService, // 👈 Injeção do StorageService
+  ) {}
 
-  async create(createPromotionDto: CreatePromotionDto, sellerId: string) {
+  async create(
+    createPromotionDto: CreatePromotionDto,
+    sellerId: string,
+    files?: Express.Multer.File[], // 👈 Recebe os arquivos de imagem
+  ) {
     const seller = await this.prisma.seller.findUnique({
       where: { id: sellerId },
     });
@@ -23,7 +31,13 @@ export class PromotionsService {
       );
     }
 
-    // 1. Desestruturando os dados do DTO
+    // 1. Processa os uploads das imagens no Supabase (se arquivos forem enviados)
+    let imageUrls: string[] = [];
+    if (files && files.length > 0) {
+      imageUrls = await this.storageService.uploadManyFiles(files);
+    }
+
+    // 2. Desestruturando os dados do DTO
     const {
       startTime,
       endTime,
@@ -35,7 +49,7 @@ export class PromotionsService {
       ...rest
     } = createPromotionDto;
 
-    // 2. Coerção explícita para tipos primitivos (Garante que strings vindas de FormData sejam convertidas)
+    // 3. Coerção explícita para tipos primitivos
     const numOriginalPrice = Number(originalPrice);
     const numPromoPrice = Number(promoPrice);
     const numStock = Number(stock);
@@ -93,6 +107,9 @@ export class PromotionsService {
       );
     }
 
+    // Prioriza as URLs das imagens geradas pelo Supabase. Caso não haja upload via file, usa o array recebido no DTO.
+    const finalImages = imageUrls.length > 0 ? imageUrls : images || [];
+
     try {
       const promotion = await this.prisma.promotion.create({
         data: {
@@ -103,7 +120,7 @@ export class PromotionsService {
           promoPrice: numPromoPrice,
           startTime: dataInicio,
           endTime: dataFim,
-          images: images || [], // 👈 URLs retornadas pelo Supabase
+          images: finalImages, // 👈 URLs registradas no banco
           sellerId: sellerId,
         },
       });
@@ -141,6 +158,7 @@ export class PromotionsService {
           select: {
             id: true,
             name: true,
+            avatarUrl: true,
           },
         },
       },
@@ -153,7 +171,7 @@ export class PromotionsService {
   async findAllBySeller(sellerId: string) {
     return this.prisma.promotion.findMany({
       where: {
-        sellerId: sellerId, // 👈 Busca direta pela chave estrangeira
+        sellerId: sellerId,
       },
       include: {
         seller: {
@@ -179,6 +197,7 @@ export class PromotionsService {
             name: true,
             address: true,
             businessHours: true,
+            avatarUrl: true,
           },
         },
       },
@@ -210,7 +229,6 @@ export class PromotionsService {
       );
     }
 
-    // Mescla dados atuais com os dados enviados
     const originalPrice =
       updatePromotionDto.originalPrice !== undefined
         ? Number(updatePromotionDto.originalPrice)
@@ -241,7 +259,6 @@ export class PromotionsService {
 
     const agora = new Date();
 
-    // Validações
     if (originalPrice <= 0 || promoPrice <= 0) {
       throw new BadRequestException(
         'Os preços original e promocional devem ser maiores que zero.',

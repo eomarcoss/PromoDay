@@ -10,10 +10,10 @@ import {
   UseGuards,
   Request,
   UseInterceptors,
-  UploadedFile,
+  UploadedFiles,
   BadRequestException,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
@@ -42,18 +42,17 @@ export class SellerPromotionsController {
 
   // POST /seller/promotions
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('files', 3))
   async create(
     @Request() req: any,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Express.Multer.File[],
     @Body() createPromotionDto: CreatePromotionDto,
   ) {
     const sellerId = req.user.sub;
     const imageUrls: string[] = [];
 
-    if (file) {
-      const publicUrl = await this.storageService.uploadFile(file, 'Avatars');
-      imageUrls.push(publicUrl);
+    if (files && files.length > 0) {
+      imageUrls.push(...(await this.storageService.uploadManyFiles(files)));
     }
 
     return this.promotionsService.create(

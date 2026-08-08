@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -6,8 +8,8 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Clock, Eye } from "lucide-react";
 
-// 1. Tipagem unificada das propriedades recebidas
 export interface PromoCardProps {
   name: string;
   storeName: string;
@@ -16,10 +18,34 @@ export interface PromoCardProps {
   discountPercentage: number;
   timeLeft: string;
   imageUrl: string;
+  avatarUrl?: string;
 }
 
 export function PromoCard({ product }: { product: PromoCardProps }) {
-  // Formatação de preço no padrão brasileiro (R$ 0,00)
+  const [timeRemaining, setTimeRemaining] = useState({ hours: 0, minutes: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const targetDate = new Date(product.timeLeft).getTime();
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const totalMinutes = Math.floor(difference / (1000 * 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        setTimeRemaining({ hours, minutes });
+      } else {
+        setTimeRemaining({ hours: 0, minutes: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 60000);
+
+    return () => clearInterval(interval);
+  }, [product.timeLeft]);
+
   const formatPrice = (price?: number) => {
     if (price === undefined || price === null) return "R$ --";
     return new Intl.NumberFormat("pt-BR", {
@@ -30,72 +56,96 @@ export function PromoCard({ product }: { product: PromoCardProps }) {
 
   return (
     <div className="p-0 flex justify-center items-center font-sans h-full">
-      <Card className="w-full max-w-md bg-[#c5c5c5] rounded-[32px] p-4 border-none shadow-md flex flex-col items-center justify-between h-full">
-        {/* Imagem do Produto */}
-        <CardHeader className="w-full p-0 relative aspect-[4/3] bg-[#1e1e1e] rounded-[24px] overflow-hidden flex items-center justify-center">
+      <Card className="w-full max-w-sm bg-card text-card-foreground rounded-2xl p-4 border border-border/50 shadow-sm flex flex-col h-full gap-4 transition-all duration-300 hover:shadow-md hover:border-primary/40">
+        {/* Imagem */}
+        <CardHeader className="w-full p-0 relative aspect-[4/3] bg-muted/30 rounded-xl overflow-hidden flex items-center justify-center border border-border/20">
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
               alt={product.name}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-xs text-neutral-400">
-              Sem Imagem
+            <div className="w-full h-full bg-muted flex items-center justify-center text-xs text-muted-foreground font-medium">
+              Sem imagem
             </div>
           )}
 
-          {/* Badge de % Desconto */}
-          <div className="absolute top-4 right-4 w-14 h-14 bg-[#c7c7c7] rounded-full flex flex-col items-center justify-center shadow-inner border border-[#C6B0B0]">
-            <span className="text-[#3B2A2A] text-lg font-extrabold leading-none">
+          {/* Selo de desconto */}
+          <div
+            className="absolute top-3 right-3 w-14 h-14 bg-primary text-primary-foreground flex flex-col items-center justify-center leading-none shadow-sm"
+            style={{
+              clipPath:
+                "polygon(100% 50%, 93.3% 62.94%, 97.55% 76.6%, 84.55% 82.14%, 82.14% 94.55%, 68.6% 92.45%, 59.48% 100%, 46.22% 94.55%, 33.68% 97.55%, 25% 86.6%, 12.5% 82.14%, 10.45% 68.6%, 0% 59.48%, 5.45% 46.22%, 2.45% 33.68%, 13.4% 25%, 17.86% 12.5%, 31.4% 10.45%, 40.52% 0%, 53.78% 5.45%, 66.32% 2.45%, 75% 13.4%, 87.5% 17.86%, 89.55% 31.4%)",
+            }}
+          >
+            <span className="text-sm font-black">
               {product.discountPercentage}%
             </span>
-            <span className="text-[#3B2A2A] text-xs font-bold leading-none">
-              off
-            </span>
+            <span className="text-[9px] font-bold uppercase mt-0.5">off</span>
           </div>
         </CardHeader>
 
-        {/* Informações da Promoção */}
-        <CardContent className="w-full p-0 text-center my-4 space-y-3 flex-1 flex flex-col justify-between">
-          {/* 🚀 Ajustado: Usando product.name em vez de product.productName */}
-          <h3 className="text-[#000000] text-lg font-extrabold tracking-tight text-left line-clamp-1">
-            {product.name}
-          </h3>
+        {/* Conteúdo */}
+        <CardContent className="w-full p-0 flex-1 flex flex-col justify-between gap-4">
+          {/* Título + loja */}
+          <div className="space-y-2">
+            <h3 className="text-foreground text-base font-semibold leading-snug tracking-tight text-left line-clamp-2">
+              {product.name}
+            </h3>
 
-          {/* Loja parceira */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-full bg-[#3B2A2A] flex-shrink-0" />
-            <span className="text-[#3B2A2A] text-sm font-bold truncate">
-              {product.storeName}
-            </span>
+            <div className="flex items-center gap-2">
+              {product.avatarUrl ? (
+                <img
+                  src={product.avatarUrl}
+                  alt={product.storeName}
+                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-[9px] font-extrabold text-primary flex-shrink-0">
+                  {product.storeName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="text-muted-foreground text-sm font-medium truncate">
+                {product.storeName}
+              </span>
+            </div>
           </div>
 
-          {/* Preços */}
-          <div className="flex space-x-4 items-baseline justify-start">
-            <div className="flex items-center space-x-1">
-              <span className="text-[#3B2A2A] text-xs font-bold">De:</span>
-              <span className="text-[#3B2A2A] text-xs font-semibold line-through decoration-2">
+          {/* Preço + cronômetro */}
+          <div className="space-y-2.5">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-foreground text-2xl font-bold tracking-tight">
+                {formatPrice(product.promoPrice)}
+              </span>
+              <span className="text-muted-foreground text-sm font-medium line-through decoration-muted-foreground/50">
                 {formatPrice(product.originalPrice)}
               </span>
             </div>
-            <div className="flex items-center space-x-1">
-              <span className="text-[#3B2A2A] text-xs font-bold">Por:</span>
-              {/* 🚀 Ajustado: Usando product.promoPrice em vez de product.discountPrice */}
-              <span className="text-[#3B2A2A] text-base font-black text-black">
-                {formatPrice(product.promoPrice)}
+
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 w-fit px-2.5 py-1 rounded-md border border-border/30">
+              <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+              <span>
+                Expira em{" "}
+                <strong className="text-foreground font-semibold">
+                  {timeRemaining.hours}h {timeRemaining.minutes}m
+                </strong>
               </span>
             </div>
           </div>
-
-          <p className="text-[#3B2A2A] text-start text-xs font-bold">
-            Término: {new Date(product.timeLeft).toLocaleDateString("pt-BR")}
-          </p>
         </CardContent>
 
-        {/* Botão de Ação */}
-        <CardFooter className="w-full p-0 mt-2">
-          <Button className="cursor-pointer w-full bg-[#101010] hover:bg-[#2e2e2e] text-white text-base font-bold py-6 rounded-full transition-colors">
+        {/* Ações */}
+        <CardFooter className="w-full p-0 grid grid-cols-2 gap-2.5">
+          <Button
+            variant="outline"
+            className="w-full font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            <Eye className="w-4 h-4" />
+            Detalhes
+          </Button>
+
+          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm h-10 rounded-lg shadow-sm transition-all">
             Resgatar
           </Button>
         </CardFooter>

@@ -1,10 +1,38 @@
 // src/promotions/promotions.controller.ts
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
+import { CreatePromotionDto } from './dto/create-promotion.dto'; // Ajuste o caminho do seu DTO
+// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'; // Se usar autenticação
 
 @Controller('promotions')
 export class PromotionsController {
   constructor(private readonly promotionsService: PromotionsService) {}
+
+  // POST /promotions (Criação de promoção com upload de até 3 imagens)
+  // @UseGuards(JwtAuthGuard) // Descomente para proteger a rota com JWT
+
+  @Post()
+  @UseInterceptors(FilesInterceptor('files', 3)) // Permite até 3 arquivos vindo da chave "files"
+  async create(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createPromotionDto: CreatePromotionDto,
+    @Req() req: any,
+  ) {
+    const sellerId = req.user.sub;
+
+    return this.promotionsService.create(createPromotionDto, sellerId, files);
+  }
 
   // GET /promotions (Feed público)
   @Get()

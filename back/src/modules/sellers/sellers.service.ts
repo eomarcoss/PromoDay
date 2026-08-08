@@ -34,7 +34,7 @@ export class SellersService {
 
       let avatarUrl: string | null = null;
       if (file) {
-        avatarUrl = await this.StorageService.uploadFile(file, 'Avatars');
+        avatarUrl = await this.StorageService.uploadFile(file);
       }
 
       // 2. Criptografa a senha do parceiro

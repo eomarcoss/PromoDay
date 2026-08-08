@@ -1,12 +1,10 @@
-import { IsUUID, IsNotEmpty, IsInt, Min } from 'class-validator';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
-export class CreateClaimDto {
-  @IsUUID()
-  @IsNotEmpty()
-  promotionId: string;
-
-  @IsInt()
-  @Min(1)
-  @IsNotEmpty()
-  quantity: number;
+export class ValidateClaimDto {
+  @IsString()
+  @IsNotEmpty({ message: 'O código do cupom é obrigatório.' })
+  @Matches(/^PD-[A-Z0-9]{6}$/, {
+    message: 'Formato de código inválido. Exemplo esperado: PD-XXXXXX',
+  })
+  code: string;
 }

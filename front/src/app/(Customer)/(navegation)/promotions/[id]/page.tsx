@@ -22,6 +22,7 @@ interface PromotionDetailResponse {
   seller: {
     id: string;
     name: string;
+    avatarUrl?: string;
     address?: string;
     businessHours?: any;
   };
@@ -70,7 +71,11 @@ export default async function PromotionDetails({ params }: PageProps) {
       <h1 className="text-xl font-black mb-4">Detalhes da promoção</h1>
 
       <PromotionDetailCard
-        imageUrl={promotion.images?.[0] || "/placeholder.png"}
+        images={
+          promotion.images && promotion.images.length > 0
+            ? promotion.images
+            : ["/placeholder.png"]
+        }
         badgeDiscount={calcDiscount(
           promotion.originalPrice,
           promotion.promoPrice,

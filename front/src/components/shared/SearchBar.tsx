@@ -53,9 +53,9 @@ export function SearchBar({
   };
 
   return (
-    <div className="bg-white p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
+    <div className="bg-primary p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
       <Link href="/promotions">
-        <h1 className="text-2xl font-bold text-black">Promoday</h1>
+        <h1 className="text-2xl font-bold text-card">Promoday</h1>
       </Link>
       <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
         {/* Área do Input */}
@@ -75,7 +75,7 @@ export function SearchBar({
 
         {/* 3. Conectamos a nossa função interna no Select do Shadcn */}
         <Select defaultValue="todas" onValueChange={handleCategoryChange}>
-          <SelectTrigger className="h-full w-[140px]  bg-neutral-800 hover:bg-black text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-white/70">
+          <SelectTrigger className="h-full w-[140px]  bg-white hover:bg-black text-primary font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-white/70">
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
 
