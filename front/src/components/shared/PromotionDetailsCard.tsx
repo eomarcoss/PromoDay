@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+// import { toast } from "sonner";
+import { api } from "@/services/api";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,21 +17,24 @@ import {
   PackageCheck,
   UserCheck,
   Timer,
+  Loader2,
 } from "lucide-react";
 
 interface PromotionDetailCardProps {
-  images?: string[] | string; // Aceita Array, String JSON ou String simples
-  imageUrl?: string; // Retrocompatibilidade
+  id: string; // ID para realizar o POST direto na API
+  images?: string[] | string;
+  imageUrl?: string;
   badgeDiscount?: string;
-  discountPercentage?: number; // Opcional: se não vier, é extraído de badgeDiscount
+  discountPercentage?: number;
   title: string;
   description: string;
   requirements: string;
   stock: number;
-  userLimit: number; // Se for 0, significa "Sem limite"
+  userLimit: number;
   duration: string;
-  timeLeft?: string; // Data-alvo ISO para o cronômetro de expiração
+  timeLeft?: string;
   storeName: string;
+  avatarUrl?: string;
   storeHours?: string;
   storeLocation?: string;
   originalPrice: string;
@@ -36,6 +43,7 @@ interface PromotionDetailCardProps {
 }
 
 export function PromotionDetailCard({
+  id,
   images,
   imageUrl,
   badgeDiscount = "20% off",
@@ -48,12 +56,15 @@ export function PromotionDetailCard({
   duration,
   timeLeft,
   storeName,
+  avatarUrl,
   storeHours = "Horário de funcionamento",
   storeLocation = "Localização",
   originalPrice,
   discountPrice,
   onRedeem,
 }: PromotionDetailCardProps) {
+  const router = useRouter();
+
   // Normaliza qualquer tipo de entrada de imagem para um array de strings limpo
   const imageList = useMemo(() => {
     let list: string[] = [];
@@ -78,6 +89,32 @@ export function PromotionDetailCard({
   }, [images, imageUrl]);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Lógica de resgate direta com suporte a fallback de callback (onRedeem)
+  const handleRedeemClick = async () => {
+    if (stock === 0 || isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+
+      if (onRedeem) {
+        await onRedeem(quantity);
+      } else {
+        await api.post(`/promotions/${id}/redeem`, { quantity });
+        toast.success("Cupom resgatado com sucesso!");
+        router.push("/redeems");
+      }
+    } catch (error: any) {
+      console.error("Erro ao resgatar promoção:", error);
+      const message =
+        error?.response?.data?.message ||
+        "Não foi possível resgatar a promoção.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -100,7 +137,7 @@ export function PromotionDetailCard({
     return match ? Number(match[0]) : null;
   }, [discountPercentage, badgeDiscount]);
 
-  // Cronômetro de tempo restante — mesma lógica do card resumido
+  // Cronômetro de tempo restante
   const [timeRemaining, setTimeRemaining] = useState({ hours: 0, minutes: 0 });
 
   useEffect(() => {
@@ -195,7 +232,7 @@ export function PromotionDetailCard({
               </>
             )}
 
-            {/* Selo de desconto — idêntico ao card resumido */}
+            {/* Selo de desconto */}
             <div
               className="absolute top-3 right-3 z-10 w-16 h-16 bg-primary text-primary-foreground flex flex-col items-center justify-center leading-none shadow-sm"
               style={{
@@ -220,11 +257,22 @@ export function PromotionDetailCard({
             </div>
           </div>
 
-          {/* Dados da loja */}
+          {/* Dados da loja com fallback de avatar e alt fixado */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
-                {storeName.charAt(0).toUpperCase()}
+              <div className="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0 overflow-hidden">
+                {avatarUrl && avatarUrl.trim() !== "" ? (
+                  <img
+                    src={avatarUrl}
+                    alt={storeName || "Loja"}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  storeName?.charAt(0).toUpperCase()
+                )}
               </div>
               <span className="font-semibold text-base text-foreground">
                 {storeName}
@@ -246,7 +294,6 @@ export function PromotionDetailCard({
 
         {/* COLUNA DIREITA: informações e ações */}
         <div className="flex flex-col flex-1 justify-between gap-6">
-          {/* Título e descrição */}
           <div className="space-y-5">
             <div className="space-y-1.5">
               <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-snug">
@@ -257,7 +304,7 @@ export function PromotionDetailCard({
               </p>
             </div>
 
-            {/* Requisitos — texto corrido, é a única informação descritiva */}
+            {/* Requisitos */}
             <div className="space-y-1 pt-4 border-t border-border/60">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                 Requisitos
@@ -267,7 +314,7 @@ export function PromotionDetailCard({
               </p>
             </div>
 
-            {/* Cards de estatística — diferenciam claramente rótulo de valor */}
+            {/* Cards de estatística */}
             <div className="grid grid-cols-3 gap-2">
               <div className="flex flex-col gap-1 bg-muted/40 border border-border/40 rounded-xl px-3 py-2.5">
                 <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -306,7 +353,7 @@ export function PromotionDetailCard({
               </div>
             </div>
 
-            {/* Cronômetro de expiração — mesmo padrão do card resumido */}
+            {/* Cronômetro de expiração */}
             {timeLeft && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 w-fit px-2.5 py-1 rounded-md border border-border/30">
                 <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
@@ -341,7 +388,7 @@ export function PromotionDetailCard({
               <button
                 type="button"
                 onClick={decrement}
-                disabled={quantity <= 1}
+                disabled={quantity <= 1 || isSubmitting}
                 className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Diminuir quantidade"
               >
@@ -355,7 +402,9 @@ export function PromotionDetailCard({
               <button
                 type="button"
                 onClick={increment}
-                disabled={quantity >= maxAvailable || maxAvailable === 0}
+                disabled={
+                  quantity >= maxAvailable || maxAvailable === 0 || isSubmitting
+                }
                 className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Aumentar quantidade"
               >
@@ -365,11 +414,26 @@ export function PromotionDetailCard({
 
             <Button
               type="button"
-              disabled={stock === 0}
-              onClick={() => onRedeem?.(quantity)}
-              className="flex-1 h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-xl shadow-sm transition-all disabled:opacity-40"
+              disabled={stock === 0 || isSubmitting}
+              onClick={handleRedeemClick}
+              className="flex-1 relative h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-md transition-all border border-dashed border-primary-foreground/40 group overflow-hidden disabled:opacity-40 cursor-pointer"
             >
-              {stock === 0 ? "Esgotado" : "Resgatar"}
+              <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-primary-foreground/40" />
+
+              <span className="flex items-center justify-center gap-2">
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Resgatando...</span>
+                  </>
+                ) : stock === 0 ? (
+                  "Esgotado"
+                ) : (
+                  "Resgatar"
+                )}
+              </span>
+
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-primary-foreground/40" />
             </Button>
           </div>
         </div>

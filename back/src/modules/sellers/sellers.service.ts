@@ -74,6 +74,7 @@ export class SellersService {
         businessHours: true,
         promotions: true,
         phone: true,
+        category: true,
       },
     });
   }
@@ -86,10 +87,15 @@ export class SellersService {
         address: true,
         avatarUrl: true,
         phone: true,
+        category: true,
         // Traz a contagem de promoções ativas para cada loja
         _count: {
           select: {
-            promotions: true,
+            promotions: {
+              where: {
+                isActive: true,
+              },
+            },
           },
         },
       },
@@ -105,8 +111,19 @@ export class SellersService {
         address: true,
         avatarUrl: true,
         businessHours: true,
-        promotions: true,
         phone: true,
+        category: true,
+        promotions: {
+          include: {
+            seller: {
+              select: {
+                id: true,
+                name: true,
+                avatarUrl: true,
+              },
+            },
+          },
+        },
       },
     });
 

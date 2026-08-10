@@ -29,7 +29,7 @@ export default async function StoreListPage() {
 
   return (
     <div className="h-auto text-white p-3 flex flex-col gap-4 items-center max-w-2xl mx-auto w-full">
-      <h1 className="text-xl font-black self-start mb-2">Lojas Parceiras</h1>
+      {/* <h1 className="text-xl font-black self-start mb-2">Lojas Parceiras</h1> */}
 
       {/* 🚀 O StoreList lida com a renderização da lista */}
       <StoreList stores={stores} />

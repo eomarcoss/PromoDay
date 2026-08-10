@@ -145,8 +145,16 @@ export function PromoCard({ product }: { product: PromoCardProps }) {
             Detalhes
           </Button>
 
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm h-10 rounded-lg shadow-sm transition-all">
-            Resgatar
+          <Button className="w-full relative bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary-foreground/40 group">
+            {/* Semicírculo esquerdo */}
+            <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-r border-dashed border-primary-foreground/40" />
+
+            <span className="flex items-center gap-2">
+              <span className="font-semibold tracking-wide">Resgatar</span>
+            </span>
+
+            {/* Semicírculo direito */}
+            <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-l border-dashed border-primary-foreground/40" />
           </Button>
         </CardFooter>
       </Card>

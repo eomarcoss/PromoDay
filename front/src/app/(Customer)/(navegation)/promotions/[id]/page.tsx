@@ -71,6 +71,7 @@ export default async function PromotionDetails({ params }: PageProps) {
       <h1 className="text-xl font-black mb-4">Detalhes da promoção</h1>
 
       <PromotionDetailCard
+        id={promotion.id}
         images={
           promotion.images && promotion.images.length > 0
             ? promotion.images
@@ -92,7 +93,8 @@ export default async function PromotionDetails({ params }: PageProps) {
         userLimit={promotion.limitPerUser}
         duration={new Date(promotion.endTime).toLocaleDateString("pt-BR")}
         storeName={promotion.seller?.name || "Loja Parceira"}
-        storeHours="Segunda a Sexta: 09h às 18h" // Pode mapear o objeto businessHours se quiser
+        avatarUrl={promotion.seller?.avatarUrl || undefined}
+        storeHours={promotion.seller?.businessHours || undefined} // Pode mapear o objeto businessHours se quiser
         storeLocation={promotion.seller?.address || "Endereço não informado"}
         originalPrice={formatCurrency(promotion.originalPrice)}
         discountPrice={formatCurrency(promotion.promoPrice)}

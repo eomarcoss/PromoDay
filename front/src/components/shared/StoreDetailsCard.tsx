@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, Clock } from "lucide-react";
+import { ChevronDown, Clock, MapPin } from "lucide-react";
 
 interface StoreDetailsCardProps {
   name: string;
@@ -19,6 +19,16 @@ const DIAS_ORDEM = [
   { key: "sexta", label: "Sexta-feira" },
   { key: "sabado", label: "Sábado" },
   { key: "domingo", label: "Domingo" },
+];
+
+const DAY_KEYS = [
+  "domingo",
+  "segunda",
+  "terca",
+  "quarta",
+  "quinta",
+  "sexta",
+  "sabado",
 ];
 
 export function StoreDetailsCard({
@@ -43,21 +53,12 @@ export function StoreDetailsCard({
     return businessHours;
   }, [businessHours]);
 
+  const todayKey = DAY_KEYS[new Date().getDay()];
+
   // Resumo para exibir quando o menu está fechado
   const summaryText = React.useMemo(() => {
     if (!parsedHours) return "Horário não informado";
 
-    const todayIndex = new Date().getDay(); // 0 = Domingo, 1 = Segunda...
-    const dayKeys = [
-      "domingo",
-      "segunda",
-      "terca",
-      "quarta",
-      "quinta",
-      "sexta",
-      "sabado",
-    ];
-    const todayKey = dayKeys[todayIndex];
     const todayData = parsedHours[todayKey];
 
     if (todayData?.aberto) {
@@ -65,14 +66,14 @@ export function StoreDetailsCard({
     }
 
     return "Ver horários da semana";
-  }, [parsedHours]);
+  }, [parsedHours, todayKey]);
 
   return (
-    <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4">
-      {/* Linha Principal do Card */}
-      <div className="flex items-center gap-5">
-        {/* Imagem de Perfil / Iniciais */}
-        <div className="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex-shrink-0 overflow-hidden flex items-center justify-center">
+    <div className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-5 flex flex-col gap-4">
+      {/* Linha principal do card */}
+      <div className="flex items-center gap-4">
+        {/* Imagem de perfil / iniciais */}
+        <div className="w-16 h-16 rounded-full bg-muted border border-border/50 flex-shrink-0 overflow-hidden flex items-center justify-center">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -80,24 +81,24 @@ export function StoreDetailsCard({
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-zinc-300 font-bold text-xl uppercase">
+            <span className="text-muted-foreground font-bold text-lg uppercase">
               {name ? name.substring(0, 2) : "SL"}
             </span>
           )}
         </div>
 
-        {/* Informações Principais */}
-        <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-          <h2 className="text-base font-bold text-zinc-100 tracking-tight truncate">
+        {/* Informações principais */}
+        <div className="flex flex-col gap-2 flex-1 min-w-0">
+          <h2 className="text-lg font-bold text-foreground tracking-tight truncate">
             {name}
           </h2>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-400 font-medium">
-            {/* Botão Interativo de Horários */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+            {/* Botão interativo de horários — único toque de azul, bem suave */}
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-1.5 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-800/50"
+              className="flex items-center gap-1.5 text-primary font-semibold bg-primary/10 hover:bg-primary/15 px-2.5 py-1 rounded-md border border-primary/20 transition-colors"
             >
               <Clock className="w-3.5 h-3.5" />
               <span>{summaryText}</span>
@@ -108,50 +109,54 @@ export function StoreDetailsCard({
               />
             </button>
 
-            <span
-              className="w-1 h-1 rounded-full bg-zinc-700 hidden sm:inline"
-              aria-hidden="true"
-            />
-
             {/* Localização */}
-            <span className="truncate">{location}</span>
-
-            <span
-              className="w-1 h-1 rounded-full bg-zinc-700 hidden sm:inline"
-              aria-hidden="true"
-            />
+            <span className="flex items-center gap-1 text-muted-foreground font-medium min-w-0">
+              <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="truncate">{location}</span>
+            </span>
 
             {/* Categoria */}
-            <span className="text-zinc-300 bg-zinc-900 px-2 py-0.5 rounded-md border border-zinc-800 tracking-wide capitalize">
+            <span className="text-foreground/80 bg-muted px-2 py-0.5 rounded-md border border-border/60 font-medium tracking-wide capitalize">
               {category}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Lista Sanfona (Dropdown) da Semana Toda */}
+      {/* Lista sanfona (dropdown) da semana toda */}
       {isOpen && parsedHours && (
-        <div className="mt-2 pt-3 border-t border-zinc-800/80 flex flex-col gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
-          <span className="text-xs font-semibold text-zinc-400 mb-1">
-            Horário de Funcionamento
+        <div className="pt-3 border-t border-border/60 flex flex-col gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+            Horário de funcionamento
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5 text-xs">
             {DIAS_ORDEM.map(({ key, label }) => {
               const dayData = parsedHours[key];
               const isAberto = dayData?.aberto;
+              const isToday = key === todayKey;
 
               return (
                 <div
                   key={key}
-                  className="flex items-center justify-between py-1 border-b border-zinc-900/60 last:border-none"
+                  className={`flex items-center justify-between px-2 -mx-2 py-1.5 rounded-md border-b border-border/40 last:border-none ${
+                    isToday ? "bg-primary/5" : ""
+                  }`}
                 >
-                  <span className="text-zinc-400 font-medium">{label}</span>
+                  <span
+                    className={`font-medium ${
+                      isToday ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    {label}
+                  </span>
                   {isAberto ? (
-                    <span className="text-zinc-200 font-semibold">
+                    <span className="text-foreground font-semibold">
                       {dayData.inicio} às {dayData.fim}
                     </span>
                   ) : (
-                    <span className="text-zinc-500 italic">Fechado</span>
+                    <span className="text-muted-foreground/70 italic">
+                      Fechado
+                    </span>
                   )}
                 </div>
               );

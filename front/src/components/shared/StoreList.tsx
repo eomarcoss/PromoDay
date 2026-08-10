@@ -5,12 +5,13 @@ import { StoreCard } from "../shared/StoreCard";
 export interface Store {
   id: string;
   name: string;
-  imageUrl?: string;
+  avatarUrl?: string;
   _count?: {
     promotions: number;
   };
   offersCount?: number;
   isOpen?: boolean;
+  category?: string;
 }
 
 interface StoreListProps {
@@ -38,9 +39,10 @@ export function StoreList({ stores }: StoreListProps) {
             key={store.id}
             id={store.id}
             name={store.name}
-            imageUrl={store.imageUrl}
+            avatarUrl={store.avatarUrl}
             offersCount={count}
             isOpen={store.isOpen ?? true}
+            category={store.category || "Categoria não informada"}
           />
         );
       })}

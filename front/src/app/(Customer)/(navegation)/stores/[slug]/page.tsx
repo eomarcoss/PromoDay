@@ -35,6 +35,7 @@ export default async function StoreProfilePage({ params }: PageProps) {
   try {
     // 2. Busca a loja no backend NestJS
     const { data } = await api.get<SellerDetailResponse>(`/sellers/${slug}`);
+    console.log("Dados da loja recebidos do backend:", data);
     store = data;
   } catch (error) {
     console.error("Erro ao buscar detalhes da loja:", error);
@@ -53,11 +54,11 @@ export default async function StoreProfilePage({ params }: PageProps) {
         imageUrl={store.avatarUrl}
         businessHours={formatBusinessHours(store.businessHours)}
         location={store.address || "Endereço não informado"}
-        category={store.category || "Geral"}
+        category={store.category || "Categoria não informada"}
       />
 
       {/* 4. Repassa as promoções pertencentes a essa loja para o grid */}
-      <PromoGrid products={store.promotions || []} sellerId={store.id} />
+      <PromoGrid products={store.promotions || []} />
     </div>
   );
 }

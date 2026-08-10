@@ -75,7 +75,7 @@ export function SearchBar({
 
         {/* 3. Conectamos a nossa função interna no Select do Shadcn */}
         <Select defaultValue="todas" onValueChange={handleCategoryChange}>
-          <SelectTrigger className="h-full w-[140px]  bg-white hover:bg-black text-primary font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-white/70">
+          <SelectTrigger className="h-full w-[140px]  bg-white hover:bg-primary text-primary hover:text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-primary/70">
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
 
