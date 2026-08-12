@@ -1,11 +1,9 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -13,7 +11,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// Criamos o Enum com as regras de tipos de usuários
 enum Role {
   CUSTOMER
   SELLER
@@ -37,72 +34,72 @@ model Customer {
   role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  claims Claim[]
+  claims    Claim[]
+
   @@map("customers")
 }
 
 // 2. Tabela dos Vendedores / Lojas (Sellers)
 model Seller {
-  id               String      @id @default(uuid())
-  name             String
-  phone            String
-  email            String      @unique
-  password         String
-  avatarUrl        String?
-  address          String      
-  businessHours    Json        
-  category         String      
-  role             Role        @default(SELLER)
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  promotions       Promotion[] // Relacionamento com as futuras promoções
+  id            String      @id @default(uuid())
+  name          String
+  phone         String
+  email         String      @unique
+  password      String
+  avatarUrl     String?
+  address       String
+  businessHours Json
+  category      String
+  role          Role        @default(SELLER)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  promotions    Promotion[]
+
+  @@map("sellers")
 }
 
+// 3. Tabela das Promoções
 model Promotion {
-  id              String   @id @default(uuid())
-  name            String
-  description     String?  // 👈 Opcional (?)
-  requirements    String?  // 👈 Requisitos da oferta (ex: "Apenas para primeira compra") - Opcional (?)
-  stock           Int      // Estoque disponível da promoção
-  limitPerUser    Int      // Limite que cada cliente pode resgatar
-  
-  startTime       DateTime // Horário de início da oferta
-  endTime         DateTime // Horário de fim da oferta
-  
-  originalPrice   Float    // O famoso preço "De"
-  promoPrice      Float    // O preço promocional "Por"
-  
-  images          String[] // 👈 Array de strings para suportar múltiplas fotos do produto!
-  isActive        Boolean  @default(true)
-  // Relacionamento com o Vendedor
-  sellerId        String
-  seller          Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  claims          Claim[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  description   String?
+  requirements  String?
+  stock         Int
+  limitPerUser  Int
+  startTime     DateTime
+  endTime       DateTime
+  originalPrice Float
+  promoPrice    Float
+  images        String[]
+  isActive      Boolean  @default(true)
+
+  sellerId  String
+  seller    Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  claims    Claim[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("promotions")
 }
 
+// 4. Tabela dos Resgates (Permite múltiplos registros por cliente/promoção)
 model Claim {
-  id          String    @id @default(uuid())
-  code        String    @unique // Código legível para o balcão (ex: PD-X8Y2Z)
-  status      ClaimStatus @default(PENDING) // PENDING, USED, EXPIRED
-  quantity    Int       @default(1)
-  // Relacionamento com o Cliente (Quem está resgatando)
-  customerId  String
-  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  id       String      @id @default(uuid())
+  code     String      @unique // Cada resgate tem um código único (ex: PD-X8Y2Z)
+  status   ClaimStatus @default(PENDING)
+  quantity Int         @default(1)
 
-  // Relacionamento com a Promoção
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
   promotionId String
   promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
 
-  claimedAt   DateTime  @default(now())
-  usedAt      DateTime? // Gravado apenas quando o lojista validar o código
+  claimedAt DateTime  @default(now())
+  usedAt    DateTime?
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // 🔒 A REGRA DE OURO DO SEU MODELO:
-  // Cria uma chave primária composta fictícia. Isso impede que exista mais de um registro PENDING para o mesmo Customer na mesma Promotion.
-  // É graças a isso que o comando `this.prisma.claim.findUnique({ where: { customerId_promotionId: { ... } } })` funciona no seu Service!
-  @@unique([customerId, promotionId])
+  @@map("claims")
 }

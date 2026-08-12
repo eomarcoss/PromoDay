@@ -13,13 +13,13 @@ import { StorageService } from 'src/shared/storage.service';
 export class PromotionsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly storageService: StorageService, // 👈 Injeção do StorageService
+    private readonly storageService: StorageService,
   ) {}
 
   async create(
     createPromotionDto: CreatePromotionDto,
     sellerId: string,
-    files?: Express.Multer.File[], // 👈 Recebe os arquivos de imagem
+    files?: Express.Multer.File[],
   ) {
     const seller = await this.prisma.seller.findUnique({
       where: { id: sellerId },
@@ -31,13 +31,11 @@ export class PromotionsService {
       );
     }
 
-    // 1. Processa os uploads das imagens no Supabase (se arquivos forem enviados)
     let imageUrls: string[] = [];
     if (files && files.length > 0) {
       imageUrls = await this.storageService.uploadManyFiles(files);
     }
 
-    // 2. Desestruturando os dados do DTO
     const {
       startTime,
       endTime,
@@ -49,7 +47,6 @@ export class PromotionsService {
       ...rest
     } = createPromotionDto;
 
-    // 3. Coerção explícita para tipos primitivos
     const numOriginalPrice = Number(originalPrice);
     const numPromoPrice = Number(promoPrice);
     const numStock = Number(stock);
@@ -59,7 +56,6 @@ export class PromotionsService {
     const dataFim = new Date(endTime);
     const agora = new Date();
 
-    // 🛑 REGRA 1 & 2: Validações de Valores (Preços válidos e desconto real)
     if (
       isNaN(numOriginalPrice) ||
       isNaN(numPromoPrice) ||
@@ -77,7 +73,6 @@ export class PromotionsService {
       );
     }
 
-    // 🛑 REGRA 3 & 4: Validações de Cronograma
     if (isNaN(dataInicio.getTime()) || isNaN(dataFim.getTime())) {
       throw new BadRequestException('Formato de data inválido.');
     }
@@ -94,7 +89,6 @@ export class PromotionsService {
       );
     }
 
-    // 🛑 REGRA 5: Lógica de Estoque vs Limite por Usuário
     if (isNaN(numStock) || isNaN(numLimitPerUser)) {
       throw new BadRequestException(
         'Estoque e limite por usuário devem ser números válidos.',
@@ -107,7 +101,6 @@ export class PromotionsService {
       );
     }
 
-    // Prioriza as URLs das imagens geradas pelo Supabase. Caso não haja upload via file, usa o array recebido no DTO.
     const finalImages = imageUrls.length > 0 ? imageUrls : images || [];
 
     try {
@@ -120,7 +113,7 @@ export class PromotionsService {
           promoPrice: numPromoPrice,
           startTime: dataInicio,
           endTime: dataFim,
-          images: finalImages, // 👈 URLs registradas no banco
+          images: finalImages,
           sellerId: sellerId,
         },
       });
@@ -187,7 +180,9 @@ export class PromotionsService {
     });
   }
 
-  async findOne(id: string) {
+  // promotions.service.ts
+
+  async findOne(id: string, userId?: string) {
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },
       include: {
@@ -207,9 +202,48 @@ export class PromotionsService {
       throw new BadRequestException('Promoção não encontrada.');
     }
 
-    return promotion;
-  }
+    let userRedeemedCount = 0;
 
+    if (userId) {
+      try {
+        // 1. Busca a soma das quantidades (se a model usa campo quantity)
+        const aggregate = await this.prisma.claim.aggregate({
+          where: {
+            customerId: userId,
+            promotionId: id,
+            status: { notIn: ['CANCELLED', 'EXPIRED'] }, // Ignora apenas cancelados/expirados
+          },
+          _sum: {
+            quantity: true,
+          },
+        });
+
+        // 2. Se a soma for null (campos quantity não preenchidos), faz o count dos registros
+        if (
+          aggregate._sum?.quantity !== null &&
+          aggregate._sum?.quantity !== undefined
+        ) {
+          userRedeemedCount = aggregate._sum.quantity;
+        } else {
+          userRedeemedCount = await this.prisma.claim.count({
+            where: {
+              customerId: userId,
+              promotionId: id,
+              status: { notIn: ['CANCELLED', 'EXPIRED'] },
+            },
+          });
+        }
+      } catch (err) {
+        console.error('🚨 Erro ao calcular resgates do usuário:', err);
+        userRedeemedCount = 0;
+      }
+    }
+
+    return {
+      ...promotion,
+      userRedeemedCount,
+    };
+  }
   async update(
     id: string,
     sellerId: string,
@@ -289,7 +323,16 @@ export class PromotionsService {
       );
     }
 
-    const { startTime, endTime, ...rest } = updatePromotionDto;
+    // Isola os campos tratados para evitar sobrescrever com strings soltas do DTO
+    const {
+      startTime,
+      endTime,
+      originalPrice: _,
+      promoPrice: __,
+      stock: ___,
+      limitPerUser: ____,
+      ...rest
+    } = updatePromotionDto;
 
     try {
       const updatedPromotion = await this.prisma.promotion.update({

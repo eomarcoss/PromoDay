@@ -70,6 +70,7 @@ export default async function PromotionDetails({ params }: PageProps) {
       <h1 className="text-xl font-black mb-4">Detalhes da promoção</h1>
 
       <PromotionDetailCard
+        id={id}
         imageUrl={promotion.images?.[0] || "/placeholder.png"}
         badgeDiscount={calcDiscount(
           promotion.originalPrice,

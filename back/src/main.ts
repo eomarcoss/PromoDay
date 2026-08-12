@@ -4,15 +4,24 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   // Ativa a validação automática em todas as rotas da API baseada nos DTOs
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Ignora qualquer campo extra intencional enviado pelo front que não esteja no DTO
-      forbidNonWhitelisted: true, // Joga um erro se tentarem enviar campos não permitidos
-      transform: true, // Converte automaticamente os tipos dos dados para o que definimos no DTO
+      whitelist: true, // Ignora campos extras não mapeados no DTO
+      forbidNonWhitelisted: true, // Lança erro 400 se enviarem campos não permitidos
+      transform: true, // Converte automaticamente os tipos definidos no DTO
     }),
   );
-  app.enableCors();
-  await app.listen(process.env.PORT ?? 3001);
+
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], // Inclui ambas as resoluções locais para evitar bloqueios
+    credentials: true,
+  });
+
+  // 🚀 Inicia o servidor HTTP na porta 3001 (ou na porta definida nas variáveis de ambiente)
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
+  console.log(`Servidor rodando em: http://localhost:${port}`);
 }
 bootstrap();

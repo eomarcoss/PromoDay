@@ -73,7 +73,7 @@ export function RegisterStepperFormStore() {
     setLoading(false);
     if (result.success) {
       alert("Cadastro do vendedor realizado com sucesso!");
-      router.push("/login"); // 🔀 Redireciona o vendedor para fazer o primeiro login
+      router.push("/auth/login"); // 🔀 Redireciona o vendedor para fazer o primeiro login
     } else {
       alert(result.error || "Erro ao efetuar o cadastro.");
     }

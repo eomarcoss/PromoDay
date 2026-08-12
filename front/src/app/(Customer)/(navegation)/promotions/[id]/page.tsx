@@ -1,13 +1,12 @@
+import { getUserRedeemedCount } from "../../../../actions/get-user-redeemed-count";
 import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
 import { api } from "@/services/api";
 import { notFound } from "next/navigation";
 
-// 1. Tipagem das props que o Next passa para rotas dinâmicas [id]
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-// 2. Tipagem dos dados retornados pelo endpoint GET /promotions/:id do NestJS
 interface PromotionDetailResponse {
   id: string;
   name: string;
@@ -28,14 +27,12 @@ interface PromotionDetailResponse {
   };
 }
 
-// Helper para calcular a % de desconto
 function calcDiscount(original: number, promo: number): string {
   if (!original || original <= 0) return "0% off";
   const pct = Math.round(((original - promo) / original) * 100);
   return `${pct}% off`;
 }
 
-// Helper para formatar o preço
 function formatCurrency(val: number): string {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -43,22 +40,25 @@ function formatCurrency(val: number): string {
   }).format(val);
 }
 
-// 🚀 Server Component Async
 export default async function PromotionDetails({ params }: PageProps) {
-  // Acessa o id vindo da URL /promotions/[id]
   const { id } = await params;
 
   let promotion: PromotionDetailResponse | null = null;
+  let userRedeemedCount = 0;
 
   try {
-    // Faz a chamada para o endpoint do NestJS (GET /promotions/:id)
-    const { data } = await api.get<PromotionDetailResponse>(
-      `/promotions/${id}`,
-    );
-    promotion = data;
+    // Busca em paralelo:
+    // 1. Dados públicos da promoção (`GET /promotions/:id`)
+    // 2. Soma otimizada vinda da nova Server Action (`GET /redeems/promotion/:id/total-quantity`)
+    const [promotionRes, totalRedeemed] = await Promise.all([
+      api.get<PromotionDetailResponse>(`/promotions/${id}`),
+      getUserRedeemedCount(id),
+    ]);
+
+    promotion = promotionRes.data;
+    userRedeemedCount = totalRedeemed;
   } catch (error) {
-    console.error("Erro ao buscar detalhes da promoção:", error);
-    // Se não encontrar ou der erro 404, exibe a página de 404 do Next.js
+    console.error("Erro ao carregar detalhes da promoção:", error);
     return notFound();
   }
 
@@ -91,10 +91,12 @@ export default async function PromotionDetails({ params }: PageProps) {
         }
         stock={promotion.stock}
         userLimit={promotion.limitPerUser}
+        userRedeemedCount={userRedeemedCount}
         duration={new Date(promotion.endTime).toLocaleDateString("pt-BR")}
+        timeLeft={promotion.endTime}
         storeName={promotion.seller?.name || "Loja Parceira"}
         avatarUrl={promotion.seller?.avatarUrl || undefined}
-        storeHours={promotion.seller?.businessHours || undefined} // Pode mapear o objeto businessHours se quiser
+        storeHours={promotion.seller?.businessHours || undefined}
         storeLocation={promotion.seller?.address || "Endereço não informado"}
         originalPrice={formatCurrency(promotion.originalPrice)}
         discountPrice={formatCurrency(promotion.promoPrice)}

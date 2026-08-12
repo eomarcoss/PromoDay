@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-// import { toast } from "sonner";
-import { api } from "@/services/api";
+import { toast } from "sonner";
+import { redeemPromotionAction } from "@/app/actions/redeem-promotion";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,10 @@ import {
   Timer,
   Loader2,
 } from "lucide-react";
+import { formatBusinessHours } from "@/utils/formatHours";
 
 interface PromotionDetailCardProps {
-  id: string; // ID para realizar o POST direto na API
+  id: string;
   images?: string[] | string;
   imageUrl?: string;
   badgeDiscount?: string;
@@ -39,7 +40,10 @@ interface PromotionDetailCardProps {
   storeLocation?: string;
   originalPrice: string;
   discountPrice: string;
-  onRedeem?: (quantity: number) => void;
+  userRedeemedCount?: number;
+  onRedeem?: (
+    quantity: number,
+  ) => Promise<{ success: boolean; error?: string } | void> | void;
 }
 
 export function PromotionDetailCard({
@@ -62,10 +66,11 @@ export function PromotionDetailCard({
   originalPrice,
   discountPrice,
   onRedeem,
+  userRedeemedCount = 0,
 }: PromotionDetailCardProps) {
   const router = useRouter();
 
-  // Normaliza qualquer tipo de entrada de imagem para um array de strings limpo
+  // Normaliza entrada de imagens
   const imageList = useMemo(() => {
     let list: string[] = [];
 
@@ -91,26 +96,57 @@ export function PromotionDetailCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Lógica de resgate direta com suporte a fallback de callback (onRedeem)
+  // Unidades restantes permitidas para o limite do usuário
+  const remainingUserLimit =
+    userLimit > 0 ? Math.max(0, userLimit - userRedeemedCount) : stock;
+
+  // O máximo selecionável no botão "+" é o menor valor entre estoque geral e saldo do usuário
+  const maxAvailable =
+    userLimit > 0 ? Math.min(stock, remainingUserLimit) : stock;
+
+  // Inicializa a quantidade com 1 caso haja estoque/limite disponível, caso contrário 0
+  const [quantity, setQuantity] = useState(() => (maxAvailable > 0 ? 1 : 0));
+
+  // Sincroniza a quantidade se maxAvailable mudar dinamicamente
+  useEffect(() => {
+    if (maxAvailable <= 0) {
+      setQuantity(0);
+    } else if (quantity === 0 || quantity > maxAvailable) {
+      setQuantity(1);
+    }
+  }, [maxAvailable]);
+
+  const increment = () => {
+    if (maxAvailable > 0 && quantity < maxAvailable) {
+      setQuantity((prev) => prev + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (quantity > 1) setQuantity((prev) => prev - 1);
+  };
+
   const handleRedeemClick = async () => {
-    if (stock === 0 || isSubmitting) return;
+    if (stock === 0 || maxAvailable === 0 || isSubmitting) return;
 
     try {
       setIsSubmitting(true);
 
-      if (onRedeem) {
-        await onRedeem(quantity);
-      } else {
-        await api.post(`/promotions/${id}/redeem`, { quantity });
-        toast.success("Cupom resgatado com sucesso!");
-        router.push("/redeems");
+      const result = await redeemPromotionAction({
+        promotionId: id,
+        quantity,
+      });
+
+      if (!result.success) {
+        toast.error(result.error || "Não foi possível resgatar a promoção.");
+        return;
       }
-    } catch (error: any) {
+
+      toast.success("Cupom resgatado com sucesso!");
+      router.push("/redeems");
+    } catch (error) {
       console.error("Erro ao resgatar promoção:", error);
-      const message =
-        error?.response?.data?.message ||
-        "Não foi possível resgatar a promoção.";
-      toast.error(message);
+      toast.error("Ocorreu um erro inesperado. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +166,7 @@ export function PromotionDetailCard({
     );
   };
 
-  // Extrai o número do desconto de badgeDiscount caso discountPercentage não seja informado
+  // Extrai o número do desconto
   const resolvedDiscount = useMemo(() => {
     if (discountPercentage !== undefined) return discountPercentage;
     const match = badgeDiscount.match(/\d+/);
@@ -163,18 +199,6 @@ export function PromotionDetailCard({
     const interval = setInterval(calculateTimeLeft, 60000);
     return () => clearInterval(interval);
   }, [timeLeft]);
-
-  // Lógica de estoque / limite
-  const maxAvailable = userLimit > 0 ? Math.min(stock, userLimit) : stock;
-  const [quantity, setQuantity] = useState(1);
-
-  const increment = () => {
-    if (quantity < maxAvailable) setQuantity((prev) => prev + 1);
-  };
-
-  const decrement = () => {
-    if (quantity > 1) setQuantity((prev) => prev - 1);
-  };
 
   return (
     <Card className="w-full max-w-4xl bg-card text-card-foreground border border-border/50 rounded-[28px] p-6 shadow-sm">
@@ -257,7 +281,7 @@ export function PromotionDetailCard({
             </div>
           </div>
 
-          {/* Dados da loja com fallback de avatar e alt fixado */}
+          {/* Dados da loja */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0 overflow-hidden">
@@ -282,7 +306,7 @@ export function PromotionDetailCard({
             <div className="flex flex-col gap-1 text-xs text-muted-foreground pl-0.5">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>{storeHours}</span>
+                <span>{formatBusinessHours(storeHours)}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
@@ -328,15 +352,36 @@ export function PromotionDetailCard({
                 </span>
               </div>
 
-              <div className="flex flex-col gap-1 bg-muted/40 border border-border/40 rounded-xl px-3 py-2.5">
+              {/* Card de Limite com alerta visual quando zerado */}
+              <div
+                className={`flex flex-col gap-1 border rounded-xl px-3 py-2.5 transition-colors ${
+                  userLimit > 0 && remainingUserLimit === 0
+                    ? "bg-destructive/10 border-destructive/30"
+                    : "bg-muted/40 border-border/40"
+                }`}
+              >
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <UserCheck className="w-3.5 h-3.5" />
+                  <UserCheck
+                    className={`w-3.5 h-3.5 ${
+                      userLimit > 0 && remainingUserLimit === 0
+                        ? "text-destructive"
+                        : ""
+                    }`}
+                  />
                   <span className="text-[10px] font-semibold uppercase tracking-wide">
                     Limite
                   </span>
                 </div>
-                <span className="text-sm font-bold text-foreground">
-                  {userLimit > 0 ? `${userLimit} un.` : "Sem limite"}
+                <span
+                  className={`text-sm font-bold ${
+                    userLimit > 0 && remainingUserLimit === 0
+                      ? "text-destructive"
+                      : "text-foreground"
+                  }`}
+                >
+                  {userLimit > 0
+                    ? `${userRedeemedCount}/${userLimit} un.`
+                    : "Sem limite"}
                 </span>
               </div>
 
@@ -383,58 +428,72 @@ export function PromotionDetailCard({
           </div>
 
           {/* Quantidade e ação de resgate */}
-          <div className="flex items-center gap-3 pt-4 border-t border-border/60">
-            <div className="flex items-center h-11 bg-muted/60 border border-border/60 rounded-xl overflow-hidden shrink-0">
-              <button
-                type="button"
-                onClick={decrement}
-                disabled={quantity <= 1 || isSubmitting}
-                className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none"
-                aria-label="Diminuir quantidade"
-              >
-                <Minus className="w-3.5 h-3.5" />
-              </button>
+          <div className="flex flex-col gap-2 pt-4 border-t border-border/60">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center h-11 bg-muted/60 border border-border/60 rounded-xl overflow-hidden shrink-0">
+                <button
+                  type="button"
+                  onClick={decrement}
+                  disabled={quantity <= 1 || isSubmitting || maxAvailable === 0}
+                  className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  aria-label="Diminuir quantidade"
+                >
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
 
-              <span className="w-8 text-center font-semibold text-sm text-foreground select-none">
-                {quantity}
-              </span>
+                <span className="w-8 text-center font-semibold text-sm text-foreground select-none">
+                  {quantity}
+                </span>
 
-              <button
+                <button
+                  type="button"
+                  onClick={increment}
+                  disabled={
+                    quantity >= maxAvailable ||
+                    maxAvailable === 0 ||
+                    isSubmitting
+                  }
+                  className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  aria-label="Aumentar quantidade"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <Button
                 type="button"
-                onClick={increment}
-                disabled={
-                  quantity >= maxAvailable || maxAvailable === 0 || isSubmitting
-                }
-                className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none"
-                aria-label="Aumentar quantidade"
+                disabled={stock === 0 || maxAvailable === 0 || isSubmitting}
+                onClick={handleRedeemClick}
+                className="flex-1 relative h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-md transition-all border border-dashed border-primary-foreground/40 group overflow-hidden disabled:opacity-50 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" />
-              </button>
+                <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-primary-foreground/40" />
+
+                <span className="flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Resgatando...</span>
+                    </>
+                  ) : stock === 0 ? (
+                    "Estoque Esgotado"
+                  ) : maxAvailable === 0 ? (
+                    "Limite de Resgates Atingido"
+                  ) : (
+                    "Resgatar Promoção"
+                  )}
+                </span>
+
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-primary-foreground/40" />
+              </Button>
             </div>
 
-            <Button
-              type="button"
-              disabled={stock === 0 || isSubmitting}
-              onClick={handleRedeemClick}
-              className="flex-1 relative h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-md transition-all border border-dashed border-primary-foreground/40 group overflow-hidden disabled:opacity-40 cursor-pointer"
-            >
-              <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-primary-foreground/40" />
-
-              <span className="flex items-center justify-center gap-2">
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Resgatando...</span>
-                  </>
-                ) : stock === 0 ? (
-                  "Esgotado"
-                ) : (
-                  "Resgatar"
-                )}
-              </span>
-
-              <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-primary-foreground/40" />
-            </Button>
+            {/* Mensagem de alerta quando atinge o limite individual */}
+            {userLimit > 0 && remainingUserLimit === 0 && stock > 0 && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 font-medium text-center">
+                Você já atingiu o limite máximo de {userLimit}{" "}
+                {userLimit === 1 ? "resgate" : "resgates"} para esta oferta.
+              </p>
+            )}
           </div>
         </div>
       </CardContent>

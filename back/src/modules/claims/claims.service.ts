@@ -3,10 +3,15 @@ import {
   NotFoundException,
   BadRequestException,
   ForbiddenException,
-  ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { generateClaimCode } from 'src/utils/generate-code';
+
+export interface ExecuteClaimInput {
+  userId: string;
+  promotionId: string;
+  quantity?: number;
+}
 
 @Injectable()
 export class ClaimsService {
@@ -14,87 +19,110 @@ export class ClaimsService {
 
   /**
    * 1. RESGATAR PROMOÇÃO (Cliente)
+   * Alias 'execute' para manter compatibilidade com a chamada do Controller
    */
-  async claimPromotion(customerId: string, promotionId: string) {
-    // 1. Busca a promoção para validar estoque e datas
-    const promotion = await this.prisma.promotion.findUnique({
-      where: { id: promotionId },
-    });
-
-    if (!promotion || !promotion.isActive) {
-      throw new NotFoundException('Promoção indisponível ou não encontrada.');
-    }
-
-    const now = new Date();
-    if (now < promotion.startTime || now > promotion.endTime) {
-      throw new BadRequestException('Esta promoção não está ativa no momento.');
-    }
-
-    if (promotion.stock <= 0) {
-      throw new BadRequestException('Estoque desta promoção esgotado.');
-    }
-
-    // 2. Verifica se o cliente já possui um resgate pendente para esta promoção
-    const existingClaim = await this.prisma.claim.findUnique({
-      where: {
-        customerId_promotionId: {
-          customerId,
-          promotionId,
-        },
-      },
-      include: {
-        promotion: {
-          select: { name: true, promoPrice: true, images: true },
-        },
-      },
-    });
-
-    // Se já resgatou e o cupom está PENDING, devolve o mesmo cupom existente
-    if (existingClaim) {
-      if (existingClaim.status === 'PENDING') {
-        return existingClaim;
-      }
-      throw new ConflictException('Você já utilizou o cupom desta promoção.');
-    }
-
-    // 3. Gera código único e cria o registro do resgate
-    let code = generateClaimCode();
-    let isCodeUnique = false;
-    let attempts = 0;
-
-    // Garante unicidade do código em caso de colisão raríssima
-    while (!isCodeUnique && attempts < 5) {
-      const codeExists = await this.prisma.claim.findUnique({
-        where: { code },
+  async execute({
+    userId,
+    promotionId,
+    quantity = 1,
+  }: {
+    userId: string;
+    promotionId: string;
+    quantity: number;
+  }) {
+    return await this.prisma.$transaction(async (tx) => {
+      // 1. Busca a promoção
+      const promotion = await tx.promotion.findUnique({
+        where: { id: promotionId },
       });
-      if (!codeExists) {
-        isCodeUnique = true;
-      } else {
-        code = generateClaimCode();
-        attempts++;
-      }
-    }
 
-    return await this.prisma.claim.create({
-      data: {
-        code,
-        customerId,
-        promotionId,
-        status: 'PENDING',
-      },
-      include: {
-        promotion: {
-          select: { name: true, promoPrice: true, images: true },
+      if (!promotion) {
+        throw new NotFoundException('Promoção não encontrada.');
+      }
+
+      // 2. Valida estoque geral
+      if (promotion.stock < quantity) {
+        throw new BadRequestException(
+          `Estoque insuficiente. Restam apenas ${promotion.stock} unidade(s).`,
+        );
+      }
+
+      // 3. Valida limite por usuário baseado no ACUMULADO (usando limitPerUser e tx.claim)
+      if (promotion.limitPerUser > 0) {
+        const userClaimsAggregate = await tx.claim.aggregate({
+          where: {
+            customerId: userId,
+            promotionId: promotionId,
+            status: { not: 'CANCELLED' },
+          },
+          _sum: {
+            quantity: true,
+          },
+        });
+
+        const totalAlreadyRedeemed = userClaimsAggregate._sum.quantity || 0;
+
+        if (totalAlreadyRedeemed + quantity > promotion.limitPerUser) {
+          const remainingAllowed = Math.max(
+            0,
+            promotion.limitPerUser - totalAlreadyRedeemed,
+          );
+          throw new BadRequestException(
+            `Limite de resgates excedido. Você já resgatou ${totalAlreadyRedeemed} unidade(s). Restam ${remainingAllowed} disponíveis.`,
+          );
+        }
+      }
+
+      // 4. Gera um novo código único para este cupom
+
+      const code = generateClaimCode();
+
+      // 5. CRIA UM NOVO REGISTRO na tabela claim
+      const newClaim = await tx.claim.create({
+        data: {
+          customerId: userId,
+          promotionId: promotionId,
+          quantity: quantity,
+          code: code,
+          status: 'PENDING',
         },
-      },
+        include: {
+          promotion: {
+            select: {
+              name: true,
+              promoPrice: true,
+              images: true,
+            },
+          },
+        },
+      });
+
+      // 6. Atualiza e abate o estoque geral
+      await tx.promotion.update({
+        where: { id: promotionId },
+        data: {
+          stock: {
+            decrement: quantity,
+          },
+        },
+      });
+
+      return newClaim;
     });
+  }
+
+  async claimPromotion(
+    customerId: string,
+    promotionId: string,
+    quantity: number = 1,
+  ) {
+    return this.execute({ userId: customerId, promotionId, quantity });
   }
 
   /**
    * 2. VALIDAR CUPOM NO BALCÃO (Vendedor)
    */
   async validateClaim(sellerId: string, code: string) {
-    // Transação do Prisma para garantir consistência entre atualizar o cupom e dar baixa no estoque
     return await this.prisma.$transaction(async (tx) => {
       const claim = await tx.claim.findUnique({
         where: { code: code.toUpperCase() },
@@ -108,12 +136,10 @@ export class ClaimsService {
         throw new NotFoundException('Código de cupom não encontrado.');
       }
 
-      // Valida se a promoção pertence à loja logada
       if (claim.promotion.sellerId !== sellerId) {
         throw new ForbiddenException('Este cupom pertence a outra loja.');
       }
 
-      // Valida status do cupom
       if (claim.status === 'USED') {
         throw new BadRequestException(
           'Este cupom já foi utilizado anteriormente.',
@@ -124,15 +150,7 @@ export class ClaimsService {
         throw new BadRequestException('Este cupom não está mais disponível.');
       }
 
-      // Valida estoque no momento da validação
-      if (claim.promotion.stock < claim.quantity) {
-        throw new BadRequestException(
-          'Estoque insuficiente para validar esta oferta.',
-        );
-      }
-
-      // 1. Atualiza o status do resgate para USED
-      const updatedClaim = await tx.claim.update({
+      return await tx.claim.update({
         where: { id: claim.id },
         data: {
           status: 'USED',
@@ -143,16 +161,6 @@ export class ClaimsService {
           promotion: { select: { name: true, promoPrice: true } },
         },
       });
-
-      // 2. Decrementa o estoque da promoção
-      await tx.promotion.update({
-        where: { id: claim.promotionId },
-        data: {
-          stock: { decrement: claim.quantity },
-        },
-      });
-
-      return updatedClaim;
     });
   }
 
@@ -171,5 +179,25 @@ export class ClaimsService {
       },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async getUserRedeemedQuantityByPromotion(
+    promotionId: string,
+    userId: string,
+  ): Promise<number> {
+    const result = await this.prisma.claim.aggregate({
+      _sum: {
+        quantity: true,
+      },
+      where: {
+        promotionId: promotionId,
+        customerId: userId, // 👈 Filtra também pelo ID do cliente
+        status: {
+          not: 'CANCELLED',
+        },
+      },
+    });
+
+    return result._sum.quantity ?? 0;
   }
 }

@@ -42,7 +42,8 @@ export class PromotionsController {
 
   // GET /promotions/:id (Detalhes públicos de uma promoção)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.promotionsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user?.sub;
+    return this.promotionsService.findOne(id, userId);
   }
 }
