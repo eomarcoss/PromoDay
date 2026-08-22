@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Eye,
@@ -10,8 +9,10 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface RedemptionCodeCardProps {
   imageUrl?: string;
@@ -20,6 +21,10 @@ interface RedemptionCodeCardProps {
   code: string;
   status?: "ACTIVE" | "USED" | "EXPIRED" | string;
   className?: string;
+  seller?: {
+    name?: string;
+    avatarUrl?: string;
+  };
 }
 
 export function RedemptionCodeCard({
@@ -29,11 +34,21 @@ export function RedemptionCodeCard({
   code,
   status = "ACTIVE",
   className,
+  seller,
 }: RedemptionCodeCardProps) {
   const [isCodeVisible, setIsCodeVisible] = useState(false);
 
   const baseColor = "bg-[#4264E2]";
   const textOnColor = "text-white";
+
+  // Gerador de iniciais a partir do nome do vendedor
+  const getInitials = (sellerName?: string) => {
+    if (!sellerName) return "";
+    const parts = sellerName.trim().split(" ");
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+  console.log("Seller", seller?.avatarUrl, seller?.name);
 
   const renderStatusBadge = () => {
     switch (status?.toUpperCase()) {
@@ -67,7 +82,7 @@ export function RedemptionCodeCard({
         className,
       )}
     >
-      {/* Recortes Semicirculares de Cupom nas Laterais (Esquerda e Direita) */}
+      {/* Recortes Semicirculares de Cupom nas Laterais */}
       <span className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full" />
       <span className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full" />
 
@@ -95,11 +110,11 @@ export function RedemptionCodeCard({
         <div className="flex flex-col flex-1 min-w-0 p-5 pl-4 relative">
           {/* Header e Status */}
           <div className="flex flex-col gap-1 mb-auto">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2 ">
               <span
                 className={cn("text-xs font-medium opacity-80", textOnColor)}
               >
-                Cupom de Desconto
+                {/* Cupom de Desconto */}
               </span>
               {renderStatusBadge()}
             </div>
@@ -113,6 +128,40 @@ export function RedemptionCodeCard({
             >
               {productName}
             </h2>
+
+            {/* SELLER PROFILE: Renderiza usando o objeto seller */}
+            {seller && (seller.name || seller.avatarUrl) && (
+              <div className="flex items-center gap-1.5 mt-1 opacity-90">
+                <Link href={`/stores/${seller.id}`}>
+                  <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 bg-white/20 border border-white/30 flex items-center justify-center">
+                    {seller.avatarUrl ? (
+                      <img
+                        src={seller.avatarUrl}
+                        alt={seller.name || "Vendedor"}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : seller.name ? (
+                      <span className="text-[9px] font-bold text-white leading-none">
+                        {getInitials(seller.name)}
+                      </span>
+                    ) : (
+                      <User className="w-3 h-3 text-white/80" />
+                    )}
+                  </div>
+                  {seller?.name && (
+                    <span
+                      className={cn(
+                        "text-xs font-medium truncate opacity-90",
+                        textOnColor,
+                      )}
+                      title={seller.name}
+                    >
+                      {seller.name}
+                    </span>
+                  )}
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Área do Código e Ação */}

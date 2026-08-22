@@ -36,6 +36,8 @@ model Customer {
   updatedAt DateTime @updatedAt
   claims    Claim[]
 
+  totalRedemptions Int                @default(0) // Qtd total de resgates realizados
+  totalSavedAmount Decimal            @default(0.0) @db.Decimal(10, 2) // Total economizado acumulado em R$
   @@map("customers")
 }
 
@@ -53,8 +55,11 @@ model Seller {
   role          Role        @default(SELLER)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  promotions    Promotion[]
 
+
+  totalPromotions  Int                @default(0) // Qtd total de anúncios criados
+  totalSales       Int                @default(0) // Qtd total de vendas/cupons validados pelo seller
+  promotions    Promotion[]
   @@map("sellers")
 }
 
@@ -68,8 +73,8 @@ model Promotion {
   limitPerUser  Int
   startTime     DateTime
   endTime       DateTime
-  originalPrice Float
-  promoPrice    Float
+  originalPrice Decimal @db.Decimal(10, 2)
+  promoPrice    Decimal @db.Decimal(10, 2)
   images        String[]
   isActive      Boolean  @default(true)
 

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
+// Assumindo que a action e as validações permanecem as mesmas
+import { validateClaimAction } from "@/app/actions/validate-claim";
 import {
   QrCode,
   Keyboard,
@@ -9,9 +11,10 @@ import {
   Loader2,
   Scan,
   ArrowRight,
-  Sparkles,
+  Zap,
 } from "lucide-react";
 
+// Mantenho a interface intacta pois é tipagem
 interface ValidationResult {
   success: boolean;
   customerName?: string;
@@ -21,6 +24,7 @@ interface ValidationResult {
 }
 
 export function ValidateCodeModal() {
+  // Lógica permanece inalterada
   const [mode, setMode] = useState<"manual" | "scanner">("manual");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,19 +32,14 @@ export function ValidateCodeModal() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Formata o texto inserido para o padrão PD-XXXXXX
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-
-    // Adiciona o hífen automaticamente após os 2 primeiros caracteres
     if (value.length > 2) {
       value = `${value.slice(0, 2)}-${value.slice(2, 8)}`;
     }
-
     setCode(value);
   };
 
-  // Simulação de envio/validação para o backend
   const handleValidate = async (codeToValidate?: string) => {
     const targetCode = codeToValidate || code;
     if (!targetCode || targetCode.length < 9) return;
@@ -48,25 +47,24 @@ export function ValidateCodeModal() {
     setLoading(true);
     setResult(null);
 
-    // Simula delay de requisição da API
-    setTimeout(() => {
-      setLoading(false);
-      // Exemplo de retorno simulado
-      if (targetCode.startsWith("PD-")) {
-        setResult({
-          success: true,
-          customerName: "Lucas Silva",
-          promotionName: "Combo X-Tudo + Refri 2L",
-          quantity: 1,
-          message: "Cupom válido! Pode realizar a entrega.",
-        });
-      } else {
-        setResult({
-          success: false,
-          message: "Código inválido ou já utilizado.",
-        });
-      }
-    }, 1200);
+    const res = await validateClaimAction(targetCode);
+
+    setLoading(false);
+
+    if (res.success && res.data) {
+      setResult({
+        success: true,
+        customerName: res.data.user?.name || "Cliente",
+        promotionName: res.data.promotion?.name || "Promoção",
+        quantity: res.data.quantity || 1,
+        message: res.message || "Cupom validado com sucesso.",
+      });
+    } else {
+      setResult({
+        success: false,
+        message: res.message || "Código inválido ou expirado.",
+      });
+    }
   };
 
   const handleReset = () => {
@@ -77,55 +75,63 @@ export function ValidateCodeModal() {
     }
   };
 
+  // --- INÍCIO DA REESTILIZAÇÃO VISUAL ---
+  // Cores aplicadas baseadas no tema Claro (Light Mode) fornecido:
+  // Fundo: #FAFAFA, Card: #FFFFFF, Texto Principal: #070F22, Primária: #144AE0
+
   return (
-    <div className="w-full max-w-md mx-auto bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden font-sans">
-      {/* Header do Card */}
-      <div className="p-6 border-b border-zinc-800/80 bg-zinc-900/40 backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <Sparkles className="w-5 h-5" />
+    // Container Principal: Agora branco, com sombra suave e bordas sutis (Light Mode)
+    <div className="w-full max-w-lvh mx-auto bg-white border border-slate-100 rounded-3xl shadow-xl shadow-slate-950/5 overflow-hidden font-sans">
+      {/* Header do Card: Fundo levemente cinza (#FAFAFA), divisória sutil */}
+      <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            {/* Ícone: Fundo suave e cor Primária (#144AE0) */}
+            <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-zinc-100 leading-tight">
+              {/* Título: Texto Escuro (#070F22) */}
+              <h2 className="text-xl font-bold text-slate-950 tracking-tight leading-tight">
                 Validar Cupom
               </h2>
-              <p className="text-xs text-zinc-400">
-                Área de conferência do estabelecimento
+              {/* Subtítulo: Texto secundário (cinza) */}
+              <p className="text-sm text-slate-600">
+                Central de verificação do parceiro
               </p>
             </div>
           </div>
         </div>
 
-        {/* Abas de Alternância (Manual vs Scanner) */}
-        <div className="grid grid-cols-2 gap-1 p-1 bg-zinc-900 rounded-xl border border-zinc-800">
+        {/* Abas de Alternância: Fundo cinza claro, visual 'pílula' */}
+        <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/70">
           <button
             onClick={() => {
               setMode("manual");
               setResult(null);
             }}
-            className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
               mode === "manual"
-                ? "bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700/50"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50" // Ativo: Branco, texto Primária
+                : "text-slate-600 hover:text-slate-900 hover:bg-white/50" // Inativo: Texto cinza
             }`}
           >
             <Keyboard className="w-4 h-4" />
-            Digitando
+            Digitar Código
           </button>
           <button
             onClick={() => {
               setMode("scanner");
               setResult(null);
             }}
-            className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
               mode === "scanner"
-                ? "bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700/50"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
             }`}
           >
             <QrCode className="w-4 h-4" />
-            Câmera / QR Code
+            Ler QR Code
           </button>
         </div>
       </div>
@@ -135,114 +141,126 @@ export function ValidateCodeModal() {
         {!result ? (
           <>
             {mode === "manual" ? (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-2">
-                    Digite o código fornecido pelo cliente:
+                  <label className="block text-sm font-medium text-slate-700 mb-2.5">
+                    Informe o código do cliente (PD-XXXXXX):
                   </label>
                   <div className="relative">
+                    {/* Input: Fundo branco, borda sutil, foco na cor Primária */}
                     <input
                       ref={inputRef}
                       type="text"
                       maxLength={9}
                       value={code}
                       onChange={handleInputChange}
-                      placeholder="PD-XXXXXX"
-                      className="w-full bg-zinc-900/90 border border-zinc-800 focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 text-center text-2xl font-mono tracking-widest text-zinc-100 placeholder:text-zinc-700 rounded-xl py-4 px-3 outline-none transition-all uppercase"
+                      placeholder="PD-000000"
+                      className="w-full bg-white border-2 border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-center text-3xl font-mono tracking-[0.2em] text-slate-950 placeholder:text-slate-300 rounded-2xl py-5 px-4 outline-none transition-all uppercase shadow-inner shadow-slate-950/5"
                     />
                     {code.length === 9 && !loading && (
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 text-xs font-bold bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 text-xs font-bold bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
                         Pronto
                       </span>
                     )}
                   </div>
                 </div>
 
+                {/* Botão Principal: Cor Primária (#144AE0), Texto Branco */}
                 <button
                   onClick={() => handleValidate()}
                   disabled={code.length < 9 || loading}
-                  className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 disabled:shadow-none"
+                  className="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-500 text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 disabled:shadow-none"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <>
-                      Validar Resgate
-                      <ArrowRight className="w-4 h-4" />
+                      Confirmar Resgate
+                      <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </button>
               </div>
             ) : (
-              /* Modo Câmera / QR Code */
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <div className="relative w-full aspect-square max-w-[240px] bg-zinc-900 border-2 border-dashed border-zinc-800 rounded-2xl flex flex-col items-center justify-center overflow-hidden group">
-                  {/* Overlay Efeito Scanner */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent animate-pulse" />
-                  <div className="w-full h-0.5 bg-emerald-500 shadow-[0_0_15px_#10b981] absolute top-1/2 -translate-y-1/2 animate-bounce" />
+              /* Modo Câmera: Cores de escaneamento ajustadas para o tema claro */
+              <div className="flex flex-col items-center justify-center space-y-5">
+                <div className="relative w-full aspect-square max-w-[260px] bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center overflow-hidden group">
+                  {/* Overlay Efeito Scanner: Agora usando azul primário suave */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent animate-pulse" />
+                  <div className="w-full h-0.5 bg-blue-500 shadow-[0_0_15px_#144AE0] absolute top-1/2 -translate-y-1/2 animate-bounce" />
 
-                  <Scan className="w-12 h-12 text-zinc-600 mb-2 group-hover:text-emerald-400 transition-colors" />
-                  <p className="text-xs text-zinc-500 text-center px-4">
-                    Aponte a câmera do dispositivo para o QR Code do cliente
+                  <Scan className="w-14 h-14 text-slate-400 mb-3 group-hover:text-blue-600 transition-colors duration-300" />
+                  <p className="text-sm text-slate-500 text-center px-6 leading-relaxed">
+                    Posicione o QR Code do cliente em frente à câmera
                   </p>
                 </div>
 
                 <button
-                  onClick={() => handleValidate("PD-TW19DQ")}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-4 pt-2"
+                  onClick={() => handleValidate("PD-DEMO12")}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium underline underline-offset-4 pt-2"
                 >
-                  [Simular leitura automática de QR Code]
+                  [ Simular leitura de QR Code ]
                 </button>
               </div>
             )}
           </>
         ) : (
-          /* Estado de Resultado da Validação */
-          <div className="space-y-5 animate-in fade-in zoom-in-95 duration-200">
+          /* Estado de Resultado: Cores de Feedback (Verde/Vermelho) mantidas, mas suavizadas */
+          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
             {result.success ? (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-2" />
-                <h3 className="text-base font-bold text-emerald-400">
+              // Sucesso: Fundo verde suave, texto verde escuro
+              <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100 text-center">
+                <CheckCircle2 className="w-14 h-14 text-emerald-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-emerald-900 tracking-tight">
                   Cupom Validado!
                 </h3>
-                <p className="text-xs text-zinc-400 mt-1">{result.message}</p>
+                <p className="text-sm text-emerald-700 mt-1.5 leading-relaxed">
+                  {result.message}
+                </p>
 
-                <div className="mt-4 pt-4 border-t border-emerald-500/20 text-left space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-500">Cliente:</span>
-                    <span className="font-semibold text-zinc-200">
+                {/* Detalhes: Linhas divisórias sutis em verde */}
+                <div className="mt-5 pt-5 border-t border-emerald-100 text-left space-y-3">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-emerald-700/80">Cliente</span>
+                    <span className="font-semibold text-emerald-950 bg-white px-2 py-0.5 rounded-md border border-emerald-100">
                       {result.customerName}
                     </span>
                   </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-500">Item:</span>
-                    <span className="font-semibold text-zinc-200">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-emerald-700/80">Oferta</span>
+                    <span className="font-semibold text-emerald-950 bg-white px-2 py-0.5 rounded-md border border-emerald-100 max-w-[200px] truncate">
                       {result.promotionName}
                     </span>
                   </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-500">Qtd a entregar:</span>
-                    <span className="font-bold text-emerald-400">
+                  <div className="flex justify-between items-center text-sm pt-2 border-t border-emerald-100/50">
+                    <span className="text-emerald-700 font-medium">
+                      Quantidade a entregar
+                    </span>
+                    <span className="font-extrabold text-xl text-emerald-600">
                       {result.quantity} un.
                     </span>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-center">
-                <XCircle className="w-12 h-12 text-rose-400 mx-auto mb-2" />
-                <h3 className="text-base font-bold text-rose-400">
+              // Erro: Fundo vermelho suave, texto vermelho escuro
+              <div className="p-6 rounded-2xl bg-red-50 border border-red-100 text-center">
+                <XCircle className="w-14 h-14 text-red-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-red-900 tracking-tight">
                   Falha na Validação
                 </h3>
-                <p className="text-xs text-zinc-400 mt-1">{result.message}</p>
+                <p className="text-sm text-red-700 mt-1.5 leading-relaxed">
+                  {result.message}
+                </p>
               </div>
             )}
 
+            {/* Botão Secundário: Fundo branco/cinza, borda, texto escuro */}
             <button
               onClick={handleReset}
-              className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-semibold text-sm rounded-xl transition-all border border-zinc-800"
+              className="w-full py-3.5 px-6 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base rounded-2xl transition-all border border-slate-200 shadow-sm shadow-slate-950/5"
             >
-              Validar outro código
+              Validar Novo Código
             </button>
           </div>
         )}

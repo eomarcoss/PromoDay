@@ -6,7 +6,7 @@ export default function Redeems() {
     <div className="w-full flex flex-col items-center justify-center ">
       <h1 className="text-2xl text-center font-bold text-black">Resgates</h1>
       <ValidateCodeModal />
-      <RedeemsList />
+      {/* <RedeemsList /> */}
     </div>
   );
 }

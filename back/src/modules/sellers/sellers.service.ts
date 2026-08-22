@@ -75,6 +75,8 @@ export class SellersService {
         promotions: true,
         phone: true,
         category: true,
+        totalPromotions: true,
+        totalSales: true,
       },
     });
   }
@@ -113,7 +115,12 @@ export class SellersService {
         businessHours: true,
         phone: true,
         category: true,
+        totalPromotions: true,
+        totalSales: true,
         promotions: {
+          where: {
+            isActive: true,
+          },
           include: {
             seller: {
               select: {
@@ -161,6 +168,25 @@ export class SellersService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async getMetrics(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id: id },
+      select: {
+        totalPromotions: true,
+        totalSales: true,
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado');
+    }
+
+    return {
+      totalPromotions: seller.totalPromotions ?? 0,
+      totalSales: seller.totalSales ?? 0,
+    };
   }
 
   async remove(id: string) {

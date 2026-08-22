@@ -33,11 +33,11 @@ export class ClaimsService {
     return await this.prisma.$transaction(async (tx) => {
       // 1. Busca a promoção
       const promotion = await tx.promotion.findUnique({
-        where: { id: promotionId },
+        where: { id: promotionId, isActive: true },
       });
 
       if (!promotion) {
-        throw new NotFoundException('Promoção não encontrada.');
+        throw new NotFoundException('Promoção não encontrada ou indisponivel.');
       }
 
       // 2. Valida estoque geral
@@ -140,6 +140,24 @@ export class ClaimsService {
         throw new ForbiddenException('Este cupom pertence a outra loja.');
       }
 
+      // Verificação de expiração pelo endTime da promoção
+      const now = new Date();
+      if (claim.promotion.endTime && new Date(claim.promotion.endTime) <= now) {
+        // 1. Apaga todas as claims vinculadas a esta promoção expirada
+        await tx.claim.deleteMany({
+          where: { promotionId: claim.promotionId },
+        });
+
+        // 2. Apaga a promoção do banco de dados
+        await tx.promotion.delete({
+          where: { id: claim.promotionId },
+        });
+
+        throw new BadRequestException(
+          'Esta promoção expirou e foi removida do sistema.',
+        );
+      }
+
       if (claim.status === 'USED') {
         throw new BadRequestException(
           'Este cupom já foi utilizado anteriormente.',
@@ -150,6 +168,30 @@ export class ClaimsService {
         throw new BadRequestException('Este cupom não está mais disponível.');
       }
 
+      // 1. Cálculo do valor economizado pelo cliente nesta compra
+      const savedPerUnit =
+        Number(claim.promotion.originalPrice) -
+        Number(claim.promotion.promoPrice);
+      const totalSavedInThisClaim = savedPerUnit * claim.quantity;
+
+      // 2. Incrementar contadores do Cliente
+      await tx.customer.update({
+        where: { id: claim.customerId },
+        data: {
+          totalRedemptions: { increment: claim.quantity },
+          totalSavedAmount: { increment: totalSavedInThisClaim },
+        },
+      });
+
+      // 3. Incrementar contador de vendas do Vendedor
+      await tx.seller.update({
+        where: { id: sellerId },
+        data: {
+          totalSales: { increment: claim.quantity },
+        },
+      });
+
+      // 4. Marcar o cupom como utilizado e retornar o resultado
       return await tx.claim.update({
         where: { id: claim.id },
         data: {
@@ -173,7 +215,7 @@ export class ClaimsService {
       include: {
         promotion: {
           include: {
-            seller: { select: { name: true } },
+            seller: { select: { name: true, avatarUrl: true, id: true } },
           },
         },
       },

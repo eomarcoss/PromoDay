@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, Eye } from "lucide-react";
 
 export interface PromoCardProps {
+  id?: string;
   name: string;
   storeName: string;
   originalPrice: number;
@@ -21,7 +22,23 @@ export interface PromoCardProps {
   avatarUrl?: string;
 }
 
-export function PromoCard({ product }: { product: PromoCardProps }) {
+interface PromoCardComponentProps {
+  product: PromoCardProps;
+  /**
+   * Slot para customizar o rodapé do card.
+   * Se não for informado, renderiza os botões padrão de Cliente (Detalhes e Resgatar).
+   */
+  actions?: React.ReactNode;
+  onDetails?: () => void;
+  onRedeem?: () => void;
+}
+
+export function PromoCard({
+  product,
+  actions,
+  onDetails,
+  onRedeem,
+}: PromoCardComponentProps) {
   const [timeRemaining, setTimeRemaining] = useState({ hours: 0, minutes: 0 });
 
   useEffect(() => {
@@ -88,7 +105,6 @@ export function PromoCard({ product }: { product: PromoCardProps }) {
 
         {/* Conteúdo */}
         <CardContent className="w-full p-0 flex-1 flex flex-col justify-between gap-4">
-          {/* Título + loja */}
           <div className="space-y-2">
             <h3 className="text-foreground text-base font-semibold leading-snug tracking-tight text-left line-clamp-2">
               {product.name}
@@ -112,7 +128,6 @@ export function PromoCard({ product }: { product: PromoCardProps }) {
             </div>
           </div>
 
-          {/* Preço + cronômetro */}
           <div className="space-y-2.5">
             <div className="flex items-baseline gap-2 flex-wrap">
               <span className="text-foreground text-2xl font-bold tracking-tight">
@@ -136,26 +151,32 @@ export function PromoCard({ product }: { product: PromoCardProps }) {
         </CardContent>
 
         {/* Ações */}
-        <CardFooter className="w-full p-0 grid grid-cols-2 gap-2.5">
-          <Button
-            variant="outline"
-            className="w-full font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors"
-          >
-            <Eye className="w-4 h-4" />
-            Detalhes
-          </Button>
+        <CardFooter className="w-full p-0">
+          {actions ? (
+            actions
+          ) : (
+            <div className="w-full grid grid-cols-2 gap-2.5">
+              <Button
+                variant="outline"
+                onClick={onDetails}
+                className="w-full font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                <Eye className="w-4 h-4" />
+                Detalhes
+              </Button>
 
-          <Button className="w-full relative bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary-foreground/40 group">
-            {/* Semicírculo esquerdo */}
-            <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-r border-dashed border-primary-foreground/40" />
-
-            <span className="flex items-center gap-2">
-              <span className="font-semibold tracking-wide">Resgatar</span>
-            </span>
-
-            {/* Semicírculo direito */}
-            <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-l border-dashed border-primary-foreground/40" />
-          </Button>
+              <Button
+                onClick={onRedeem}
+                className="w-full relative bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary-foreground/40 group"
+              >
+                <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-r border-dashed border-primary-foreground/40" />
+                <span className="flex items-center gap-2">
+                  <span className="font-semibold tracking-wide">Resgatar</span>
+                </span>
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-l border-dashed border-primary-foreground/40" />
+              </Button>
+            </div>
+          )}
         </CardFooter>
       </Card>
     </div>

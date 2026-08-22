@@ -36,6 +36,14 @@ export class SellersController {
     return this.sellersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard) // Guard de autenticação do seu projeto
+  @Get('metrics')
+  async getMetrics(@Request() req: any) {
+    const sellerId = req.user.sub;
+    console.log('Seller', sellerId);
+    return this.sellersService.getMetrics(sellerId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.sellersService.findOne(id);

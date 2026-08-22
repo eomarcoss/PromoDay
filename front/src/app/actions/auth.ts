@@ -96,3 +96,9 @@ export async function signOutAction() {
 
   redirect("/auth/login");
 }
+
+export async function getTokenAction(): Promise<string | undefined> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("@PromoDay:token")?.value;
+  return token;
+}

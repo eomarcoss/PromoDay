@@ -3,6 +3,8 @@ import {
   HttpException,
   HttpStatus,
   BadRequestException,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
@@ -104,18 +106,33 @@ export class PromotionsService {
     const finalImages = imageUrls.length > 0 ? imageUrls : images || [];
 
     try {
-      const promotion = await this.prisma.promotion.create({
-        data: {
-          ...rest,
-          stock: numStock,
-          limitPerUser: numLimitPerUser,
-          originalPrice: numOriginalPrice,
-          promoPrice: numPromoPrice,
-          startTime: dataInicio,
-          endTime: dataFim,
-          images: finalImages,
-          sellerId: sellerId,
-        },
+      const promotion = await this.prisma.$transaction(async (tx) => {
+        // 1. Cria a promoção usando o contexto da transação (tx)
+        const newPromotion = await tx.promotion.create({
+          data: {
+            ...rest,
+            stock: numStock,
+            limitPerUser: numLimitPerUser,
+            originalPrice: numOriginalPrice,
+            promoPrice: numPromoPrice,
+            startTime: dataInicio,
+            endTime: dataFim,
+            images: finalImages,
+            sellerId: sellerId,
+          },
+        });
+
+        // 2. Incremente o totalPromotions do Seller em +1
+        await tx.seller.update({
+          where: { id: sellerId },
+          data: {
+            totalPromotions: {
+              increment: 1,
+            },
+          },
+        });
+
+        return newPromotion;
       });
 
       return promotion;
@@ -171,6 +188,7 @@ export class PromotionsService {
           select: {
             id: true,
             name: true,
+            avatarUrl: true,
           },
         },
       },
@@ -293,13 +311,13 @@ export class PromotionsService {
 
     const agora = new Date();
 
-    if (originalPrice <= 0 || promoPrice <= 0) {
+    if (Number(originalPrice) <= 0 || Number(promoPrice) <= 0) {
       throw new BadRequestException(
         'Os preços original e promocional devem ser maiores que zero.',
       );
     }
 
-    if (promoPrice >= originalPrice) {
+    if (Number(promoPrice) >= Number(originalPrice)) {
       throw new BadRequestException(
         'O preço promocional deve ser menor do que o preço original.',
       );
@@ -358,13 +376,52 @@ export class PromotionsService {
     }
   }
 
-  async remove(id: string, sellerId: string) {
+  async toggleActive(id: string, sellerId: string) {
+    if (!id || !sellerId) {
+      throw new BadRequestException(
+        'IDs do vendedor e da promoção são obrigatórios.',
+      );
+    }
+
+    // 1. Busca a promoção existente
     const promotion = await this.prisma.promotion.findUnique({
       where: { id },
     });
 
     if (!promotion) {
-      throw new BadRequestException('Promoção não encontrada.');
+      throw new NotFoundException('Promoção não encontrada.');
+    }
+
+    // 2. Garante que apenas o próprio vendedor dono da promoção pode alterá-la
+    if (promotion.sellerId !== sellerId) {
+      throw new ForbiddenException(
+        'Você não tem permissão para alterar o status desta promoção.',
+      );
+    }
+
+    // 3. Atualiza invertendo o estado atual do isActive (true <-> false)
+    const updatedPromotion = await this.prisma.promotion.update({
+      where: { id },
+      data: {
+        isActive: !promotion.isActive,
+      },
+    });
+
+    return {
+      message: `Promoção ${updatedPromotion.isActive ? 'ativada' : 'pausada'} com sucesso.`,
+      isActive: updatedPromotion.isActive,
+      promotion: updatedPromotion,
+    };
+  }
+
+  async remove(id: string, sellerId: string) {
+    // 1. Busca a promoção para validar existência e permissão
+    const promotion = await this.prisma.promotion.findUnique({
+      where: { id },
+    });
+
+    if (!promotion) {
+      throw new NotFoundException('Promoção não encontrada.');
     }
 
     if (promotion.sellerId !== sellerId) {
@@ -373,19 +430,22 @@ export class PromotionsService {
       );
     }
 
-    try {
-      await this.prisma.promotion.update({
+    // 2. Transação atômica para deletar a promoção e decrementar o contador do Seller
+    await this.prisma.$transaction(async (tx) => {
+      await tx.promotion.delete({
         where: { id },
-        data: { isActive: false },
       });
 
-      return { message: 'Promoção removida com sucesso do feed.' };
-    } catch (error) {
-      console.error('🚨 ERRO AO REMOVER PROMOÇÃO:', error);
-      throw new HttpException(
-        'Erro interno ao tentar remover a promoção.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      await tx.seller.update({
+        where: { id: sellerId },
+        data: {
+          totalPromotions: {
+            decrement: 1,
+          },
+        },
+      });
+    });
+
+    return { message: 'Promoção excluída com sucesso' };
   }
 }

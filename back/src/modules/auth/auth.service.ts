@@ -63,8 +63,11 @@ export class AuthService {
         role: user.role, // 👈 Agora este campo é garantido
         phone: user.phone,
         avatarUrl: user.avatarUrl || null,
+        totalPromotions: user.totalPromotions,
+        totalSales: user.totalSales,
         ...(user.businessHours && { businessHours: user.businessHours }),
         ...(user.address && { address: user.address }),
+        ...(user.category && { category: user.category }),
       },
     };
   }

@@ -4,24 +4,34 @@ import { UserProfileCard } from "@/components/shared/UserProfileCard";
 import { signOutAction } from "@/app/actions/auth";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
+import { SellerProfileCard } from "@/components/shared/SellerProfileCard";
 
 export default function Profile() {
   // 1. Resgata os dados reais do usuário logado
   const { user } = useAuth();
-  console.log("Dados do usuário logado:", user);
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
       <h1 className="text-2xl text-center font-bold text-black">Minha conta</h1>
-
       {/* 2. Passa as props dinâmicas (com fallback caso o dado demore a carregar ou seja opcional) */}
-      <UserProfileCard
+      {/* <UserProfileCard
         name={user?.name || "Usuário"}
         email={user?.email || "Email não informado"}
         phone={user?.phone || "(00) 00000-0000"}
         avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
-      />
+      /> */}
 
+      <SellerProfileCard
+        name={user?.name || "Usuário"}
+        email={user?.email || "Email não informado"}
+        phone={user?.phone || "(00) 00000-0000"}
+        avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
+        address={user?.address || "Endereço não informado"}
+        businessHours={user?.businessHours || "Horário não informado"}
+        category={user?.category || "Categoria não informada"}
+        totalPromotions={user?.totalPromotions || 0}
+        totalSales={user?.totalSales || 0}
+      />
       <button
         type="button"
         onClick={async () => {

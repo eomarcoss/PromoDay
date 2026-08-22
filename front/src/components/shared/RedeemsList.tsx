@@ -15,6 +15,7 @@ export default async function RedeemsList() {
     );
   }
 
+  console.log("Rendering RedeemsList with claims:", claims);
   return (
     <div className="h-auto text-white p-3 flex flex-col gap-4 items-center w-full mx-auto">
       {claims.map((claim) => {
@@ -31,6 +32,7 @@ export default async function RedeemsList() {
             quantity={claim.quantity || 1}
             code={claim.code}
             status={claim.status}
+            seller={claim.promotion?.seller}
           />
         );
       })}

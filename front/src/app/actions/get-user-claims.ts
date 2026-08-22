@@ -10,20 +10,34 @@ export interface UserClaim {
   status: string;
   createdAt: string;
   promotion: {
+    seller:
+      | {
+          name?: string | undefined;
+          avatarUrl?: string | undefined;
+          id?: string;
+        }
+      | undefined;
     id: string;
     name: string;
     images?: string[];
+  };
+  seller: {
+    name: string;
+    avatarUrl: string;
+    id: string;
   };
 }
 
 export async function getUserClaims(): Promise<UserClaim[]> {
   try {
     const cookieStore = await cookies();
-    // Substitua 'token' pelo nome exato do seu cookie JWT
-    const token = cookieStore.get("@PromoDay:token")?.value;
 
-    if (!token) {
-      console.warn("Token de autenticação não encontrado nos cookies.");
+    const token = cookieStore.get("@PromoDay:token")?.value;
+    // Pega o valor do cookie de role (ajuste o nome se for diferente)
+    const role = cookieStore.get("@PromoDay:role")?.value;
+
+    // Se não houver token ou se o usuário logado NÃO for um 'USER' (ex: for SELLER/ADMIN), aborta
+    if (!token || role !== "CUSTOMER") {
       return [];
     }
 

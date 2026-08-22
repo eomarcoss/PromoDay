@@ -57,6 +57,15 @@ export class CostomersController {
     return this.costomersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('metrics')
+  getMetrics(@Request() req) {
+    // req.user é injetado pelo JwtAuthGuard após validar o JWT
+    const customerId = req.user.sub;
+
+    return this.costomersService.getMetrics(customerId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.costomersService.findOne(id);

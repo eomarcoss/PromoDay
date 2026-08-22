@@ -7,8 +7,9 @@ import {
   ReactNode,
   useEffect,
 } from "react";
+import { api } from "@/lib/api"; // Instância do Axios com `withCredentials: true`
+import { signOutAction } from "@/app/actions/auth"; // Sua Server Action de logout
 
-// 1. Defina a estrutura do Usuário com base no que o seu NestJS retorna
 interface User {
   id: string;
   name: string;
@@ -17,60 +18,64 @@ interface User {
   avatarUrl?: string;
   phone?: string;
   imageUrl?: string;
-  businessh?: string;
+  businessHours?: string;
   address?: string;
+  category?: string;
+  totalPromotions?: number;
+  totalSales?: number;
 }
 
-// 2. Defina o formato dos dados que o Contexto vai compartilhar com o app
 interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  updateUser: (updatedFields: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Recupera o usuário do localStorage ao carregar a página (apenas no Front-end)
+  // Busca o usuário logado na API usando o cookie httpOnly enviado automaticamente
   useEffect(() => {
-    const storedUser = localStorage.getItem("@PromoDay:user");
-    if (storedUser) {
+    async function loadUser() {
       try {
-        // const user = JSON.parse(storedUser);
-        setUser(JSON.parse(storedUser));
-        // console.log(user);
-      } catch (e) {
-        localStorage.removeItem("@PromoDay:user");
+        const { data } = await api.get("/seller/profile"); // ou a sua rota de perfil
+        setUser(data);
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
     }
+
+    loadUser();
   }, []);
 
-  // Função customizada para salvar o usuário tanto no estado quanto no localStorage
-  const handleSetUser = (newUser: User | null) => {
-    setUser(newUser);
-    if (newUser) {
-      localStorage.setItem("@PromoDay:user", JSON.stringify(newUser));
-    } else {
-      localStorage.removeItem("@PromoDay:user");
-    }
+  const logout = async () => {
+    setUser(null);
+    await signOutAction(); // Limpa os cookies @PromoDay:token e @PromoDay:role e redireciona
   };
 
-  const logout = () => {
-    handleSetUser(null);
-    // Aqui no futuro você pode chamar uma Action para limpar o Cookie httpOnly também
-    window.location.href = "/login";
+  const updateUser = (updatedFields: Partial<User>) => {
+    setUser((prevUser) =>
+      prevUser ? { ...prevUser, ...updatedFields } : null,
+    );
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser: handleSetUser,
+        setUser,
         logout,
         isAuthenticated: !!user,
+        isLoading,
+        updateUser,
       }}
     >
       {children}
@@ -78,11 +83,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook personalizado para facilitar o uso do contexto nas páginas
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth deve ser usado de dentro de um AuthProvider");
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   }
   return context;
 }

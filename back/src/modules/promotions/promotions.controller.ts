@@ -9,11 +9,15 @@ import {
   UploadedFiles,
   Req,
   UseGuards,
+  HttpCode,
+  HttpStatus,
+  Delete,
+  Patch,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto'; // Ajuste o caminho do seu DTO
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'; // Se usar autenticação
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('promotions')
 export class PromotionsController {
@@ -45,5 +49,22 @@ export class PromotionsController {
   findOne(@Param('id') id: string, @Req() req: any) {
     const userId = req.user?.sub;
     return this.promotionsService.findOne(id, userId);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: string, @Req() req: any) {
+    const sellerId = req.user?.sub;
+    return this.promotionsService.remove(id, sellerId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/pause')
+  @HttpCode(HttpStatus.OK)
+  async toggleActive(@Param('id') id: string, @Req() req: any) {
+    const sellerId = req.user.sub || req.user.id || req.user.sellerId;
+
+    return this.promotionsService.toggleActive(id, sellerId);
   }
 }

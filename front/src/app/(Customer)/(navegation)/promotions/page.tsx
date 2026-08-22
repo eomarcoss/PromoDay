@@ -23,7 +23,7 @@ export default async function AllPromotionsPage() {
       <h1 className="text-2xl font-bold mb-4 text-center">
         Todas as Promoções
       </h1>
-      <PromoGrid products={promotions} />
+      <PromoGrid products={promotions} role="CUSTOMER" />
     </main>
   );
 }

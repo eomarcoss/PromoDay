@@ -119,6 +119,25 @@ export class CostomersService {
     }
   }
 
+  async getMetrics(customerId: string) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { id: customerId },
+      select: {
+        totalRedemptions: true,
+        totalSavedAmount: true,
+      },
+    });
+
+    if (!customer) {
+      throw new NotFoundException('Cliente não encontrado.');
+    }
+
+    return {
+      totalRedemptions: customer.totalRedemptions ?? 0,
+      totalSavedAmount: customer.totalSavedAmount ?? 0,
+    };
+  }
+
   findAll() {
     return `This action returns all costomers`;
   }
