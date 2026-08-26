@@ -52,6 +52,14 @@ export class CostomersController {
     return this.costomersService.remove(userId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  async getProfile(@Request() req) {
+    // Extrai o ID do cliente do payload do JWT injetado no req.user
+    const customerId = req.user.sub;
+    return this.costomersService.getProfile(customerId);
+  }
+
   @Get()
   findAll() {
     return this.costomersService.findAll();

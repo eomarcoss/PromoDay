@@ -1,47 +1,24 @@
-"use client";
+import { getProfileSellerAction } from "@/app/actions/sellerProfileActions"; // Ou o caminho das suas actions
+import { SellerClientContainer } from "./SellerClientContainer";
+import { redirect } from "next/navigation";
 
-import { UserProfileCard } from "@/components/shared/UserProfileCard";
-import { signOutAction } from "@/app/actions/auth";
-import { useAuth } from "@/contexts/AuthContext";
-import { LogOut } from "lucide-react";
-import { SellerProfileCard } from "@/components/shared/SellerProfileCard";
+export default async function SellerProfilePage() {
+  // 1. Busca os dados do vendedor diretamente no servidor (Node.js/NestJS)
+  const initialUser = await getProfileSellerAction();
 
-export default function Profile() {
-  // 1. Resgata os dados reais do usuário logado
-  const { user } = useAuth();
+  // 2. Redireciona para o login caso não esteja autenticado ou a session expire
+  if (!initialUser) {
+    redirect("/login");
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
-      <h1 className="text-2xl text-center font-bold text-black">Minha conta</h1>
-      {/* 2. Passa as props dinâmicas (com fallback caso o dado demore a carregar ou seja opcional) */}
-      {/* <UserProfileCard
-        name={user?.name || "Usuário"}
-        email={user?.email || "Email não informado"}
-        phone={user?.phone || "(00) 00000-0000"}
-        avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
-      /> */}
+      <h1 className="text-2xl text-center font-bold text-black">
+        Minha conta (Vendedor)
+      </h1>
 
-      <SellerProfileCard
-        name={user?.name || "Usuário"}
-        email={user?.email || "Email não informado"}
-        phone={user?.phone || "(00) 00000-0000"}
-        avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
-        address={user?.address || "Endereço não informado"}
-        businessHours={user?.businessHours || "Horário não informado"}
-        category={user?.category || "Categoria não informada"}
-        totalPromotions={user?.totalPromotions || 0}
-        totalSales={user?.totalSales || 0}
-      />
-      <button
-        type="button"
-        onClick={async () => {
-          await signOutAction();
-        }}
-        className="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 font-semibold px-4 py-2.5 rounded-xl border border-red-500/20 transition-colors cursor-pointer text-sm"
-      >
-        <LogOut className="w-4 h-4" />
-        <span>Sair da conta</span>
-      </button>
+      {/* 3. Renderiza o container de cliente passando os dados pré-carregados */}
+      <SellerClientContainer initialUser={initialUser} />
     </div>
   );
 }

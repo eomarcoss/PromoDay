@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
-import { api } from "@/lib/api"; // Instância do Axios com `withCredentials: true`
-import { signOutAction } from "@/app/actions/auth"; // Sua Server Action de logout
+import { createContext, useContext, useState, ReactNode } from "react";
+import { signOutAction } from "@/app/actions/auth";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -30,35 +23,26 @@ interface AuthContextType {
   setUser: (user: User | null) => void;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
-  isLoading: boolean;
   updateUser: (updatedFields: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+interface AuthProviderProps {
+  children: ReactNode;
+  initialUser?: User | null; // Permite inicializar vindo do Server Component
+}
 
-  // Busca o usuário logado na API usando o cookie httpOnly enviado automaticamente
-  useEffect(() => {
-    async function loadUser() {
-      try {
-        const { data } = await api.get("/seller/profile"); // ou a sua rota de perfil
-        setUser(data);
-      } catch (error) {
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadUser();
-  }, []);
+export function AuthProvider({
+  children,
+  initialUser = null,
+}: AuthProviderProps) {
+  // Inicializa o estado com o usuário vindo do servidor, se houver
+  const [user, setUser] = useState<User | null>(initialUser);
 
   const logout = async () => {
     setUser(null);
-    await signOutAction(); // Limpa os cookies @PromoDay:token e @PromoDay:role e redireciona
+    await signOutAction(); // Executa a Server Action de logout
   };
 
   const updateUser = (updatedFields: Partial<User>) => {
@@ -74,7 +58,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser,
         logout,
         isAuthenticated: !!user,
-        isLoading,
         updateUser,
       }}
     >

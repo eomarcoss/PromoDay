@@ -61,6 +61,25 @@ export class CostomersService {
     return customerWithoutPassword;
   }
 
+  async getProfile(id: string) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+      },
+    });
+
+    if (!customer) {
+      throw new NotFoundException('Cliente não encontrado.');
+    }
+
+    return customer;
+  }
+
   async findByEmail(email: string) {
     // Busca no banco um cliente onde o e-mail seja exatamente o digitado
     const customer = await this.prisma.customer.findUnique({

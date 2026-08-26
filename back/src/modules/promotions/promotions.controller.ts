@@ -17,6 +17,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto'; // Ajuste o caminho do seu DTO
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('promotions')
@@ -63,8 +64,21 @@ export class PromotionsController {
   @Patch(':id/pause')
   @HttpCode(HttpStatus.OK)
   async toggleActive(@Param('id') id: string, @Req() req: any) {
-    const sellerId = req.user.sub || req.user.id || req.user.sellerId;
+    const sellerId = req.user.sub;
 
     return this.promotionsService.toggleActive(id, sellerId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  @UseInterceptors(FilesInterceptor('files', 3))
+  async update(
+    @Param('id') id: string,
+    @Req() req: any,
+    @Body() dto: UpdatePromotionDto,
+    @UploadedFiles() file?: Express.Multer.File,
+  ) {
+    const sellerId = req.user.sub;
+    return this.promotionsService.update(id, sellerId, dto, file);
   }
 }

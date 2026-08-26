@@ -262,118 +262,75 @@ export class PromotionsService {
       userRedeemedCount,
     };
   }
+
   async update(
-    id: string,
+    promotionId: string,
     sellerId: string,
-    updatePromotionDto: UpdatePromotionDto,
+    dto: UpdatePromotionDto,
+    file?: Express.Multer.File,
   ) {
+    // 1. Busca a promoção incluindo a contagem de claims
     const promotion = await this.prisma.promotion.findUnique({
-      where: { id },
+      where: { id: promotionId },
+      include: {
+        _count: {
+          select: { claims: true }, // 👈 Forma otimizada: conta sem carregar o array inteiro
+        },
+      },
     });
 
     if (!promotion) {
-      throw new BadRequestException('Promoção não encontrada.');
+      throw new NotFoundException('Promoção não encontrada.');
     }
 
     if (promotion.sellerId !== sellerId) {
-      throw new BadRequestException(
+      throw new ForbiddenException(
         'Você não tem permissão para alterar esta promoção.',
       );
     }
 
-    const originalPrice =
-      updatePromotionDto.originalPrice !== undefined
-        ? Number(updatePromotionDto.originalPrice)
-        : promotion.originalPrice;
+    // 2. Validação: Fim da Oferta (Apenas Prorrogar)
+    if (dto.endTime) {
+      const newEndDate = new Date(dto.endTime);
+      const currentEndDate = new Date(promotion.endTime);
 
-    const promoPrice =
-      updatePromotionDto.promoPrice !== undefined
-        ? Number(updatePromotionDto.promoPrice)
-        : promotion.promoPrice;
-
-    const stock =
-      updatePromotionDto.stock !== undefined
-        ? Number(updatePromotionDto.stock)
-        : promotion.stock;
-
-    const limitPerUser =
-      updatePromotionDto.limitPerUser !== undefined
-        ? Number(updatePromotionDto.limitPerUser)
-        : promotion.limitPerUser;
-
-    const dataInicio = updatePromotionDto.startTime
-      ? new Date(updatePromotionDto.startTime)
-      : promotion.startTime;
-
-    const dataFim = updatePromotionDto.endTime
-      ? new Date(updatePromotionDto.endTime)
-      : promotion.endTime;
-
-    const agora = new Date();
-
-    if (Number(originalPrice) <= 0 || Number(promoPrice) <= 0) {
-      throw new BadRequestException(
-        'Os preços original e promocional devem ser maiores que zero.',
-      );
+      if (newEndDate < currentEndDate) {
+        throw new BadRequestException(
+          'A data final só pode ser prorrogada, não reduzida.',
+        );
+      }
     }
 
-    if (Number(promoPrice) >= Number(originalPrice)) {
-      throw new BadRequestException(
-        'O preço promocional deve ser menor do que o preço original.',
-      );
+    // 3. Validação: Estoque Total Disponível (Não pode ser menor do que já foi resgatado)
+    const totalClaims = promotion._count.claims;
+
+    if (dto.stock !== undefined) {
+      if (dto.stock < totalClaims) {
+        throw new BadRequestException(
+          `O estoque total não pode ser menor do que os cupons já resgatados (${totalClaims}).`,
+        );
+      }
     }
 
-    if (dataInicio >= dataFim) {
-      throw new BadRequestException(
-        'A data de início não pode ser maior ou igual à data de término.',
-      );
+    // 4. Upload de nova imagem do produto (se enviada)
+    let updatedImages = promotion.images;
+    if (file) {
+      const uploadedUrl = await this.storageService.uploadFile(file);
+      updatedImages = [uploadedUrl]; // Substitui pelo novo envio ou concatene com promotion.images se preferir acumular
     }
 
-    if (dataFim <= agora) {
-      throw new BadRequestException(
-        'A data de término da promoção deve ser em uma data futura.',
-      );
-    }
-
-    if (limitPerUser > 0 && limitPerUser > stock) {
-      throw new BadRequestException(
-        'O limite de resgate por usuário não pode ser maior do que o estoque total disponível.',
-      );
-    }
-
-    // Isola os campos tratados para evitar sobrescrever com strings soltas do DTO
-    const {
-      startTime,
-      endTime,
-      originalPrice: _,
-      promoPrice: __,
-      stock: ___,
-      limitPerUser: ____,
-      ...rest
-    } = updatePromotionDto;
-
-    try {
-      const updatedPromotion = await this.prisma.promotion.update({
-        where: { id },
-        data: {
-          ...rest,
-          stock,
-          limitPerUser,
-          originalPrice,
-          promoPrice,
-          startTime: dataInicio,
-          endTime: dataFim,
-        },
-      });
-
-      return updatedPromotion;
-    } catch (error) {
-      console.error('🚨 ERRO AO ATUALIZAR PROMOÇÃO:', error);
-      throw new HttpException(
-        'Erro interno ao tentar atualizar a promoção.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    // 5. Atualiza os dados permitidos
+    return this.prisma.promotion.update({
+      where: { id: promotionId },
+      data: {
+        description: dto.description,
+        requirements: dto.requirements,
+        stock: dto.stock,
+        limitPerUser: dto.limitPerUser,
+        endTime: dto.endTime ? new Date(dto.endTime) : undefined,
+        images: updatedImages,
+      },
+    });
   }
 
   async toggleActive(id: string, sellerId: string) {

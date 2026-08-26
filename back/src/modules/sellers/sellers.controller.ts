@@ -43,6 +43,12 @@ export class SellersController {
     console.log('Seller', sellerId);
     return this.sellersService.getMetrics(sellerId);
   }
+  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor)
+  @Get('profile')
+  async getProfile(@Request() req: any) {
+    const sellerId = req.user.sub;
+    return this.sellersService.getProfile(sellerId);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -51,10 +57,15 @@ export class SellersController {
 
   @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor
   @Patch('profile') // 👈 Rota: PATCH /sellers/profile
-  update(@Request() req: any, @Body() updateSellerDto: UpdateSellerDto) {
+  @UseInterceptors(FileInterceptor('avatar'))
+  update(
+    @Request() req: any,
+    @Body() updateSellerDto: UpdateSellerDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
     // Pegamos o ID direto do token descriptografado pelo Guard
     const sellerId = req.user.sub;
-    return this.sellersService.update(sellerId, updateSellerDto);
+    return this.sellersService.updateProfile(sellerId, updateSellerDto, file);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT

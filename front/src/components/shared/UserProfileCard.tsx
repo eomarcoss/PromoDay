@@ -12,6 +12,7 @@ import {
   X,
   Check,
   User,
+  Loader2,
 } from "lucide-react";
 import { useCustomerMetrics } from "@/hooks/useCustomerMetric";
 
@@ -22,11 +23,12 @@ interface UserProfileCardProps {
   phone: string;
   totalRedemptions?: number;
   totalSavedAmount?: number;
+  isSubmitting?: boolean;
   onSaveProfile?: (updatedData: {
     name: string;
     phone: string;
     avatarUrl?: string;
-  }) => void;
+  }) => Promise<void> | void;
 }
 
 export function UserProfileCard({
@@ -36,6 +38,7 @@ export function UserProfileCard({
   phone: initialPhone,
   totalRedemptions = 0,
   totalSavedAmount = 0,
+  isSubmitting = false,
   onSaveProfile,
 }: UserProfileCardProps) {
   // Estados para dados locais
@@ -48,8 +51,10 @@ export function UserProfileCard({
   // Estados para o Modal de Edição
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState(userData);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // 👈 CORREÇÃO: Sincroniza o estado interno sempre que as props externas mudarem (pós-carregamento do cookie/API)
+  // Sincroniza o estado interno sempre que as props externas mudarem
   useEffect(() => {
     setUserData({
       name: initialName,
@@ -60,15 +65,31 @@ export function UserProfileCard({
 
   const handleOpenEdit = () => {
     setEditForm(userData);
+    setErrorMessage(null);
     setIsEditing(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setUserData(editForm);
-    setIsEditing(false);
+    setErrorMessage(null);
+
     if (onSaveProfile) {
-      onSaveProfile(editForm);
+      try {
+        setLocalLoading(true);
+        // Aguarda a resposta da Server Action / API
+        await onSaveProfile(editForm);
+        setUserData(editForm);
+        setIsEditing(false); // Fecha o modal apenas se o salvamento for bem-sucedido
+      } catch (error: any) {
+        setErrorMessage(
+          error?.message || "Erro ao salvar alterações. Tente novamente.",
+        );
+      } finally {
+        setLocalLoading(false);
+      }
+    } else {
+      setUserData(editForm);
+      setIsEditing(false);
     }
   };
 
@@ -80,12 +101,14 @@ export function UserProfileCard({
     }
   };
 
-  const { metrics, isLoading, isError } = useCustomerMetrics();
+  const { metrics } = useCustomerMetrics();
 
   const formattedSaved = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   }).format(metrics?.totalSavedAmount ?? totalSavedAmount);
+
+  const isPending = isSubmitting || localLoading;
 
   return (
     <>
@@ -136,10 +159,9 @@ export function UserProfileCard({
             {/* DIVISÓRIA MOBILE/DESKTOP */}
             <div className="w-full h-[1px] lg:w-[1px] lg:h-16 bg-slate-100" />
 
-            {/* PARTE DIREITA: Métricas (Resgates + Economia) + Botão Editar */}
+            {/* PARTE DIREITA: Métricas + Botão Editar */}
             <div className="flex items-center justify-between lg:justify-end gap-4 w-full lg:w-auto">
               <div className="grid grid-cols-2 gap-3 w-full sm:w-auto">
-                {/* Métrica 1: Resgates */}
                 <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3 px-4 flex items-center gap-3">
                   <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100/60 shrink-0">
                     <Ticket className="w-4 h-4" />
@@ -154,7 +176,6 @@ export function UserProfileCard({
                   </div>
                 </div>
 
-                {/* Métrica 2: Economia */}
                 <div className="bg-emerald-50/50 border border-emerald-100/80 rounded-2xl p-3 px-4 flex items-center gap-3">
                   <div className="p-2.5 rounded-xl bg-emerald-100/70 text-emerald-600 shrink-0">
                     <PiggyBank className="w-4 h-4" />
@@ -170,10 +191,10 @@ export function UserProfileCard({
                 </div>
               </div>
 
-              {/* Botão para Abrir Edição */}
               <button
+                type="button"
                 onClick={handleOpenEdit}
-                className="p-3 bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-950 rounded-2xl transition-all border border-slate-200/60 shrink-0 flex items-center justify-center gap-2 text-sm font-semibold"
+                className="p-3 bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-950 rounded-2xl transition-all border border-slate-200/60 shrink-0 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer"
                 title="Editar Perfil"
               >
                 <Pencil className="w-4 h-4" />
@@ -194,8 +215,10 @@ export function UserProfileCard({
                 Editar Dados Pessoais
               </h3>
               <button
+                type="button"
+                disabled={isPending}
                 onClick={() => setIsEditing(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-all"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-all disabled:opacity-50"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -203,6 +226,12 @@ export function UserProfileCard({
 
             {/* Form Modal */}
             <form onSubmit={handleSave} className="p-6 space-y-4">
+              {errorMessage && (
+                <div className="p-3 text-xs bg-red-50 text-red-600 rounded-xl border border-red-100">
+                  {errorMessage}
+                </div>
+              )}
+
               {/* Foto de Perfil */}
               <div className="flex flex-col items-center justify-center mb-2">
                 <div className="relative group cursor-pointer">
@@ -225,6 +254,7 @@ export function UserProfileCard({
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
+                      disabled={isPending}
                       className="hidden"
                     />
                   </label>
@@ -244,10 +274,11 @@ export function UserProfileCard({
                   <input
                     type="text"
                     value={editForm.name}
+                    disabled={isPending}
                     onChange={(e) =>
                       setEditForm({ ...editForm, name: e.target.value })
                     }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
                     required
                   />
                 </div>
@@ -263,10 +294,11 @@ export function UserProfileCard({
                   <input
                     type="text"
                     value={editForm.phone}
+                    disabled={isPending}
                     onChange={(e) =>
                       setEditForm({ ...editForm, phone: e.target.value })
                     }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
                     required
                   />
                 </div>
@@ -276,17 +308,25 @@ export function UserProfileCard({
               <div className="pt-3 flex gap-2">
                 <button
                   type="button"
+                  disabled={isPending}
                   onClick={() => setIsEditing(false)}
-                  className="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-xl transition-all"
+                  className="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-xl transition-all disabled:opacity-50 cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-blue-500/20"
+                  disabled={isPending}
+                  className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-blue-500/20 disabled:opacity-50 cursor-pointer"
                 >
-                  <Check className="w-4 h-4" />
-                  Salvar
+                  {isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Salvar
+                    </>
+                  )}
                 </button>
               </div>
             </form>

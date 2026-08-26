@@ -1,6 +1,42 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePromotionDto } from './create-promotion.dto';
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  Min,
+  IsDateString,
+  IsArray,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-// O PartialType faz com que todos os campos do CreatePromotionDto virem opcionais (?, ex: name?, stock?)
-// mas mantém as validações como @IsInt, @Min, @IsDateString rodando caso o campo venha na requisição.
-export class UpdatePromotionDto extends PartialType(CreatePromotionDto) {}
+export class UpdatePromotionDto {
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  requirements?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1, { message: 'O estoque deve ser de pelo menos 1.' })
+  stock?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1, { message: 'O limite por usuário deve ser de pelo menos 1.' })
+  limitPerUser?: number;
+
+  @IsOptional()
+  @IsDateString({}, { message: 'A data final deve ser uma data válida.' })
+  endTime?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
+  images?: string[];
+
+  claims?: any[]; // Adicione esta linha para claims, se necessário
+}

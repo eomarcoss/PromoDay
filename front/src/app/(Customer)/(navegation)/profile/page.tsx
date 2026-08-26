@@ -1,37 +1,22 @@
-"use client";
+import { getProfileCustomerAction } from "@/app/actions/customerProfileAction"; // Ou o caminho das suas actions
+import { ProfileClientContainer } from "@/app/(Customer)/(navegation)/profile/ProfileClientContainer";
+import { redirect } from "next/navigation";
 
-import { UserProfileCard } from "@/components/shared/UserProfileCard";
-import { signOutAction } from "@/app/actions/auth";
-import { useAuth } from "@/contexts/AuthContext";
-import { LogOut } from "lucide-react";
+export default async function Profile() {
+  // 1. Busca os dados no servidor Node do Next.js antes de renderizar
+  const initialUser = await getProfileCustomerAction();
 
-export default function Profile() {
-  // 1. Resgata os dados reais do usuário logado
-  const { user } = useAuth();
-  console.log("Dados do usuário logado:", user);
+  // 2. Se o cookie não existir ou for inválido, redireciona antes de montar a tela
+  if (!initialUser) {
+    redirect("/login");
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
       <h1 className="text-2xl text-center font-bold text-black">Minha conta</h1>
 
-      {/* 2. Passa as props dinâmicas (com fallback caso o dado demore a carregar ou seja opcional) */}
-      <UserProfileCard
-        name={user?.name || "Usuário"}
-        email={user?.email || "Email não informado"}
-        phone={user?.phone || "(00) 00000-0000"}
-        avatarUrl={user?.avatarUrl || "/images/default-avatar.png"}
-      />
-
-      <button
-        type="button"
-        onClick={async () => {
-          await signOutAction();
-        }}
-        className="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 font-semibold px-4 py-2.5 rounded-xl border border-red-500/20 transition-colors cursor-pointer text-sm"
-      >
-        <LogOut className="w-4 h-4" />
-        <span>Sair da conta</span>
-      </button>
+      {/* 3. Delega a interatividade, edições e logout para um Client Component wrapper */}
+      <ProfileClientContainer initialUser={initialUser} />
     </div>
   );
 }

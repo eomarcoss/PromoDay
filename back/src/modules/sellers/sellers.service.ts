@@ -104,6 +104,28 @@ export class SellersService {
     });
   }
 
+  async getProfile(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        address: true,
+        businessHours: true,
+        category: true,
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado.');
+    }
+
+    return seller;
+  }
+
   async findOne(id: string) {
     const seller = await this.prisma.seller.findUnique({
       where: { id },
@@ -141,35 +163,49 @@ export class SellersService {
     return seller;
   }
 
-  async update(id: string, updateSellerDto: UpdateSellerDto) {
-    try {
-      // 1. Verifica se o vendedor realmente existe no banco
-      const seller = await this.prisma.seller.findUnique({ where: { id } });
-      if (!seller) {
-        throw new NotFoundException('Vendedor não encontrado.');
-      }
+  async updateProfile(
+    sellerId: string,
+    dto: UpdateSellerDto,
+    file?: Express.Multer.File,
+  ) {
+    // 1. Verifica se o vendedor existe
+    const sellerExists = await this.prisma.seller.findUnique({
+      where: { id: sellerId },
+    });
 
-      // 2. Atualiza apenas os campos enviados pelo front
-      const updatedSeller = await this.prisma.seller.update({
-        where: { id },
-        data: {
-          ...updateSellerDto,
-        },
-      });
-
-      // 3. Remove a senha do retorno por segurança
-      const { password: _, ...result } = updatedSeller;
-      return result;
-    } catch (error) {
-      console.error('🚨 ERRO REAL DO PRISMA:', error);
-      if (error instanceof NotFoundException) throw error;
-      throw new HttpException(
-        'Erro ao atualizar os dados do vendedor.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    if (!sellerExists) {
+      throw new NotFoundException('Vendedor não encontrado.');
     }
-  }
 
+    // 2. Mantém a imagem antiga por padrão
+    let avatarUrl = sellerExists.avatarUrl;
+
+    // 3. Se um novo arquivo foi enviado, realiza o upload para o Supabase
+    if (file) {
+      avatarUrl = await this.StorageService.uploadFile(file);
+    }
+
+    // 4. Atualiza os dados no banco
+    const updatedSeller = await this.prisma.seller.update({
+      where: { id: sellerId },
+      data: {
+        ...dto,
+        avatarUrl, // Atualiza a URL apenas se um novo arquivo foi enviado
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        address: true,
+        businessHours: true,
+        category: true,
+      },
+    });
+
+    return updatedSeller;
+  }
   async getMetrics(id: string) {
     const seller = await this.prisma.seller.findUnique({
       where: { id: id },
