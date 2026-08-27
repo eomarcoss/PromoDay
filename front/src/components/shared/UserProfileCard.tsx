@@ -24,11 +24,7 @@ interface UserProfileCardProps {
   totalRedemptions?: number;
   totalSavedAmount?: number;
   isSubmitting?: boolean;
-  onSaveProfile?: (updatedData: {
-    name: string;
-    phone: string;
-    avatarUrl?: string;
-  }) => Promise<void> | void;
+  onSaveProfile?: (formData: FormData) => Promise<void> | void; // 👈 Ajustado para aceitar FormData
 }
 
 export function UserProfileCard({
@@ -41,20 +37,21 @@ export function UserProfileCard({
   isSubmitting = false,
   onSaveProfile,
 }: UserProfileCardProps) {
-  // Estados para dados locais
+  // Estados para dados exibidos no Card
   const [userData, setUserData] = useState({
     name: initialName,
     phone: initialPhone,
     avatarUrl: initialAvatar,
   });
 
-  // Estados para o Modal de Edição
+  // Estados do Modal de Edição
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState(userData);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // 👈 Guarda o arquivo binário real
   const [localLoading, setLocalLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Sincroniza o estado interno sempre que as props externas mudarem
+  // Sincroniza o estado interno quando as props mudarem
   useEffect(() => {
     setUserData({
       name: initialName,
@@ -65,21 +62,39 @@ export function UserProfileCard({
 
   const handleOpenEdit = () => {
     setEditForm(userData);
+    setSelectedFile(null); // Reseta o arquivo selecionado
     setErrorMessage(null);
     setIsEditing(true);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file); // Guarda o objeto File para envio no FormData
+      const previewUrl = URL.createObjectURL(file); // Blob apenas para a prévia visual no modal
+      setEditForm((prev) => ({ ...prev, avatarUrl: previewUrl }));
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
+    // 1. Monta o FormData para enviar os textos + arquivo para o container/action
+    const formData = new FormData();
+    formData.append("name", editForm.name);
+    formData.append("phone", editForm.phone);
+
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
     if (onSaveProfile) {
       try {
         setLocalLoading(true);
-        // Aguarda a resposta da Server Action / API
-        await onSaveProfile(editForm);
-        setUserData(editForm);
-        setIsEditing(false); // Fecha o modal apenas se o salvamento for bem-sucedido
+        // 2. Dispara a callback passando o FormData montado
+        await onSaveProfile(formData);
+        setIsEditing(false); // O container/action cuida da atualização do userData via props
       } catch (error: any) {
         setErrorMessage(
           error?.message || "Erro ao salvar alterações. Tente novamente.",
@@ -88,16 +103,7 @@ export function UserProfileCard({
         setLocalLoading(false);
       }
     } else {
-      setUserData(editForm);
       setIsEditing(false);
-    }
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setEditForm((prev) => ({ ...prev, avatarUrl: url }));
     }
   };
 
@@ -117,7 +123,6 @@ export function UserProfileCard({
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             {/* PARTE ESQUERDA: Avatar + Infos Pessoais */}
             <div className="flex flex-col sm:flex-row items-center gap-5 w-full lg:w-auto text-center sm:text-left">
-              {/* Avatar com Badge de Foto */}
               <div className="relative group shrink-0">
                 <div className="w-20 h-20 sm:w-22 sm:h-22 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border-2 border-slate-100 shadow-md">
                   {userData.avatarUrl ? (

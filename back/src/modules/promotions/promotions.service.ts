@@ -5,6 +5,7 @@ import {
   BadRequestException,
   NotFoundException,
   ForbiddenException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
@@ -267,70 +268,106 @@ export class PromotionsService {
     promotionId: string,
     sellerId: string,
     dto: UpdatePromotionDto,
-    file?: Express.Multer.File,
+    files?: Express.Multer.File[],
   ) {
-    // 1. Busca a promoção incluindo a contagem de claims
-    const promotion = await this.prisma.promotion.findUnique({
-      where: { id: promotionId },
-      include: {
-        _count: {
-          select: { claims: true }, // 👈 Forma otimizada: conta sem carregar o array inteiro
+    try {
+      // 1. Busca a promoção incluindo a contagem OTIMIZADA de resgates (claims)
+      const promotion = await this.prisma.promotion.findUnique({
+        where: { id: promotionId },
+        include: {
+          _count: {
+            select: { claims: true },
+          },
         },
-      },
-    });
+      });
 
-    if (!promotion) {
-      throw new NotFoundException('Promoção não encontrada.');
-    }
+      if (!promotion) {
+        throw new NotFoundException('Promoção não encontrada.');
+      }
 
-    if (promotion.sellerId !== sellerId) {
-      throw new ForbiddenException(
-        'Você não tem permissão para alterar esta promoção.',
-      );
-    }
-
-    // 2. Validação: Fim da Oferta (Apenas Prorrogar)
-    if (dto.endTime) {
-      const newEndDate = new Date(dto.endTime);
-      const currentEndDate = new Date(promotion.endTime);
-
-      if (newEndDate < currentEndDate) {
-        throw new BadRequestException(
-          'A data final só pode ser prorrogada, não reduzida.',
+      // Validação de Permissão (Ownership)
+      if (promotion.sellerId !== sellerId) {
+        throw new ForbiddenException(
+          'Você não tem permissão para alterar esta promoção.',
         );
       }
-    }
 
-    // 3. Validação: Estoque Total Disponível (Não pode ser menor do que já foi resgatado)
-    const totalClaims = promotion._count.claims;
+      // 2. Validação: Fim da Oferta (Apenas Prorrogar)
+      if (dto.endTime) {
+        const newEndDate = new Date(dto.endTime);
+        const currentEndDate = new Date(promotion.endTime);
 
-    if (dto.stock !== undefined) {
-      if (dto.stock < totalClaims) {
-        throw new BadRequestException(
-          `O estoque total não pode ser menor do que os cupons já resgatados (${totalClaims}).`,
+        if (newEndDate < currentEndDate) {
+          throw new BadRequestException(
+            'A data final só pode ser prorrogada, não reduzida.',
+          );
+        }
+      }
+
+      // 3. Validação: Estoque Total Disponível (Não pode ser menor do que já foi resgatado)
+      const totalClaims = promotion._count.claims;
+
+      if (dto.stock !== undefined) {
+        if (dto.stock < totalClaims) {
+          throw new BadRequestException(
+            `O estoque não pode ser menor do que os cupons já resgatados (${totalClaims}).`,
+          );
+        }
+      }
+
+      // 4. Processamento da Galeria de Fotos
+      // Trata 'existingImages' (pode vir como string única ou array se forem várias)
+      let keptImages: string[] = [];
+      if (dto.existingImages) {
+        keptImages = Array.isArray(dto.existingImages)
+          ? dto.existingImages
+          : [dto.existingImages];
+      }
+
+      // Upload de novos arquivos para o Supabase
+      let newUploadedUrls: string[] = [];
+      if (files && files.length > 0) {
+        newUploadedUrls = await Promise.all(
+          files.map((file) => this.storageService.uploadFile(file)),
         );
       }
-    }
 
-    // 4. Upload de nova imagem do produto (se enviada)
-    let updatedImages = promotion.images;
-    if (file) {
-      const uploadedUrl = await this.storageService.uploadFile(file);
-      updatedImages = [uploadedUrl]; // Substitui pelo novo envio ou concatene com promotion.images se preferir acumular
-    }
+      // União das imagens mantidas com as novas enviadas
+      const finalImages = [...keptImages, ...newUploadedUrls];
 
-    // 5. Atualiza os dados permitidos
-    return this.prisma.promotion.update({
-      where: { id: promotionId },
-      data: {
-        description: dto.description,
-        requirements: dto.requirements,
-        stock: dto.stock,
-        limitPerUser: dto.limitPerUser,
-        endTime: dto.endTime ? new Date(dto.endTime) : undefined,
-        images: updatedImages,
-      },
-    });
+      if (finalImages.length === 0) {
+        throw new BadRequestException(
+          'A promoção deve conter pelo menos uma imagem.',
+        );
+      }
+
+      // 5. Atualiza no Banco de Dados via Prisma
+      return await this.prisma.promotion.update({
+        where: { id: promotionId },
+        data: {
+          description: dto.description,
+          requirements: dto.requirements,
+          stock: dto.stock !== undefined ? Number(dto.stock) : undefined,
+          limitPerUser:
+            dto.limitPerUser !== undefined
+              ? Number(dto.limitPerUser)
+              : undefined,
+          endTime: dto.endTime ? new Date(dto.endTime) : undefined,
+          images: finalImages,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ForbiddenException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+
+      console.error('Erro no update da promoção:', error);
+      throw new InternalServerErrorException('Erro ao atualizar a promoção.');
+    }
   }
 
   async toggleActive(id: string, sellerId: string) {

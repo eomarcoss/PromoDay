@@ -1,6 +1,7 @@
 import { PromoCard } from "@/components/shared/PromoCard";
 import Link from "next/link";
 import { SellerPromoActions } from "@/components/shared/SellerPromoActions";
+import { mutate } from "swr";
 
 export interface PromotionFromBackend {
   id: string;
@@ -47,38 +48,40 @@ export default function PromoGrid({
     <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
         {products.map((promo) => (
-          <Link
-            key={promo.id}
-            href={`/promotions/${promo.id}`}
-            className="h-full"
-          >
-            <div key={promo.id} className="h-full">
-              <PromoCard
-                product={{
-                  id: promo.id,
-                  name: promo.name,
-                  storeName: promo.seller?.name || "Loja Parceira",
-                  avatarUrl: promo.seller?.avatarUrl || "",
-                  originalPrice: promo.originalPrice,
-                  promoPrice: promo.promoPrice,
-                  discountPercentage: calcDiscount(
-                    promo.originalPrice,
-                    promo.promoPrice,
-                  ),
-                  timeLeft: promo.endTime,
-                  imageUrl: promo.images?.[0] || "",
-                }}
-                actions={
-                  role === "SELLER" ? (
-                    <SellerPromoActions
-                      productId={promo.id}
-                      isActive={promo.isActive}
-                    />
-                  ) : undefined
-                }
-              />
-            </div>
-          </Link>
+          // <Link
+          //   key={promo.id}
+          //   href={`/promotions/${promo.id}`}
+          //   className="h-full"
+          // >
+          <div key={promo.id} className="h-full">
+            <PromoCard
+              product={{
+                id: promo.id,
+                name: promo.name,
+                storeName: promo.seller?.name || "Loja Parceira",
+                avatarUrl: promo.seller?.avatarUrl || "",
+                originalPrice: promo.originalPrice,
+                promoPrice: promo.promoPrice,
+                discountPercentage: calcDiscount(
+                  promo.originalPrice,
+                  promo.promoPrice,
+                ),
+                timeLeft: promo.endTime,
+                imageUrl: promo.images?.[0] || "",
+              }}
+              actions={
+                role === "SELLER" ? (
+                  <SellerPromoActions
+                    productId={promo.id}
+                    isActive={promo.isActive}
+                    promotion={promo}
+                    // onUpdate={() => mutate("/seller/promotions")} // Recarrega a lista de promoções do vendedor
+                  />
+                ) : undefined
+              }
+            />
+          </div>
+          // </Link>
         ))}
       </div>
     </div>

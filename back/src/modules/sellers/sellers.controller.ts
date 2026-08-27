@@ -57,7 +57,7 @@ export class SellersController {
 
   @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor
   @Patch('profile') // 👈 Rota: PATCH /sellers/profile
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('file'))
   update(
     @Request() req: any,
     @Body() updateSellerDto: UpdateSellerDto,

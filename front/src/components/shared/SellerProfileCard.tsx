@@ -18,11 +18,10 @@ import {
   Loader2,
 } from "lucide-react";
 import { formatBusinessHours } from "@/utils/formatHours";
-import { updateSellerAction } from "@/app/actions/update-seller";
+import { updateProfileSellerAction } from "@/app/actions/sellerProfileActions";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSellerMetrics } from "@/hooks/useSellerMetrics";
 
-// --- ESTRUTURA IGUAL À DO FORMULÁRIO DE REGISTRO ---
 export type DayKey =
   | "segunda"
   | "terca"
@@ -60,9 +59,6 @@ const DEFAULT_HOURS: BusinessHoursState = {
   domingo: { aberto: false, inicio: "00:00", fim: "00:00" },
 };
 
-/**
- * Converte string vinda do backend (JSON ou texto formatado) para o objeto estruturado.
- */
 function parseBusinessHours(
   hoursInput: string | object | null | undefined,
 ): BusinessHoursState {
@@ -70,7 +66,6 @@ function parseBusinessHours(
 
   let parsed = hoursInput;
 
-  // Se for string, tenta converter em JSON
   if (typeof hoursInput === "string") {
     try {
       parsed = JSON.parse(hoursInput);
@@ -79,9 +74,7 @@ function parseBusinessHours(
     }
   }
 
-  // Verifica se o resultado é um objeto válido
   if (typeof parsed === "object" && parsed !== null) {
-    // Garante mesclagem segura mantendo as chaves em minúsculo
     const merged = { ...DEFAULT_HOURS };
 
     Object.keys(parsed).forEach((key) => {
@@ -108,14 +101,7 @@ interface SellerProfileCardProps {
   address: string;
   businessHours: string;
   category: string;
-  onSaveProfile?: (updatedData: {
-    name: string;
-    phone: string;
-    address: string;
-    businessHours: string;
-    category: string;
-    avatarUrl?: string;
-  }) => void;
+  onSaveProfile?: (formData: FormData) => void;
 }
 
 export function SellerProfileCard({
@@ -160,7 +146,8 @@ export function SellerProfileCard({
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Estado unificado do formulário de edição (com businessHours idêntico ao RegisterForm)
+  // Estados para o formulário
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [editForm, setEditForm] = useState({
     name: sellerData.name,
     phone: sellerData.phone,
@@ -181,6 +168,7 @@ export function SellerProfileCard({
   }, [isEditing, isSubmitting]);
 
   const handleOpenEdit = () => {
+    setSelectedFile(null); // Reseta o arquivo selecionado ao abrir
     setEditForm({
       name: sellerData.name,
       phone: sellerData.phone,
@@ -192,7 +180,6 @@ export function SellerProfileCard({
     setIsEditing(true);
   };
 
-  // Função idêntica à handleHoursChange do formulário de registro
   const handleHoursChange = (
     dia: DayKey,
     campo: "aberto" | "inicio" | "fim",
@@ -213,8 +200,9 @@ export function SellerProfileCard({
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setEditForm((prev) => ({ ...prev, avatarUrl: url }));
+      setSelectedFile(file); // Guarda o arquivo binário real para o FormData
+      const previewUrl = URL.createObjectURL(file); // Usa a URL temporária apenas para a prévia visual
+      setEditForm((prev) => ({ ...prev, avatarUrl: previewUrl }));
     }
   };
 
@@ -222,22 +210,36 @@ export function SellerProfileCard({
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Serializa o objeto JSON de horários exatamente como no fluxo de Registro
     const jsonBusinessHours = JSON.stringify(editForm.businessHours);
 
-    const updatedData = {
-      name: editForm.name,
-      phone: editForm.phone,
-      address: editForm.address,
-      category: editForm.category,
-      avatarUrl: editForm.avatarUrl,
-      businessHours: jsonBusinessHours,
-    };
+    // Monta o FormData multipart para enviar arquivo e textos de forma limpa
+    const formData = new FormData();
+    formData.append("name", editForm.name);
+    formData.append("phone", editForm.phone);
+    formData.append("address", editForm.address);
+    formData.append("category", editForm.category);
+    formData.append("businessHours", jsonBusinessHours);
+
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
 
     try {
-      const response = await updateSellerAction(updatedData);
+      // Envia o FormData para a Server Action / Controller
+      const response = await updateProfileSellerAction(formData);
 
       if (response.success) {
+        const newAvatarUrl = response.data?.avatarUrl || editForm.avatarUrl;
+
+        const updatedData = {
+          name: editForm.name,
+          phone: editForm.phone,
+          address: editForm.address,
+          category: editForm.category,
+          avatarUrl: newAvatarUrl,
+          businessHours: jsonBusinessHours,
+        };
+
         setSellerData(updatedData);
         setIsEditing(false);
 
@@ -255,7 +257,7 @@ export function SellerProfileCard({
         }
       } else {
         alert(
-          `Erro ao salvar: ${response.error || "Não foi possível atualizar."}`,
+          `Erro ao salvar: ${response.error?.message || response.error || "Não foi possível atualizar."}`,
         );
       }
     } catch (error) {
@@ -266,14 +268,7 @@ export function SellerProfileCard({
   };
 
   const { metrics, isLoading, isError } = useSellerMetrics();
-  console.log(
-    "Métricas do vendedor:",
-    metrics,
-    "Carregando:",
-    isLoading,
-    "Erro:",
-    isError,
-  );
+
   return (
     <>
       <Card className="w-full max-w-5xl bg-white border border-slate-200/80 rounded-3xl shadow-lg shadow-slate-950/5 overflow-hidden">
@@ -344,17 +339,13 @@ export function SellerProfileCard({
                       Anúncios
                     </span>
                     <span className="text-base font-black text-slate-950 mt-1 leading-none">
-                      <p>
-                        {isLoading ? (
-                          <span className="animate-pulse text-gray-400">
-                            ...
-                          </span>
-                        ) : isError ? (
-                          <span className="text-red-500 text-sm">Erro</span>
-                        ) : (
-                          metrics.totalPromotions
-                        )}
-                      </p>
+                      {isLoading ? (
+                        <span className="animate-pulse text-gray-400">...</span>
+                      ) : isError ? (
+                        <span className="text-red-500 text-sm">Erro</span>
+                      ) : (
+                        (metrics?.totalPromotions ?? 0)
+                      )}
                     </span>
                   </div>
                 </div>
@@ -373,7 +364,7 @@ export function SellerProfileCard({
                       ) : isError ? (
                         <span className="text-red-500 text-sm">Erro</span>
                       ) : (
-                        metrics.totalSales
+                        (metrics?.totalSales ?? 0)
                       )}
                     </span>
                   </div>
@@ -539,7 +530,7 @@ export function SellerProfileCard({
                 </div>
               </div>
 
-              {/* EDICAO DE HORARIOS - MESMA ESTRUTURA E ESTILO DE ENTRADA */}
+              {/* HORÁRIOS */}
               <div className="space-y-3 bg-neutral-50 p-4 rounded-3xl border border-neutral-200">
                 <label className="text-neutral-700 font-black ml-1 text-sm block border-b border-neutral-200 pb-2">
                   Horários de Funcionamento:

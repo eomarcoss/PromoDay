@@ -34,6 +34,9 @@ export class UpdatePromotionDto {
   endTime?: string;
 
   @IsOptional()
+  existingImages?: string | string[];
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
   images?: string[];

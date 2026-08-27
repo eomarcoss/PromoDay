@@ -51,31 +51,28 @@ export async function getProfileCustomerAction(): Promise<CustomerProfileData | 
 /**
  * Atualiza os dados do perfil do Cliente
  */
-export async function updateProfileCustomerAction(
-  updateData: Partial<CustomerProfileData>,
-): Promise<CustomerProfileData> {
+export async function updateProfileCustomerAction(formData: FormData) {
   const cookieStore = await cookies();
   const token = cookieStore.get("@PromoDay:token")?.value;
 
   if (!token) {
-    throw new Error("Usuário não autenticado.");
+    return { success: false, error: "Usuário não autenticado." };
   }
 
   try {
-    const response = await api.patch<CustomerProfileData>(
-      "/costomers/profile",
-      updateData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // Cookie: `@PromoDay:token=${token}`,
-        },
+    const response = await api.patch("/costomers/profile", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
       },
-    );
+    });
 
     return {
-      ...response.data,
-      role: "CUSTOMER",
+      success: true,
+      data: {
+        ...response.data,
+        role: "CUSTOMER",
+      },
     };
   } catch (error: any) {
     const status = error?.response?.status;
@@ -88,6 +85,10 @@ export async function updateProfileCustomerAction(
       `[updateProfileCustomerAction Error ${status || ""}]:`,
       errorMessage,
     );
-    throw new Error(errorMessage);
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
   }
 }

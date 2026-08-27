@@ -69,16 +69,16 @@ export class PromotionsController {
     return this.promotionsService.toggleActive(id, sellerId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files', 3))
   async update(
     @Param('id') id: string,
     @Req() req: any,
     @Body() dto: UpdatePromotionDto,
-    @UploadedFiles() file?: Express.Multer.File,
+    @UploadedFiles() files?: Express.Multer.File[],
   ) {
     const sellerId = req.user.sub;
-    return this.promotionsService.update(id, sellerId, dto, file);
+    return this.promotionsService.update(id, sellerId, dto, files);
   }
 }

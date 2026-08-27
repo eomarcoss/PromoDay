@@ -30,17 +30,16 @@ export class CostomersController {
     return this.costomersService.create(createCostomerDto, file);
   }
 
-  @Patch('profile') // 👈 fica apenas 'costomers/profile'
-  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota com o teu Guard
-  update(
-    @Request() req, // 👈 Captura a requisição para ler o token decodificado
+  @Patch('profile')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file')) // Intercepta a chave 'file' do FormData
+  async update(
+    @Request() req: any,
     @Body() updateCostomerDto: UpdateCostomerDto,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    // O teu JwtAuthGuard injeta o payload do token dentro de req.user
-    // No passo anterior, configuramos o ID do utilizador no campo 'sub'
     const userId = req.user.sub;
-
-    return this.costomersService.update(userId, updateCostomerDto);
+    return this.costomersService.update(userId, updateCostomerDto, file);
   }
 
   @Delete('profile') // 👈 Rota: DELETE costomers/account (sem expor ID na URL)

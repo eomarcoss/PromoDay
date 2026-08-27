@@ -32,4 +32,7 @@ export class UpdateSellerDto extends PartialType(CreateSellerDto) {
   @IsOptional()
   @IsString()
   category?: string;
+
+  @IsOptional()
+  file?: any;
 }

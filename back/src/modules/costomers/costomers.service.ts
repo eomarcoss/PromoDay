@@ -89,24 +89,52 @@ export class CostomersService {
     return customer;
   }
 
-  async update(id: string, updateCostomerDto: UpdateCostomerDto) {
+  async update(
+    id: string,
+    updateCostomerDto: UpdateCostomerDto,
+    file?: Express.Multer.File,
+  ) {
     try {
-      const costomerAtualizado = await this.prisma.customer.update({
+      // 1. Busca o cliente atual para preservar o avatarUrl se não houver nova imagem
+      const customer = await this.prisma.customer.findUnique({
+        where: { id },
+      });
+
+      if (!customer) {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+
+      let avatarUrl = customer.avatarUrl;
+
+      // 2. Faz o upload para o Supabase se um novo arquivo tiver sido enviado
+      if (file) {
+        avatarUrl = await this.StorageService.uploadFile(file);
+      }
+
+      // 3. Atualiza os dados no banco
+      const customerAtualizado = await this.prisma.customer.update({
         where: { id },
         data: {
-          name: updateCostomerDto.name,
-          phone: updateCostomerDto.phone,
-          avatarUrl: updateCostomerDto.avatarUrl,
+          ...updateCostomerDto,
+          avatarUrl, // Atualiza a URL apenas se um novo arquivo foi enviado
+        },
+        select: {
+          name: true,
+          phone: true,
+          avatarUrl: true,
         },
       });
 
-      // Remove a senha do retorno por segurança
-      const { password, ...result } = costomerAtualizado;
-      return result;
+      // 4. Omitir a senha no retorno
+      return customerAtualizado;
     } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
       if (error.code === 'P2025') {
         throw new NotFoundException('Utilizador não encontrado.');
       }
+
+      console.error('Erro no update do customer:', error);
       throw new HttpException(
         'Erro ao atualizar o perfil.',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -3,12 +3,18 @@
 import { useState } from "react";
 import { UserProfileCard } from "@/components/shared/UserProfileCard";
 import { signOutAction } from "@/app/actions/auth";
-import {
-  updateProfileCustomerAction,
-  CustomerProfileData,
-} from "@/app/actions/customerProfileAction";
+import { updateProfileCustomerAction } from "@/app/actions/customerProfileAction";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
+
+export interface CustomerProfileData {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  avatarUrl?: string;
+  role?: string;
+}
 
 interface ProfileClientContainerProps {
   initialUser: CustomerProfileData;
@@ -21,23 +27,27 @@ export function ProfileClientContainer({
   const { updateUser: updateContextUser } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Função para salvar edições feitas no UserProfileCard
-  const handleUpdateProfile = async (
-    updatedFields: Partial<CustomerProfileData>,
-  ) => {
+  // A função agora recebe o FormData diretamente vindo do UserProfileCard
+  const handleUpdateProfile = async (formData: FormData) => {
     try {
       setIsUpdating(true);
 
-      // Envia as alterações via Server Action para a API NestJS
-      const updatedUser = await updateProfileCustomerAction(updatedFields);
+      // Envia o FormData para a Server Action
+      const response = await updateProfileCustomerAction(formData);
 
-      // Sincroniza o estado local e o contexto global
-      setUser(updatedUser);
-      updateContextUser(updatedUser);
+      if (response.success && response.data) {
+        const updatedCustomer = response.data;
 
-      alert("Perfil atualizado com sucesso!");
+        // Sincroniza o estado local e o contexto global com os dados reais do banco
+        setUser(updatedCustomer);
+        updateContextUser(updatedCustomer);
+
+        alert("Perfil atualizado com sucesso!");
+      } else {
+        alert(`Erro ao atualizar: ${response.error || "Tente novamente."}`);
+      }
     } catch (error: any) {
-      alert(error.message || "Erro ao atualizar perfil.");
+      alert("Erro inesperado ao atualizar perfil.");
     } finally {
       setIsUpdating(false);
     }
@@ -50,7 +60,7 @@ export function ProfileClientContainer({
         email={user.email || "Email não informado"}
         phone={user.phone || "(00) 00000-0000"}
         avatarUrl={user.avatarUrl || "/images/default-avatar.png"}
-        onSaveProfile={handleUpdateProfile} // Passa a função async aqui
+        onSaveProfile={handleUpdateProfile} // Passa o handler que aceita FormData
         isSubmitting={isUpdating}
       />
 

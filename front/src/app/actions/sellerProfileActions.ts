@@ -57,8 +57,8 @@ export async function getProfileSellerAction(): Promise<SellerProfileData | null
  * Atualiza os dados do perfil do Vendedor
  */
 export async function updateProfileSellerAction(
-  updateData: Partial<SellerProfileData>,
-): Promise<SellerProfileData> {
+  formData: FormData, // 👈 Ajustado para receber o FormData
+) {
   const cookieStore = await cookies();
   const token = cookieStore.get("@PromoDay:token")?.value;
 
@@ -67,20 +67,23 @@ export async function updateProfileSellerAction(
   }
 
   try {
-    const response = await api.patch<SellerProfileData>(
-      "/sellers/profile",
-      updateData,
+    const response = await api.patch(
+      "/sellers/profile", // 👈 Verifique se a rota no NestJS é /sellers/profile ou /seller/profile
+      formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          // Cookie: `@PromoDay:token=${token}`,
+          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
         },
       },
     );
 
     return {
-      ...response.data,
-      role: "SELLER",
+      success: true,
+      data: {
+        ...response.data,
+        role: "SELLER",
+      },
     };
   } catch (error: any) {
     const status = error?.response?.status;
@@ -93,6 +96,10 @@ export async function updateProfileSellerAction(
       `[updateProfileSellerAction Error ${status || ""}]:`,
       errorMessage,
     );
-    throw new Error(errorMessage);
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
   }
 }
