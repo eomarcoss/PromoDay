@@ -68,17 +68,4 @@ export class PromotionsController {
 
     return this.promotionsService.toggleActive(id, sellerId);
   }
-
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 3))
-  async update(
-    @Param('id') id: string,
-    @Req() req: any,
-    @Body() dto: UpdatePromotionDto,
-    @UploadedFiles() files?: Express.Multer.File[],
-  ) {
-    const sellerId = req.user.sub;
-    return this.promotionsService.update(id, sellerId, dto, files);
-  }
 }

@@ -41,5 +41,9 @@ export class UpdatePromotionDto {
   @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
   images?: string[];
 
-  claims?: any[]; // Adicione esta linha para claims, se necessário
+  @IsOptional()
+  sellerId?: string;
+
+  @IsOptional()
+  claims?: any;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   Check,
@@ -17,6 +17,7 @@ import { updatePromotionAction } from "@/app/actions/updatePromotionAction";
 export interface PromotionData {
   id: string;
   name: string;
+  sellerId: string;
   description?: string | null;
   requirements?: string | null;
   stock: number;
@@ -51,27 +52,49 @@ export function EditPromotionModal({
   };
 
   const [form, setForm] = useState({
-    description: promotion.description || "",
-    requirements: promotion.requirements || "",
-    stock: promotion.stock,
-    limitPerUser: promotion.limitPerUser,
-    endTime: formatForInput(promotion.endTime),
+    description: promotion?.description || "",
+    requirements: promotion?.requirements || "",
+    stock: promotion?.stock || 1,
+    limitPerUser: promotion?.limitPerUser || 1,
+    endTime: formatForInput(promotion?.endTime),
   });
 
-  // Lista de imagens já salvas no Supabase/Backend
   const [existingImages, setExistingImages] = useState<string[]>(
-    promotion.images || [],
+    promotion?.images || [],
   );
 
-  // Lista de novas imagens selecionadas localmente
   const [newFiles, setNewFiles] = useState<LocalFilePreview[]>([]);
-
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (promotion && isOpen) {
+      setForm({
+        description: promotion.description || "",
+        requirements: promotion.requirements || "",
+        stock: promotion.stock,
+        limitPerUser: promotion.limitPerUser,
+        endTime: formatForInput(promotion.endTime),
+      });
+      setExistingImages(promotion.images || []);
+      setNewFiles([]);
+      setErrorMessage(null);
+    }
+  }, [promotion, isOpen]);
+
+  const cleanupPreviews = () => {
+    newFiles.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+  };
+
+  const handleClose = () => {
+    cleanupPreviews();
+    setNewFiles([]);
+    setErrorMessage(null);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
-  // Trata adição de novos arquivos de imagem
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -83,15 +106,13 @@ export function EditPromotionModal({
     }));
 
     setNewFiles((prev) => [...prev, ...newEntries]);
-    e.target.value = ""; // Reseta o input
+    e.target.value = "";
   };
 
-  // Remove imagem que já existe no banco
   const handleRemoveExistingImage = (urlToRemove: string) => {
     setExistingImages((prev) => prev.filter((url) => url !== urlToRemove));
   };
 
-  // Remove nova imagem selecionada antes de enviar
   const handleRemoveNewFile = (idToRemove: string) => {
     setNewFiles((prev) => {
       const fileToRemove = prev.find((item) => item.id === idToRemove);
@@ -105,7 +126,6 @@ export function EditPromotionModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validação mínima: Ter pelo menos 1 imagem
     if (existingImages.length === 0 && newFiles.length === 0) {
       setErrorMessage("A promoção deve conter pelo menos uma foto.");
       return;
@@ -114,27 +134,42 @@ export function EditPromotionModal({
     setLoading(true);
     setErrorMessage(null);
 
+    // Estruturação do FormData contendo todos os dados textuais e binários
     const formData = new FormData();
+    formData.append("sellerId", promotion.sellerId);
     formData.append("description", form.description);
     formData.append("requirements", form.requirements);
     formData.append("stock", String(form.stock));
     formData.append("limitPerUser", String(form.limitPerUser));
     formData.append("endTime", new Date(form.endTime).toISOString());
 
-    // Envia o array com as URLs das imagens existentes mantidas
+    // Anexa as URLs mantidas
     existingImages.forEach((url) => {
       formData.append("existingImages", url);
     });
 
-    // Envia os novos arquivos de imagem para upload
+    // Anexa os novos arquivos binários para upload
     newFiles.forEach((item) => {
       formData.append("files", item.file);
     });
 
     try {
+      console.log("=== CONTEÚDO DO FORMDATA ENVIADO ===");
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`📁 File [${key}]:`, {
+            name: value.name,
+            size: value.size,
+            type: value.type,
+          });
+        } else {
+          console.log(`📝 Text [${key}]:`, value);
+        }
+      }
       const res = await updatePromotionAction(promotion.id, formData);
 
       if (res.success) {
+        cleanupPreviews();
         if (onSuccess) onSuccess();
         onClose();
       } else {
@@ -153,7 +188,7 @@ export function EditPromotionModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-      onClick={() => !loading && onClose()}
+      onClick={() => !loading && handleClose()}
     >
       <div
         className="bg-white border border-slate-100 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200"
@@ -172,7 +207,7 @@ export function EditPromotionModal({
           <button
             type="button"
             disabled={loading}
-            onClick={onClose}
+            onClick={handleClose}
             className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-all disabled:opacity-50 cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -209,7 +244,6 @@ export function EditPromotionModal({
             </div>
 
             <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-200/80 min-h-[110px]">
-              {/* Renderiza imagens já salvas no banco */}
               {existingImages.map((url, idx) => (
                 <div
                   key={`existing-${idx}`}
@@ -232,7 +266,6 @@ export function EditPromotionModal({
                 </div>
               ))}
 
-              {/* Renderiza novas imagens selecionadas */}
               {newFiles.map((item) => (
                 <div
                   key={item.id}
@@ -258,7 +291,6 @@ export function EditPromotionModal({
                 </div>
               ))}
 
-              {/* Botão de Add se a galeria estiver vazia */}
               {existingImages.length === 0 && newFiles.length === 0 && (
                 <label className="col-span-3 flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-100/60 transition-colors">
                   <Plus className="w-6 h-6 text-slate-400 mb-1" />
@@ -378,7 +410,7 @@ export function EditPromotionModal({
             <button
               type="button"
               disabled={loading}
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all disabled:opacity-50 cursor-pointer"
             >
               Cancelar

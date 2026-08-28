@@ -1,7 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { api } from "@/lib/api";
+import { revalidatePath } from "next/cache";
+import { api } from "@/services/api";
 
 export async function updatePromotionAction(
   promotionId: string,
@@ -15,12 +16,19 @@ export async function updatePromotionAction(
   }
 
   try {
-    const response = await api.patch(`/promotions/${promotionId}`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    // No Axios: api.patch(URL, DATA, CONFIG)
+    const response = await api.patch(
+      `/seller/promotions/${promotionId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+        },
       },
-    });
+    );
 
+    revalidatePath("/seller/promotions");
     return {
       success: true,
       data: response.data,

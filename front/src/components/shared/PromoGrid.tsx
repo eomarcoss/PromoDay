@@ -1,7 +1,6 @@
 import { PromoCard } from "@/components/shared/PromoCard";
 import Link from "next/link";
 import { SellerPromoActions } from "@/components/shared/SellerPromoActions";
-import { mutate } from "swr";
 
 export interface PromotionFromBackend {
   id: string;
@@ -47,13 +46,8 @@ export default function PromoGrid({
   return (
     <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
-        {products.map((promo) => (
-          // <Link
-          //   key={promo.id}
-          //   href={`/promotions/${promo.id}`}
-          //   className="h-full"
-          // >
-          <div key={promo.id} className="h-full">
+        {products.map((promo) => {
+          const cardContent = (
             <PromoCard
               product={{
                 id: promo.id,
@@ -75,14 +69,32 @@ export default function PromoGrid({
                     productId={promo.id}
                     isActive={promo.isActive}
                     promotion={promo}
-                    // onUpdate={() => mutate("/seller/promotions")} // Recarrega a lista de promoções do vendedor
                   />
                 ) : undefined
               }
             />
-          </div>
-          // </Link>
-        ))}
+          );
+
+          // Se for vendedor (SELLER), renderiza sem o Link em volta.
+          if (role === "SELLER") {
+            return (
+              <div key={promo.id} className="h-full">
+                {cardContent}
+              </div>
+            );
+          }
+
+          // Se for cliente (CUSTOMER), envolve o card com o Link para navegação.
+          return (
+            <Link
+              key={promo.id}
+              href={`/promotions/${promo.id}`}
+              className="h-full block"
+            >
+              {cardContent}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

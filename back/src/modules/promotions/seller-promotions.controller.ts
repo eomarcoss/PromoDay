@@ -61,14 +61,17 @@ export class SellerPromotionsController {
     );
   }
 
-  // PATCH /seller/promotions/:id
   @Patch(':id')
-  update(
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FilesInterceptor('files', 3))
+  async update(
     @Param('id') id: string,
     @Request() req: any,
-    @Body() updatePromotionDto: UpdatePromotionDto,
+    @Body() dto: UpdatePromotionDto,
+    @UploadedFiles() files?: Express.Multer.File[],
   ) {
-    return this.promotionsService.update(id, req.user.sub, updatePromotionDto);
+    const sellerId = req.user.sub;
+    return this.promotionsService.update(id, sellerId, dto, files);
   }
 
   // DELETE /seller/promotions/:id
@@ -77,3 +80,12 @@ export class SellerPromotionsController {
     return this.promotionsService.remove(id, req.user.sub);
   }
 }
+// // PATCH /seller/promotions/:id
+// @Patch(':id')
+// update(
+//   @Param('id') id: string,
+//   @Request() req: any,
+//   @Body() updatePromotionDto: UpdatePromotionDto,
+// ) {
+//   return this.promotionsService.update(id, req.user.sub, updatePromotionDto);
+// }
