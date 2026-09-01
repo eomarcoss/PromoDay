@@ -735,10 +735,36 @@ export function SellerProfileCard({
                           <option value="" disabled>
                             Selecione...
                           </option>
-                          <option value="alimentacao">Alimentação / Restaurante</option>
-                          <option value="vestuario">Vestuário / Roupas</option>
-                          <option value="servicos">Prestação de Serviços</option>
-                          <option value="outros">Outros</option>
+                          <option value="supermercado">
+                            Supermercado & Mercados
+                          </option>
+                          <option value="farmacia">
+                            Farmácia & Drogarias
+                          </option>
+                          <option value="padaria">
+                            Padaria & Confeitarias
+                          </option>
+                          <option value="hortifruti">
+                            Hortifrúti & Feira
+                          </option>
+                          <option value="restaurante">
+                            Restaurantes & Lanchonetes
+                          </option>
+                          <option value="petshop">
+                            Pet Shops
+                          </option>
+                          <option value="vestuario">
+                            Roupas & Acessórios
+                          </option>
+                          <option value="eletronicos">
+                            Eletrônicos & Informática
+                          </option>
+                          <option value="servicos">
+                            Serviços
+                          </option>
+                          <option value="outros">
+                            Outros
+                          </option>
                         </select>
                       </div>
 

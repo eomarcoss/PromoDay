@@ -457,12 +457,36 @@ export function RegisterStepperFormStore() {
                       <option value="" disabled>
                         Selecione uma categoria...
                       </option>
-                      <option value="alimentacao">
-                        Alimentação / Restaurante
+                      <option value="supermercado">
+                        Supermercado & Mercados
                       </option>
-                      <option value="vestuario">Vestuário / Roupas</option>
-                      <option value="servicos">Prestação de Serviços</option>
-                      <option value="outros">Outros</option>
+                      <option value="farmacia">
+                        Farmácia & Drogarias
+                      </option>
+                      <option value="padaria">
+                        Padaria & Confeitarias
+                      </option>
+                      <option value="hortifruti">
+                        Hortifrúti & Feira
+                      </option>
+                      <option value="restaurante">
+                        Restaurantes & Lanchonetes
+                      </option>
+                      <option value="petshop">
+                        Pet Shops
+                      </option>
+                      <option value="vestuario">
+                        Roupas & Acessórios
+                      </option>
+                      <option value="eletronicos">
+                        Eletrônicos & Informática
+                      </option>
+                      <option value="servicos">
+                        Serviços
+                      </option>
+                      <option value="outros">
+                        Outros
+                      </option>
                     </select>
                     {/* Seta customizada do select para não quebrar o visual minimalista */}
                     <div className="pointer-events-none absolute inset-y-0 right-5 flex items-center text-neutral-500">

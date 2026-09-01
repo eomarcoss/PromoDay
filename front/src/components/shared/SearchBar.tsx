@@ -1,7 +1,8 @@
-"use client"; // Obrigatório aqui em cima, pois o componente agora gerencia estado próprio
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation"; // 👈 Importe o usePathname
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -21,15 +22,21 @@ interface Category {
 interface SearchBarProps {
   placeholder?: string;
   categories?: Category[];
-  // Caso a página ainda queira saber o valor final para fazer a busca no NestJS:
   onSearchSubmit?: (termo: string, categoria: string) => void;
 }
 
 const defaultCategories: Category[] = [
-  { value: "todas", label: "Todos" },
-  { value: "eletronicos", label: "Eletrônicos" },
-  { value: "acessorios", label: "Acessórios" },
+  { value: "todas", label: "Todas" },
+  { value: "supermercado", label: "Supermercados & Mercados" },
+  { value: "farmacia", label: "Farmácias & Drogaria" },
+  { value: "padaria", label: "Padarias & Confeitarias" },
+  { value: "hortifruti", label: "Hortifrúti & Feira" },
+  { value: "restaurante", label: "Restaurantes & Lanchonetes" },
+  { value: "petshop", label: "Pet Shops" },
+  { value: "vestuario", label: "Roupas & Acessórios" },
+  { value: "eletronicos", label: "Eletrônicos & Informática" },
   { value: "servicos", label: "Serviços" },
+  { value: "outros", label: "Outros" },
 ];
 
 export function SearchBar({
@@ -37,18 +44,55 @@ export function SearchBar({
   categories = defaultCategories,
   onSearchSubmit,
 }: SearchBarProps) {
-  // 1. Criamos os estados internos do componente
-  const [termo, setTermo] = useState("");
-  const [categoria, setCategoria] = useState("todas");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname(); // 👈 Descobre em qual rota o usuário está agora
 
-  // 2. A FUNÇÃO INTERNA: Ela gerencia a mudança e, se necessário, avisa a página externa
+  const [termo, setTermo] = useState(searchParams.get("search") || "");
+  const [categoria, setCategoria] = useState(searchParams.get("category") || "todas");
+
+  useEffect(() => {
+    // 🛡️ TRAVA DE SEGURANÇA: Se o usuário NÃO estiver na página de listagem (/promotions), 
+    // a barra de pesquisa NÃO deve forçar redirecionamentos automáticos!
+    if (pathname !== "/promotions") {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams();
+
+      if (termo.trim()) {
+        params.set("search", termo.trim());
+      }
+
+      if (categoria && categoria !== "todas") {
+        params.set("category", categoria);
+      }
+
+      // Só executa o push se realmente houver parâmetros ou se a URL precisar ser limpa
+      const currentQuery = searchParams.toString();
+      const newQuery = params.toString();
+
+      if (currentQuery !== newQuery) {
+        router.push(`/promotions?${newQuery}`);
+      }
+
+      if (onSearchSubmit) {
+        onSearchSubmit(termo, categoria);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [termo, categoria, router, searchParams, pathname, onSearchSubmit]);
+
   const handleCategoryChange = (novaCategoria: string) => {
     setCategoria(novaCategoria);
-    console.log("Estado interno atualizado no componente:", novaCategoria);
-
-    // Opcional: Se a página passou a prop de submit, avisa ela com os dados atualizados
-    if (onSearchSubmit) {
-      onSearchSubmit(termo, novaCategoria);
+    // Se o usuário mudar a categoria estando em outra tela, redireciona para o promotions
+    if (pathname !== "/promotions") {
+      const params = new URLSearchParams();
+      if (termo.trim()) params.set("search", termo.trim());
+      if (novaCategoria && novaCategoria !== "todas") params.set("category", novaCategoria);
+      router.push(`/promotions?${params.toString()}`);
     }
   };
 
@@ -58,24 +102,32 @@ export function SearchBar({
         <h1 className="text-2xl font-bold text-card">Promoday</h1>
       </Link>
       <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
-        {/* Área do Input */}
         <div className="relative flex-1 h-full flex items-center">
           <Input
             type="text"
+            value={termo}
             placeholder={placeholder}
-            onChange={(e) => setTermo(e.target.value)} // Atualiza o termo internamente
+            onChange={(e) => {
+              setTermo(e.target.value);
+              // Se o usuário começar a digitar estando na página de detalhes, joga ele para o promotions com o termo
+              if (pathname !== "/promotions") {
+                router.push(`/promotions?search=${encodeURIComponent(e.target.value)}`);
+              }
+            }}
             className="w-full h-full bg-transparent border-none text-black placeholder:text-neutral-400 pl-6 pr-12 text-base rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <button className="absolute right-4 text-neutral-400 cursor-pointer hover:text-neutral-600 transition-colors">
+          <button
+            type="button"
+            className="absolute right-4 text-neutral-400 pointer-events-none"
+          >
             <Search className="w-5 h-5" />
           </button>
         </div>
 
         <div className="h-6 w-[1px] bg-neutral-300" />
 
-        {/* 3. Conectamos a nossa função interna no Select do Shadcn */}
-        <Select defaultValue="todas" onValueChange={handleCategoryChange}>
-          <SelectTrigger className="h-full w-[140px]  bg-white hover:bg-primary text-primary hover:text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-primary/70">
+        <Select value={categoria} onValueChange={handleCategoryChange}>
+          <SelectTrigger className="h-full w-[140px] bg-white hover:bg-primary text-primary hover:text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-primary/70">
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
 

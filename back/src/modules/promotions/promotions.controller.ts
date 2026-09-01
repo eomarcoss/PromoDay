@@ -13,6 +13,7 @@ import {
   HttpStatus,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
@@ -22,7 +23,7 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('promotions')
 export class PromotionsController {
-  constructor(private readonly promotionsService: PromotionsService) {}
+  constructor(private readonly promotionsService: PromotionsService) { }
 
   // POST /promotions (Criação de promoção com upload de até 3 imagens)
   // @UseGuards(JwtAuthGuard) // Descomente para proteger a rota com JWT
@@ -41,8 +42,11 @@ export class PromotionsController {
 
   // GET /promotions (Feed público)
   @Get()
-  async getFeed() {
-    return this.promotionsService.findAllActive();
+  async getFeed(
+    @Query('search') search?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.promotionsService.findAllActive(search, category);
   }
 
   // GET /promotions/:id (Detalhes públicos de uma promoção)

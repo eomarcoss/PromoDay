@@ -17,7 +17,7 @@ export class PromotionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
-  ) {}
+  ) { }
 
   async create(
     createPromotionDto: CreatePromotionDto,
@@ -146,7 +146,7 @@ export class PromotionsService {
     }
   }
 
-  async findAllActive() {
+  async findAllActive(search?: string, category?: string) {
     const agora = new Date();
 
     return this.prisma.promotion.findMany({
@@ -155,6 +155,15 @@ export class PromotionsService {
         stock: { gte: 1 },
         startTime: { lte: agora },
         endTime: { gte: agora },
+        // 🔍 Filtros dinâmicos de busca e categoria
+        AND: [
+          search
+            ? { name: { contains: search, mode: 'insensitive' } }
+            : {},
+          category && category !== 'todas'
+            ? { seller: { category: { equals: category, mode: 'insensitive' } } }
+            : {},
+        ],
       },
       select: {
         id: true,
@@ -170,6 +179,7 @@ export class PromotionsService {
             id: true,
             name: true,
             avatarUrl: true,
+            category: true, // Útil garantir que o seller traga a categoria se necessário
           },
         },
       },

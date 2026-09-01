@@ -1,12 +1,16 @@
-import PromoGrid, { PromotionFromBackend } from "@/components/shared/PromoGrid";
+import PromoGrid from "@/components/shared/PromoGrid";
 import { api } from "@/services/api";
 
-async function getAllPromotions(): Promise<PromotionFromBackend[]> {
+interface PageProps {
+  searchParams: Promise<{ search?: string; category?: string }>;
+}
+
+async function getAllPromotions(category?: string) {
   try {
-    // Busca na rota pública sem enviar token de autorização
     const { data } = await api.get("/promotions", {
+      params: { category }, // Filtra por categoria no banco de dados
       timeout: 5000,
-      next: { revalidate: 30 }, // Atualiza o cache a cada 30s
+      next: { revalidate: 30 },
     });
     return data || [];
   } catch (error) {
@@ -15,12 +19,14 @@ async function getAllPromotions(): Promise<PromotionFromBackend[]> {
   }
 }
 
-export default async function AllPromotionsPage() {
-  const promotions = await getAllPromotions();
+export default async function AllPromotionsPage({ searchParams }: PageProps) {
+  const { search, category } = await searchParams;
+  const promotions = await getAllPromotions(category);
 
   return (
     <main className="w-full min-h-screen py-6">
-      <PromoGrid products={promotions} role="CUSTOMER" />
+      {/* O PromoGrid agora recebe os produtos e faz a busca inteligente via Fuse.js */}
+      <PromoGrid products={promotions} role="CUSTOMER" searchTerm={search} />
     </main>
   );
 }

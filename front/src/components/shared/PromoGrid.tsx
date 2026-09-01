@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo } from "react";
+import Fuse from "fuse.js";
 import { PromoCard } from "@/components/shared/PromoCard";
 import Link from "next/link";
 import { SellerPromoActions } from "@/components/shared/SellerPromoActions";
@@ -5,6 +9,7 @@ import { SellerPromoActions } from "@/components/shared/SellerPromoActions";
 export interface PromotionFromBackend {
   id: string;
   name: string;
+  description?: string;
   images: string[];
   originalPrice: number;
   promoPrice: number;
@@ -22,6 +27,7 @@ export interface PromotionFromBackend {
 interface PromoGridProps {
   products: PromotionFromBackend[];
   role?: "CUSTOMER" | "SELLER";
+  searchTerm?: string; // 👈 Novo parâmetro opcional para filtrar pelo Fuse.js
 }
 
 function calcDiscount(original: number, promo: number): number {
@@ -32,12 +38,30 @@ function calcDiscount(original: number, promo: number): number {
 export default function PromoGrid({
   products,
   role = "CUSTOMER",
+  searchTerm,
 }: PromoGridProps) {
-  if (!products || products.length === 0) {
+  // Lógica do Fuse.js para tolerância a erros e acentos no front-end
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return products;
+    }
+
+    const fuse = new Fuse(products, {
+      keys: ["name", "description", "seller.name"],
+      threshold: 0.4, // Tolerância a erros de digitação
+      ignoreLocation: true,
+    });
+
+    return fuse.search(searchTerm).map((result) => result.item);
+  }, [products, searchTerm]);
+
+  if (!filteredProducts || filteredProducts.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-neutral-500 font-bold">
-          Nenhuma promoção ativa no momento.
+          {searchTerm
+            ? `Nenhuma promoção encontrada para "${searchTerm}".`
+            : "Nenhuma promoção ativa no momento."}
         </p>
       </div>
     );
@@ -46,53 +70,58 @@ export default function PromoGrid({
   return (
     <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
-        {products.map((promo) => {
-          const cardContent = (
+        {filteredProducts.map((promo) => {
+          const mainImage =
+            promo.images && promo.images.length > 0
+              ? promo.images[0]
+              : "/placeholder.png";
+
+          const discount = calcDiscount(
+            Number(promo.originalPrice),
+            Number(promo.promoPrice)
+          );
+
+          // Define as ações com base na role do usuário (igual ao seu original)
+          let customActions: React.ReactNode = undefined;
+
+          if (role === "SELLER") {
+            customActions = (
+              <SellerPromoActions
+                productId={promo.id}
+                isActive={promo.isActive}
+                promotion={{
+                  id: promo.id,
+                  name: promo.name,
+                  sellerId: promo.seller?.id || "",
+                  description: promo.description,
+                  stock: promo.stock || 0,
+                  limitPerUser: promo.limitPerUser || 1,
+                  endTime: promo.endTime,
+                  images: promo.images,
+                }}
+              />
+            );
+          }
+
+          return (
             <PromoCard
+              key={promo.id}
               product={{
                 id: promo.id,
                 name: promo.name,
                 storeName: promo.seller?.name || "Loja Parceira",
-                avatarUrl: promo.seller?.avatarUrl || "",
-                originalPrice: promo.originalPrice,
-                promoPrice: promo.promoPrice,
-                discountPercentage: calcDiscount(
-                  promo.originalPrice,
-                  promo.promoPrice,
-                ),
+                originalPrice: Number(promo.originalPrice),
+                promoPrice: Number(promo.promoPrice),
+                discountPercentage: discount,
                 timeLeft: promo.endTime,
-                imageUrl: promo.images?.[0] || "",
+                imageUrl: mainImage,
+                avatarUrl: promo.seller?.avatarUrl,
               }}
-              actions={
-                role === "SELLER" ? (
-                  <SellerPromoActions
-                    productId={promo.id}
-                    isActive={promo.isActive}
-                    promotion={promo}
-                  />
-                ) : undefined
-              }
+              actions={customActions}
+              onDetails={() => {
+                window.location.href = `/promotions/${promo.id}`;
+              }}
             />
-          );
-
-          // Se for vendedor (SELLER), renderiza sem o Link em volta.
-          if (role === "SELLER") {
-            return (
-              <div key={promo.id} className="h-full">
-                {cardContent}
-              </div>
-            );
-          }
-
-          // Se for cliente (CUSTOMER), envolve o card com o Link para navegação.
-          return (
-            <Link
-              key={promo.id}
-              href={`/promotions/${promo.id}`}
-              className="h-full block"
-            >
-              {cardContent}
-            </Link>
           );
         })}
       </div>
