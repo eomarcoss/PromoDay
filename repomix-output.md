@@ -1,0 +1,12405 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+# File Summary
+
+## Purpose
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+## File Format
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  a. A header with the file path (## File: path/to/file)
+  b. The full contents of the file in a code block
+
+## Usage Guidelines
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+## Notes
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+
+# Directory Structure
+````
+back/
+  prisma/
+    migrations/
+      20260606031507_adicionado_tabela_seller/
+        migration.sql
+      20260615190619_add_role_enum/
+        migration.sql
+      20260616132729_create_promotions_table/
+        migration.sql
+      20260616163341_add_is_active_to_promotions/
+        migration.sql
+      20260616173739_create_claims_table/
+        migration.sql
+      20260807013837_add_claim_status_enum/
+        migration.sql
+      20260811154119_remove_unique_claim_customer_promotion/
+        migration.sql
+      20260819185114_increments/
+        migration.sql
+      migration_lock.toml
+    prisma.service.ts
+    schema.prisma
+  src/
+    modules/
+      auth/
+        auth.controller.spec.ts
+        auth.controller.ts
+        auth.module.ts
+        auth.service.spec.ts
+        auth.service.ts
+      claims/
+        dto/
+          claim-promotion.dto.ts
+          create-claim.dto.ts
+        claims.controller.ts
+        claims.module.ts
+        claims.service.ts
+      costomers/
+        dto/
+          create-costomer.dto.ts
+          update-costomer.dto.ts
+        entities/
+          costomer.entity.ts
+        costomers.controller.ts
+        costomers.module.ts
+        costomers.service.ts
+      guards/
+        decorators/
+          roles.decorator.ts
+        jwt-auth.guard.ts
+        roles.guard.ts
+      promotions/
+        dto/
+          create-promotion.dto.ts
+          update-promotion.dto.ts
+        entities/
+          promotion.entity.ts
+        promotions.controller.ts
+        promotions.module.ts
+        promotions.service.ts
+        seller-promotions.controller.ts
+      sellers/
+        dto/
+          create-seller.dto.ts
+          update-seller.dto.ts
+        entities/
+          seller.entity.ts
+        sellers.controller.spec.ts
+        sellers.controller.ts
+        sellers.module.ts
+        sellers.service.spec.ts
+        sellers.service.ts
+      tasks/
+        tasks.module.ts
+        tasks.service.ts
+    shared/
+      storage.service.ts
+    utils/
+      generate-code.ts
+    app.controller.spec.ts
+    app.controller.ts
+    app.module.ts
+    app.service.ts
+    main.ts
+  test/
+    app.e2e-spec.ts
+    jest-e2e.json
+  .gitignore
+  .prettierrc
+  eslint.config.mjs
+  nest-cli.json
+  package.json
+  prisma.config.ts
+  README.md
+  tsconfig.build.json
+  tsconfig.json
+front/
+  public/
+    file.svg
+    globe.svg
+    next.svg
+    vercel.svg
+    window.svg
+  src/
+    app/
+      (Customer)/
+        (navegation)/
+          profile/
+            page.tsx
+            ProfileClientContainer.tsx
+          promotions/
+            [id]/
+              page.tsx
+            page.tsx
+          redeems/
+            page.tsx
+          stores/
+            [slug]/
+              page.tsx
+            page.tsx
+          layout.tsx
+      actions/
+        auth.ts
+        customerProfileAction.ts
+        deletePromotionAction.ts
+        get-user-claims.ts
+        get-user-redeemed-count.ts
+        pausePromotionAction.ts
+        promotions.ts
+        redeem-promotion.ts
+        sellerProfileActions.ts
+        update-seller.ts
+        updatePromotionAction.ts
+        validate-claim.ts
+      auth/
+        login/
+          page.tsx
+      playground/
+        page.tsx
+      register/
+        client/
+          page.tsx
+        store/
+          page.tsx
+        page.tsx
+      seller/
+        (navegation)/
+          announce/
+            page.tsx
+          profile/
+            page.tsx
+            SellerClientContainer.tsx
+          promotions/
+            [id]/
+              page.tsx
+            page.tsx
+          redeems/
+            page.tsx
+          stores/
+            [slug]/
+              page.tsx
+            page.tsx
+          layout.tsx
+      favicon.ico
+      globals.css
+      layout.tsx
+      page.tsx
+    components/
+      shared/
+        BottomNav.tsx
+        CreateAdForm.tsx
+        EditPromotionModal.tsx
+        login.tsx
+        PromoCard.tsx
+        PromoGrid.tsx
+        PromotionDetailsCard.tsx
+        RedeemedProductBadge.tsx
+        RedeemsList.tsx
+        RedemptionCodeCard.tsx
+        RegisterStepperClient.tsx
+        RegisterStepperStore.tsx
+        SearchBar.tsx
+        SellerProfileCard.tsx
+        SellerPromoActions.tsx
+        StoreCard.tsx
+        StoreDetailsCard.tsx
+        StoreList.tsx
+        UserProfileCard.tsx
+        UserTypeSelector.tsx
+        ValidateCodeModal.tsx
+      ui/
+        button.tsx
+        card.tsx
+        input.tsx
+        label.tsx
+        select.tsx
+        textarea.tsx
+    contexts/
+      AuthContext.tsx
+    hooks/
+      useCustomerMetric.ts
+      useSellerMetrics.ts
+    lib/
+      api.ts
+      utils.ts
+    schemas/
+      register-client-schema.ts
+      register-schema.ts
+    services/
+      api.ts
+      auth.ts
+    types/
+      auth.ts
+      customer.ts
+      seller.ts
+    utils/
+      formatHours.ts
+    middleware.ts
+  .gitignore
+  AGENTS.md
+  CLAUDE.md
+  components.json
+  eslint.config.mjs
+  next.config.ts
+  package.json
+  postcss.config.mjs
+  README.md
+  tsconfig.json
+README.md
+````
+
+# Files
+
+## File: back/prisma/migrations/20260606031507_adicionado_tabela_seller/migration.sql
+````sql
+-- CreateTable
+CREATE TABLE "customers" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "avatarUrl" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "customers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "sellers" (
+    "id" TEXT NOT NULL,
+    "companyName" TEXT NOT NULL,
+    "cnpj" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "logoUrl" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "sellers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "customers_email_key" ON "customers"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "sellers_cnpj_key" ON "sellers"("cnpj");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "sellers_email_key" ON "sellers"("email");
+````
+
+## File: back/prisma/migrations/20260615190619_add_role_enum/migration.sql
+````sql
+/*
+  Warnings:
+
+  - You are about to drop the `sellers` table. If the table is not empty, all the data it contains will be lost.
+
+*/
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('CUSTOMER', 'SELLER');
+
+-- AlterTable
+ALTER TABLE "customers" ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'CUSTOMER';
+
+-- DropTable
+DROP TABLE "sellers";
+
+-- CreateTable
+CREATE TABLE "Seller" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "avatarUrl" TEXT,
+    "address" TEXT NOT NULL,
+    "businessHours" JSONB NOT NULL,
+    "category" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'SELLER',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Seller_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Promotion" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "sellerId" TEXT NOT NULL,
+
+    CONSTRAINT "Promotion_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Seller_email_key" ON "Seller"("email");
+
+-- AddForeignKey
+ALTER TABLE "Promotion" ADD CONSTRAINT "Promotion_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "Seller"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+````
+
+## File: back/prisma/migrations/20260616132729_create_promotions_table/migration.sql
+````sql
+/*
+  Warnings:
+
+  - You are about to drop the column `title` on the `Promotion` table. All the data in the column will be lost.
+  - Added the required column `endTime` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `limitPerUser` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `name` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `originalPrice` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `promoPrice` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `startTime` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `stock` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `updatedAt` to the `Promotion` table without a default value. This is not possible if the table is not empty.
+
+*/
+-- AlterTable
+ALTER TABLE "Promotion" DROP COLUMN "title",
+ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "endTime" TIMESTAMP(3) NOT NULL,
+ADD COLUMN     "images" TEXT[],
+ADD COLUMN     "limitPerUser" INTEGER NOT NULL,
+ADD COLUMN     "name" TEXT NOT NULL,
+ADD COLUMN     "originalPrice" DOUBLE PRECISION NOT NULL,
+ADD COLUMN     "promoPrice" DOUBLE PRECISION NOT NULL,
+ADD COLUMN     "requirements" TEXT,
+ADD COLUMN     "startTime" TIMESTAMP(3) NOT NULL,
+ADD COLUMN     "stock" INTEGER NOT NULL,
+ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL;
+````
+
+## File: back/prisma/migrations/20260616163341_add_is_active_to_promotions/migration.sql
+````sql
+-- AlterTable
+ALTER TABLE "Promotion" ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT true;
+````
+
+## File: back/prisma/migrations/20260616173739_create_claims_table/migration.sql
+````sql
+-- CreateTable
+CREATE TABLE "Claim" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'PENDING',
+    "customerId" TEXT NOT NULL,
+    "promotionId" TEXT NOT NULL,
+    "claimedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "usedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Claim_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Claim_code_key" ON "Claim"("code");
+
+-- AddForeignKey
+ALTER TABLE "Claim" ADD CONSTRAINT "Claim_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Claim" ADD CONSTRAINT "Claim_promotionId_fkey" FOREIGN KEY ("promotionId") REFERENCES "Promotion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+````
+
+## File: back/prisma/migrations/20260807013837_add_claim_status_enum/migration.sql
+````sql
+/*
+  Warnings:
+
+  - The `status` column on the `Claim` table would be dropped and recreated. This will lead to data loss if there is data in the column.
+  - A unique constraint covering the columns `[customerId,promotionId]` on the table `Claim` will be added. If there are existing duplicate values, this will fail.
+
+*/
+-- CreateEnum
+CREATE TYPE "ClaimStatus" AS ENUM ('PENDING', 'USED', 'EXPIRED', 'CANCELLED');
+
+-- AlterTable
+ALTER TABLE "Claim" ADD COLUMN     "quantity" INTEGER NOT NULL DEFAULT 1,
+DROP COLUMN "status",
+ADD COLUMN     "status" "ClaimStatus" NOT NULL DEFAULT 'PENDING';
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Claim_customerId_promotionId_key" ON "Claim"("customerId", "promotionId");
+````
+
+## File: back/prisma/migrations/20260811154119_remove_unique_claim_customer_promotion/migration.sql
+````sql
+/*
+  Warnings:
+
+  - You are about to drop the `Claim` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `Promotion` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `Seller` table. If the table is not empty, all the data it contains will be lost.
+
+*/
+-- DropForeignKey
+ALTER TABLE "Claim" DROP CONSTRAINT "Claim_customerId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Claim" DROP CONSTRAINT "Claim_promotionId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Promotion" DROP CONSTRAINT "Promotion_sellerId_fkey";
+
+-- DropTable
+DROP TABLE "Claim";
+
+-- DropTable
+DROP TABLE "Promotion";
+
+-- DropTable
+DROP TABLE "Seller";
+
+-- CreateTable
+CREATE TABLE "sellers" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "avatarUrl" TEXT,
+    "address" TEXT NOT NULL,
+    "businessHours" JSONB NOT NULL,
+    "category" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'SELLER',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "sellers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "promotions" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "requirements" TEXT,
+    "stock" INTEGER NOT NULL,
+    "limitPerUser" INTEGER NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
+    "originalPrice" DOUBLE PRECISION NOT NULL,
+    "promoPrice" DOUBLE PRECISION NOT NULL,
+    "images" TEXT[],
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "sellerId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "promotions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "claims" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "status" "ClaimStatus" NOT NULL DEFAULT 'PENDING',
+    "quantity" INTEGER NOT NULL DEFAULT 1,
+    "customerId" TEXT NOT NULL,
+    "promotionId" TEXT NOT NULL,
+    "claimedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "usedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "claims_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "sellers_email_key" ON "sellers"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "claims_code_key" ON "claims"("code");
+
+-- AddForeignKey
+ALTER TABLE "promotions" ADD CONSTRAINT "promotions_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "sellers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "claims" ADD CONSTRAINT "claims_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "claims" ADD CONSTRAINT "claims_promotionId_fkey" FOREIGN KEY ("promotionId") REFERENCES "promotions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+````
+
+## File: back/prisma/migrations/20260819185114_increments/migration.sql
+````sql
+/*
+  Warnings:
+
+  - You are about to alter the column `originalPrice` on the `promotions` table. The data in that column could be lost. The data in that column will be cast from `DoublePrecision` to `Decimal(10,2)`.
+  - You are about to alter the column `promoPrice` on the `promotions` table. The data in that column could be lost. The data in that column will be cast from `DoublePrecision` to `Decimal(10,2)`.
+
+*/
+-- AlterTable
+ALTER TABLE "customers" ADD COLUMN     "totalRedemptions" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "totalSavedAmount" DECIMAL(10,2) NOT NULL DEFAULT 0.0;
+
+-- AlterTable
+ALTER TABLE "promotions" ALTER COLUMN "originalPrice" SET DATA TYPE DECIMAL(10,2),
+ALTER COLUMN "promoPrice" SET DATA TYPE DECIMAL(10,2);
+
+-- AlterTable
+ALTER TABLE "sellers" ADD COLUMN     "totalPromotions" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "totalSales" INTEGER NOT NULL DEFAULT 0;
+````
+
+## File: back/prisma/migrations/migration_lock.toml
+````toml
+# Please do not edit this file manually
+# It should be added in your version-control system (e.g., Git)
+provider = "postgresql"
+````
+
+## File: back/src/modules/auth/auth.controller.spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthController } from './auth.controller';
+
+describe('AuthController', () => {
+  let controller: AuthController;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [AuthController],
+    }).compile();
+
+    controller = module.get<AuthController>(AuthController);
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+});
+````
+
+## File: back/src/modules/auth/auth.controller.ts
+````typescript
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import { AuthService } from './auth.service';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private authService: AuthService) {}
+
+  @Post('login')
+  async login(@Body() body: any) {
+    // Valida as credenciais enviadas no corpo da requisição
+    const user = await this.authService.validateUser(body.email, body.password);
+
+    if (!user) {
+      throw new UnauthorizedException('E-mail ou senha inválidos.');
+    }
+
+    // Se válido, gera e retorna o JWT
+    return this.authService.login(user);
+  }
+}
+````
+
+## File: back/src/modules/auth/auth.service.spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthService } from './auth.service';
+
+describe('AuthService', () => {
+  let service: AuthService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [AuthService],
+    }).compile();
+
+    service = module.get<AuthService>(AuthService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
+````
+
+## File: back/src/modules/claims/dto/claim-promotion.dto.ts
+````typescript
+import { IsInt, Min, IsOptional } from 'class-validator';
+
+export class ClaimPromotionDto {
+  @IsInt({ message: 'A quantidade deve ser um número inteiro.' })
+  @Min(1, { message: 'A quantidade mínima de resgate é 1.' })
+  @IsOptional()
+  quantity?: number = 1;
+}
+````
+
+## File: back/src/modules/claims/claims.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { ClaimsService } from './claims.service';
+import { ClaimsController } from './claims.controller';
+import { PrismaService } from 'prisma/prisma.service';
+
+@Module({
+  controllers: [ClaimsController],
+  providers: [ClaimsService, PrismaService],
+})
+export class ClaimsModule {}
+````
+
+## File: back/src/modules/costomers/entities/costomer.entity.ts
+````typescript
+export class Costomer {}
+````
+
+## File: back/src/modules/guards/decorators/roles.decorator.ts
+````typescript
+import { SetMetadata } from '@nestjs/common';
+
+export const ROLES_KEY = 'roles';
+export const Roles = (...roles: string[]) => SetMetadata(ROLES_KEY, roles);
+````
+
+## File: back/src/modules/guards/jwt-auth.guard.ts
+````typescript
+// src/modules/auth/jwt-auth.guard.ts
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
+@Injectable()
+export class JwtAuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Token não fornecido ou inválido.');
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      // Injeta os dados do token decodificado dentro da requisição (req.user)
+      request.user = payload;
+      return true;
+    } catch {
+      throw new UnauthorizedException('Token inválido ou expirado.');
+    }
+  }
+}
+````
+
+## File: back/src/modules/guards/roles.guard.ts
+````typescript
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { ROLES_KEY } from './decorators/roles.decorator';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+
+    // Se a rota não exige role específica, permite a passagem
+    if (!requiredRoles) {
+      return true;
+    }
+
+    const { user } = context.switchToHttp().getRequest();
+
+    // Se a role não existir no payload decodificado
+    if (!user || !user.role) {
+      throw new ForbiddenException('Acesso negado: Perfil não identificado.');
+    }
+
+    const hasRole = requiredRoles.includes(user.role);
+
+    if (!hasRole) {
+      throw new ForbiddenException(
+        'Acesso negado: Perfil sem permissão para este recurso.',
+      );
+    }
+
+    return true;
+  }
+}
+````
+
+## File: back/src/modules/promotions/entities/promotion.entity.ts
+````typescript
+export class Promotion {}
+````
+
+## File: back/src/modules/sellers/entities/seller.entity.ts
+````typescript
+export class Seller {}
+````
+
+## File: back/src/modules/sellers/sellers.controller.spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { SellersController } from './sellers.controller';
+import { SellersService } from './sellers.service';
+
+describe('SellersController', () => {
+  let controller: SellersController;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [SellersController],
+      providers: [SellersService],
+    }).compile();
+
+    controller = module.get<SellersController>(SellersController);
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+});
+````
+
+## File: back/src/modules/sellers/sellers.service.spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { SellersService } from './sellers.service';
+
+describe('SellersService', () => {
+  let service: SellersService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [SellersService],
+    }).compile();
+
+    service = module.get<SellersService>(SellersService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
+````
+
+## File: back/src/modules/tasks/tasks.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { TasksService } from './tasks.service';
+import { PrismaService } from 'prisma/prisma.service';
+
+@Module({
+  imports: [],
+  providers: [TasksService, PrismaService],
+})
+export class TasksModule {}
+````
+
+## File: back/src/modules/tasks/tasks.service.ts
+````typescript
+import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { PrismaService } from 'prisma/prisma.service';
+
+@Injectable()
+export class TasksService {
+  private readonly logger = new Logger(TasksService.name);
+
+  constructor(private prisma: PrismaService) {}
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleExpiredPromotions() {
+    const now = new Date();
+
+    await this.prisma.$transaction(async (tx) => {
+      const expiredPromotions = await tx.promotion.findMany({
+        where: { endTime: { lt: now } },
+        select: { id: true },
+      });
+
+      if (expiredPromotions.length === 0) return;
+
+      const expiredIds = expiredPromotions.map((p) => p.id);
+
+      const deletedClaims = await tx.claim.deleteMany({
+        where: { promotionId: { in: expiredIds } },
+      });
+
+      const deletedPromotions = await tx.promotion.deleteMany({
+        where: { id: { in: expiredIds } },
+      });
+
+      this.logger.log(
+        `[Limpeza]: ${deletedClaims.count} cupons e ${deletedPromotions.count} promoções expiradas foram removidos.`,
+      );
+    });
+  }
+}
+````
+
+## File: back/src/utils/generate-code.ts
+````typescript
+import * as crypto from 'crypto';
+
+/**
+ * Gera um código legível com o prefixo 'PD-' e 6 caracteres alfanuméricos em caixa alta.
+ * Exemplo de retorno: PD-8A2F9B
+ */
+export function generateClaimCode(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const randomBytes = crypto.randomBytes(6);
+
+  for (let i = 0; i < 6; i++) {
+    result += chars[randomBytes[i] % chars.length];
+  }
+
+  return `PD-${result}`;
+}
+````
+
+## File: back/src/app.controller.spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+describe('AppController', () => {
+  let appController: AppController;
+
+  beforeEach(async () => {
+    const app: TestingModule = await Test.createTestingModule({
+      controllers: [AppController],
+      providers: [AppService],
+    }).compile();
+
+    appController = app.get<AppController>(AppController);
+  });
+
+  describe('root', () => {
+    it('should return "Hello World!"', () => {
+      expect(appController.getHello()).toBe('Hello World!');
+    });
+  });
+});
+````
+
+## File: back/src/app.controller.ts
+````typescript
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
+}
+````
+
+## File: back/src/app.service.ts
+````typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World!';
+  }
+}
+````
+
+## File: back/test/app.e2e-spec.ts
+````typescript
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import request from 'supertest';
+import { App } from 'supertest/types';
+import { AppModule } from './../src/app.module';
+
+describe('AppController (e2e)', () => {
+  let app: INestApplication<App>;
+
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  it('/ (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/')
+      .expect(200)
+      .expect('Hello World!');
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+});
+````
+
+## File: back/test/jest-e2e.json
+````json
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}
+````
+
+## File: back/.prettierrc
+````
+{
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+````
+
+## File: back/eslint.config.mjs
+````javascript
+// @ts-check
+import eslint from '@eslint/js';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  {
+    ignores: ['eslint.config.mjs'],
+  },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  eslintPluginPrettierRecommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+      sourceType: 'commonjs',
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      "prettier/prettier": ["error", { endOfLine: "auto" }],
+    },
+  },
+);
+````
+
+## File: back/nest-cli.json
+````json
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true
+  }
+}
+````
+
+## File: back/prisma.config.ts
+````typescript
+// This file was generated by Prisma, and assumes you have installed the following:
+// npm install --save-dev prisma dotenv
+import "dotenv/config";
+import { defineConfig } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: process.env["DATABASE_URL"],
+  },
+});
+````
+
+## File: back/README.md
+````markdown
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
+
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Project setup
+
+```bash
+$ npm install
+```
+
+## Compile and run the project
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Run tests
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
+
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+## Resources
+
+Check out a few resources that may come in handy when working with NestJS:
+
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+````
+
+## File: back/tsconfig.build.json
+````json
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}
+````
+
+## File: front/public/file.svg
+````xml
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+````
+
+## File: front/public/globe.svg
+````xml
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+````
+
+## File: front/public/next.svg
+````xml
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+````
+
+## File: front/public/vercel.svg
+````xml
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+````
+
+## File: front/public/window.svg
+````xml
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+````
+
+## File: front/src/app/(Customer)/(navegation)/layout.tsx
+````typescript
+import { SearchBar } from "@/components/shared/SearchBar";
+import { BottomNav } from "@/components/shared/BottomNav";
+
+export default function NavegationLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <SearchBar />
+      <main className="grow">{children}</main>
+      <BottomNav />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/actions/deletePromotionAction.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+
+export interface DeletePromotionResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+}
+
+export async function deletePromotionAction(
+  productId: string,
+): Promise<DeletePromotionResponse> {
+  try {
+    const cookieStore = await cookies();
+
+    const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = cookieStore.get("@PromoDay:role")?.value;
+
+    if (!token || role !== "SELLER") {
+      return {
+        success: false,
+        error: "Sessão expirada ou usuário não autorizado.",
+      };
+    }
+
+    const response = await api.delete(`/promotions/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/promotions");
+    revalidatePath("/seller/promotions");
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error: any) {
+    console.error(
+      "Erro na Server Action deletePromotionAction:",
+      error?.response?.data || error.message,
+    );
+
+    const errorMessage =
+      error?.response?.data?.message || "Falha ao excluir promoção.";
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/actions/get-user-redeemed-count.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+
+interface RedeemCountResponse {
+  count: number;
+}
+
+/**
+ * Consulta a rota do NestJS que busca de forma otimizada (via findUnique/aggregate)
+ * a quantidade de cupons que o usuário logado resgatou para a promoção informada.
+ */
+export async function getUserRedeemedCount(
+  promotionId: string,
+): Promise<number> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+
+    // Se não houver token, o usuário está anônimo e o total resgatado é 0
+    if (!token) {
+      return 0;
+    }
+
+    // Chamada direta para a rota específica do backend NestJS
+    const response = await api.get<RedeemCountResponse>(
+      `promotion/${promotionId}/total-quantity`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data.total;
+  } catch (error: any) {
+    console.error(
+      "Erro na Server Action getUserRedeemedCount:",
+      error?.response?.data || error.message,
+    );
+    return 0;
+  }
+}
+````
+
+## File: front/src/app/actions/pausePromotionAction.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+
+export interface PausePromotionResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+}
+
+export async function pausePromotionAction(
+  productId: string,
+): Promise<PausePromotionResponse> {
+  try {
+    const cookieStore = await cookies();
+
+    const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = cookieStore.get("@PromoDay:role")?.value;
+
+    if (!token || role !== "SELLER") {
+      return {
+        success: false,
+        error: "Sessão expirada ou usuário não autorizado.",
+      };
+    }
+
+    const response = await api.patch(
+      `/promotions/${productId}/pause`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    revalidatePath("/promotions");
+    revalidatePath("/seller/dashboard");
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error: any) {
+    console.error(
+      "Erro na Server Action pausePromotionAction:",
+      error?.response?.data || error.message,
+    );
+
+    const errorMessage =
+      error?.response?.data?.message || "Falha ao pausar promoção.";
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/actions/redeem-promotion.ts
+````typescript
+"use server";
+
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+
+interface RedeemParams {
+  promotionId: string;
+  quantity: number;
+}
+
+export async function redeemPromotionAction({
+  promotionId,
+  quantity,
+}: RedeemParams) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+
+    if (!token) {
+      return {
+        success: false,
+        error: "Sessão expirada. Faça login novamente.",
+      };
+    }
+
+    const response = await fetch(
+      `http://localhost:3001/promotions/${promotionId}/redeem`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity }),
+      },
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Não foi possível realizar o resgate.",
+      };
+    }
+
+    revalidatePath("/promotions");
+    revalidatePath("/redeems");
+
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, error: "Falha na comunicação com o servidor." };
+  }
+}
+````
+
+## File: front/src/app/actions/validate-claim.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+
+export interface ValidateClaimResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    code: string;
+    quantity: number;
+    user?: {
+      name: string;
+      email?: string;
+    };
+    promotion?: {
+      name: string;
+    };
+  };
+}
+
+export async function validateClaimAction(
+  code: string,
+): Promise<ValidateClaimResponse> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = cookieStore.get("@PromoDay:role")?.value;
+
+    // Se não for SELLER ou não possuir token, bloqueia a execução
+    if (!token || role !== "SELLER") {
+      return {
+        success: false,
+        message:
+          "Acesso não autorizado. Apenas vendedores podem validar códigos.",
+      };
+    }
+
+    // Requisição PATCH para a rota do NestJS
+    const response = await api.patch(
+      "/seller/claims/validate",
+      { code },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return {
+      success: true,
+      message: "Cupom validado com sucesso!",
+      data: response.data,
+    };
+  } catch (error: any) {
+    console.error(
+      "Erro ao validar código no NestJS:",
+      error?.response?.data || error.message,
+    );
+
+    // Trata mensagens de erro retornadas pelo NestJS (ex: 400 Bad Request, 404 Not Found)
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Erro ao validar código. Verifique se o código está correto ou se já foi utilizado.";
+
+    return {
+      success: false,
+      message: Array.isArray(errorMessage) ? errorMessage[0] : errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/auth/login/page.tsx
+````typescript
+import { LoginCard } from "@/components/shared/login";
+
+export default function LoginPage() {
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-screen">
+      <LoginCard />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/register/page.tsx
+````typescript
+import { UserTypeSelector } from "@/components/shared/UserTypeSelector";
+
+export default function RegisterPage() {
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 flex items-center justify-center min-h-screen">
+      <UserTypeSelector />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/profile/SellerClientContainer.tsx
+````typescript
+"use client";
+
+import { useState } from "react";
+import { SellerProfileCard } from "@/components/shared/SellerProfileCard";
+import { signOutAction } from "@/app/actions/auth";
+import {
+  updateProfileSellerAction,
+  SellerProfileData,
+} from "@/app/actions/sellerProfileActions";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
+
+interface SellerClientContainerProps {
+  initialUser: SellerProfileData;
+}
+
+export function SellerClientContainer({
+  initialUser,
+}: SellerClientContainerProps) {
+  const [user, setUser] = useState<SellerProfileData>(initialUser);
+  const { updateUser: updateContextUser } = useAuth();
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // Função para sincronizar atualizações vindas do SellerProfileCard
+  const handleUpdateProfile = (updatedFields: Partial<SellerProfileData>) => {
+    setUser((prev) => ({ ...prev, ...updatedFields }));
+    updateContextUser(updatedFields);
+  };
+
+  return (
+    <div className="w-full flex flex-col items-center space-y-6">
+      <SellerProfileCard
+        name={user.name || "Usuário"}
+        email={user.email || "Email não informado"}
+        phone={user.phone || "(00) 00000-0000"}
+        avatarUrl={user.avatarUrl || "/images/default-avatar.png"}
+        address={user.address || "Endereço não informado"}
+        businessHours={user.businessHours || "Horário não informado"}
+        category={user.category || "Categoria não informada"}
+        // totalPromotions={user.totalPromotions || 0}
+        // totalSales={user.totalSales || 0}
+        onSaveProfile={handleUpdateProfile}
+        isSubmitting={isUpdating}
+      />
+
+      <button
+        type="button"
+        onClick={async () => {
+          await signOutAction();
+        }}
+        className="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 font-semibold px-4 py-2.5 rounded-xl border border-red-500/20 transition-colors cursor-pointer text-sm"
+      >
+        <LogOut className="w-4 h-4" />
+        <span>Sair da conta</span>
+      </button>
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/stores/[slug]/page.tsx
+````typescript
+import { StoreDetailsCard } from "@/components/shared/StoreDetailsCard";
+import PromoGrid from "@/components/shared/PromoGrid";
+import { api } from "@/services/api";
+import { notFound } from "next/navigation";
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+// Tipagem baseada no retorno do GET /sellers/:id do NestJS
+interface SellerDetailResponse {
+  id: string;
+  name: string;
+  address?: string;
+  category?: string;
+  businessHours?: string | any;
+  avatarUrl?: string;
+  promotions?: any[];
+}
+
+// Helper para tratar a exibição dos horários
+function formatBusinessHours(hours: any): string {
+  if (!hours) return "Horário não informado";
+  if (typeof hours === "string") return hours;
+  // Se for objeto salvo em JSON no banco, ajusta a formatação simples
+  return "08:00 às 22:00";
+}
+
+export default async function StoreProfilePage({ params }: PageProps) {
+  // 1. Pega o ID da URL dinamicamente
+  const { slug } = await params;
+
+  let store: SellerDetailResponse | null = null;
+
+  try {
+    // 2. Busca a loja no backend NestJS
+    const { data } = await api.get<SellerDetailResponse>(`/sellers/${slug}`);
+    store = data;
+  } catch (error) {
+    console.error("Erro ao buscar detalhes da loja:", error);
+    return notFound();
+  }
+
+  if (!store) {
+    return notFound();
+  }
+
+  return (
+    <div className="min-h-screen text-white p-4 w-full mx-auto flex flex-col items-center gap-6">
+      {/* 3. Preenche os dados da loja de forma dinâmica */}
+      <StoreDetailsCard
+        name={store.name}
+        imageUrl={store.avatarUrl}
+        businessHours={formatBusinessHours(store.businessHours)}
+        location={store.address || "Endereço não informado"}
+        category={store.category || "Geral"}
+      />
+
+      {/* 4. Repassa as promoções pertencentes a essa loja para o grid */}
+      <PromoGrid products={store.promotions || []} sellerId={store.id} />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/stores/page.tsx
+````typescript
+import React from "react";
+import { StoreList, Store } from "@/components/shared/StoreList"; // Ajuste o caminho do seu import
+import { api } from "@/services/api";
+
+async function getStores(): Promise<Store[]> {
+  try {
+    const response = await api.get("/sellers");
+
+    // 💡 Se o backend retornar { data: [...] } em vez de direto [...], acessa response.data.data
+    const data = response.data;
+
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    if (data && Array.isArray(data.data)) {
+      return data.data;
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Erro ao buscar lojas:", error);
+    return [];
+  }
+}
+
+export default async function StoreListPage() {
+  const stores = await getStores();
+
+  return (
+    <div className="h-auto text-white p-3 flex flex-col gap-4 items-center max-w-2xl mx-auto w-full">
+      <h1 className="text-xl font-black self-start mb-2">Lojas Parceiras</h1>
+
+      {/* 🚀 O StoreList lida com a renderização da lista */}
+      <StoreList stores={stores} />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/layout.tsx
+````typescript
+import { SearchBar } from "@/components/shared/SearchBar";
+import { BottomNav } from "@/components/shared/BottomNav";
+
+export default function NavegationLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <SearchBar />
+      <main className="grow">{children}</main>
+      <BottomNav />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/page.tsx
+````typescript
+import Image from "next/image";
+
+export default function Home() {
+  return (
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <Image
+          className="dark:invert"
+          src="/next.svg"
+          alt="Next.js logo"
+          width={100}
+          height={20}
+          priority
+        />
+        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+            To get started, edit the page.tsx file.
+          </h1>
+          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+            Looking for a starting point or more instructions? Head over to{" "}
+            <a
+              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Templates
+            </a>{" "}
+            or the{" "}
+            <a
+              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Learning
+            </a>{" "}
+            center.
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+          <a
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className="dark:invert"
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={16}
+              height={16}
+            />
+            Deploy Now
+          </a>
+          <a
+            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Documentation
+          </a>
+        </div>
+      </main>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/RedeemedProductBadge.tsx
+````typescript
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { PackageCheck } from "lucide-react";
+
+interface RedeemedProductBadgeProps {
+  imageUrl?: string;
+  productName: string;
+  quantity: number;
+}
+
+export function RedeemedProductBadge({
+  imageUrl,
+  productName,
+  quantity,
+}: RedeemedProductBadgeProps) {
+  return (
+    <Card className="relative w-full max-w-xl bg-gradient-to-r from-[#2D62EA] to-[#1E4DC2] text-white border-none rounded-[24px] shadow-md hover:shadow-lg transition-all overflow-hidden p-0">
+      {/* Recorte Semicircular de Ticket na lateral direita */}
+      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full pointer-events-none" />
+
+      <CardContent className="flex items-stretch p-0 relative min-h-[108px]">
+        {/* SEÇÃO DA ESQUERDA: Imagem do Produto */}
+        <div className="flex items-center justify-center p-3.5 w-1/3 min-w-[100px] max-w-[120px] relative">
+          <div className="w-full h-20 flex items-center justify-center overflow-hidden relative rounded-2xl bg-white/10 p-1.5 backdrop-blur-xs">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={productName}
+                className="w-full h-full object-contain drop-shadow-sm transition-transform hover:scale-105"
+              />
+            ) : (
+              <PackageCheck className="w-8 h-8 text-white/50" />
+            )}
+          </div>
+        </div>
+
+        {/* PERFURAÇÃO / LINHA VERTICAL PONTILHADA */}
+        <div className="w-0 shrink-0 border-l border-dashed border-white/30 my-3 z-10" />
+
+        {/* SEÇÃO DA DIREITA: Informações e Quantidade no Pill Branco */}
+        <div className="flex flex-col justify-between flex-1 min-w-0 p-4 pl-4 pr-7 relative">
+          {/* Top: Nome e Subtítulo */}
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <h3
+              className="text-base sm:text-lg font-bold text-white leading-snug truncate"
+              title={productName}
+            >
+              {productName}
+            </h3>
+            <span className="text-xs text-white/75 font-medium tracking-wide">
+              Item Resgatado
+            </span>
+          </div>
+
+          {/* Bottom: Quantidade no Pill Branco no estilo do design de referência */}
+          <div className="flex items-center justify-between gap-2 mt-2">
+            <span className="text-xs font-semibold text-white/90">
+              Entrega confirmada
+            </span>
+
+            <div className="bg-white text-slate-950 font-bold text-xs px-3.5 py-1 rounded-full shadow-xs flex items-center gap-1 shrink-0">
+              <span>
+                {quantity} {quantity === 1 ? "un." : "unid."}
+              </span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+````
+
+## File: front/src/components/ui/button.tsx
+````typescript
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "group/button inline-flex shrink-0 items-center justify-center rounded-4xl border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/80",
+        outline:
+          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-transparent dark:hover:bg-input/30",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+        ghost:
+          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+        destructive:
+          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default:
+          "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+        xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-8 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+        lg: "h-10 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
+        icon: "size-9",
+        "icon-xs": "size-6 [&_svg:not([class*='size-'])]:size-3",
+        "icon-sm": "size-8",
+        "icon-lg": "size-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);
+
+function Button({
+  className,
+  variant = "default",
+  size = "default",
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  }) {
+  const Comp = asChild ? Slot.Root : "button";
+
+  return (
+    <Comp
+      data-slot="button"
+      data-variant={variant}
+      data-size={size}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+
+export { Button, buttonVariants };
+````
+
+## File: front/src/components/ui/card.tsx
+````typescript
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+function Card({
+  className,
+  size = "default",
+  ...props
+}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+  return (
+    <div
+      data-slot="card"
+      data-size={size}
+      className={cn(
+        "group/card flex flex-col gap-6 overflow-hidden rounded-4xl bg-card py-6 text-sm text-card-foreground shadow-md ring-1 ring-foreground/5 has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4 dark:ring-foreground/10 *:[img:first-child]:rounded-t-4xl *:[img:last-child]:rounded-b-4xl",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-header"
+      className={cn(
+        "group/card-header @container/card-header grid auto-rows-min items-start gap-1.5 rounded-t-4xl px-6 group-data-[size=sm]/card:px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-6 group-data-[size=sm]/card:[.border-b]:pb-4",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-title"
+      className={cn("font-heading text-base font-medium", className)}
+      {...props}
+    />
+  );
+}
+
+function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-description"
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  );
+}
+
+function CardAction({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-action"
+      className={cn(
+        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-content"
+      className={cn("px-6 group-data-[size=sm]/card:px-4", className)}
+      {...props}
+    />
+  );
+}
+
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn(
+        "flex items-center rounded-b-4xl px-6 group-data-[size=sm]/card:px-4 [.border-t]:pt-6 group-data-[size=sm]/card:[.border-t]:pt-4",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+};
+````
+
+## File: front/src/components/ui/input.tsx
+````typescript
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "h-9 w-full min-w-0 rounded-3xl border border-transparent bg-input/50 px-3 py-1 text-base transition-[color,box-shadow,background-color] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Input };
+````
+
+## File: front/src/components/ui/label.tsx
+````typescript
+"use client";
+
+import * as React from "react";
+import { Label as LabelPrimitive } from "radix-ui";
+
+import { cn } from "@/lib/utils";
+
+function Label({
+  className,
+  ...props
+}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+  return (
+    <LabelPrimitive.Root
+      data-slot="label"
+      className={cn(
+        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Label };
+````
+
+## File: front/src/components/ui/select.tsx
+````typescript
+"use client"
+
+import * as React from "react"
+import { Select as SelectPrimitive } from "radix-ui"
+
+import { cn } from "@/lib/utils"
+import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
+
+function Select({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Root>) {
+  return <SelectPrimitive.Root data-slot="select" {...props} />
+}
+
+function SelectGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Group>) {
+  return (
+    <SelectPrimitive.Group
+      data-slot="select-group"
+      className={cn("scroll-my-1.5 p-1.5", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectValue({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Value>) {
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />
+}
+
+function SelectTrigger({
+  className,
+  size = "default",
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+  size?: "sm" | "default"
+}) {
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
+      className={cn(
+        "flex w-fit items-center justify-between gap-1.5 rounded-3xl border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
+      </SelectPrimitive.Icon>
+    </SelectPrimitive.Trigger>
+  )
+}
+
+function SelectContent({
+  className,
+  children,
+  position = "item-aligned",
+  align = "center",
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        data-slot="select-content"
+        data-align-trigger={position === "item-aligned"}
+        className={cn("relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-3xl bg-popover text-popover-foreground shadow-lg ring-1 ring-foreground/5 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:ring-foreground/10 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", position ==="popper"&&"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className )}
+        position={position}
+        align={align}
+        {...props}
+      >
+        <SelectScrollUpButton />
+        <SelectPrimitive.Viewport
+          data-position={position}
+          className={cn(
+            "data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)",
+            position === "popper" && ""
+          )}
+        >
+          {children}
+        </SelectPrimitive.Viewport>
+        <SelectScrollDownButton />
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  )
+}
+
+function SelectLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Label>) {
+  return (
+    <SelectPrimitive.Label
+      data-slot="select-label"
+      className={cn("px-3 py-2.5 text-xs text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectItem({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(
+        "relative flex w-full cursor-default items-center gap-2.5 rounded-2xl py-2 pr-8 pl-3 text-sm font-medium outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        className
+      )}
+      {...props}
+    >
+      <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon className="pointer-events-none" />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  )
+}
+
+function SelectSeparator({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+  return (
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn(
+        "pointer-events-none -mx-1.5 my-1.5 h-px bg-border",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function SelectScrollUpButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+  return (
+    <SelectPrimitive.ScrollUpButton
+      data-slot="select-scroll-up-button"
+      className={cn(
+        "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      <ChevronUpIcon
+      />
+    </SelectPrimitive.ScrollUpButton>
+  )
+}
+
+function SelectScrollDownButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+  return (
+    <SelectPrimitive.ScrollDownButton
+      data-slot="select-scroll-down-button"
+      className={cn(
+        "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      <ChevronDownIcon
+      />
+    </SelectPrimitive.ScrollDownButton>
+  )
+}
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+}
+````
+
+## File: front/src/components/ui/textarea.tsx
+````typescript
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
+  return (
+    <textarea
+      data-slot="textarea"
+      className={cn(
+        "flex field-sizing-content min-h-16 w-full resize-none rounded-2xl border border-transparent bg-input/50 px-3 py-3 text-base transition-[color,box-shadow,background-color] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Textarea }
+````
+
+## File: front/src/hooks/useCustomerMetric.ts
+````typescript
+"use client";
+
+import useSWR from "swr";
+import { getTokenAction } from "@/app/actions/auth";
+
+interface CustomerMetrics {
+  totalRedemptions: number;
+  totalSavedAmount: number;
+}
+
+const fetcher = async (url: string) => {
+  const token = await getTokenAction();
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Erro ao buscar métricas do cliente");
+  }
+
+  return res.json();
+};
+
+export function useCustomerMetrics() {
+  const { data, error, isLoading } = useSWR<CustomerMetrics>(
+    "http://localhost:3001/costomers/metrics",
+    fetcher,
+    {
+      refreshInterval: 10000,
+      revalidateOnFocus: true,
+    },
+  );
+
+  return {
+    metrics: data ?? { totalRedemptions: 0, totalSavedAmount: 0 },
+    isLoading,
+    isError: error,
+  };
+}
+````
+
+## File: front/src/hooks/useSellerMetrics.ts
+````typescript
+"use client";
+
+import useSWR from "swr";
+import { getTokenAction } from "@/app/actions/auth";
+
+interface SellerMetrics {
+  totalPromotions: number;
+  totalSales: number;
+}
+
+const fetcher = async (url: string) => {
+  const token = await getTokenAction();
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Erro ao buscar métricas");
+  }
+
+  return res.json();
+};
+
+export function useSellerMetrics() {
+  const { data, error, isLoading } = useSWR<SellerMetrics>(
+    "http://localhost:3001/sellers/metrics", // Ajuste para a URL/porta da sua API NestJS
+    fetcher,
+    {
+      refreshInterval: 10000, // Revalida a cada 10 segundos
+      revalidateOnFocus: true,
+    },
+  );
+
+  return {
+    metrics: data ?? { totalPromotions: 0, totalSales: 0 },
+    isLoading,
+    isError: error,
+  };
+}
+````
+
+## File: front/src/lib/api.ts
+````typescript
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  withCredentials: true, // 👈 ESSENCIAL: Envia os cookies httpOnly automaticamente
+});
+````
+
+## File: front/src/lib/utils.ts
+````typescript
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+````
+
+## File: front/src/schemas/register-client-schema.ts
+````typescript
+import { z } from "zod";
+
+// ==========================================
+// VALIDAÇÕES DA ETAPA 1: Identificação e Foto
+// ==========================================
+export const stepOneSchemaClient = z.object({
+  name: z
+    .string()
+    .min(3, "O nome deve ter pelo menos 3 caracteres")
+    .max(50, "Nome longo demais"),
+
+  phone: z
+    .string()
+    .min(10, "Telefone incompleto. Insira o DDD + Número")
+    .max(15, "Telefone longo demais"),
+  // Removi o regex antigo de "apenas números" caso você use máscaras como (11) 99999-9999 no front.
+  // Se quiser apenas números puros salvos, mantenha o .regex(/^\d+$/, "Apenas números")
+
+  email: z
+    .string()
+    .min(1, "O e-mail é obrigatório")
+    .email("Insira um formato de e-mail válido (ex: seu@email.com)"),
+
+  password: z
+    .string()
+    .min(8, "A senha deve ter pelo menos 8 caracteres")
+    .regex(/[A-Za-z]/, "A senha deve conter pelo menos uma letra")
+    .regex(/\d/, "A senha deve conter pelo menos um número"),
+
+  // Descomente as linhas abaixo se quiser validar o arquivo da foto no passo 1:
+  avatarFile: z.any().optional(),
+  /* .refine((file) => !file || file instanceof File, "Formato de arquivo inválido")
+    .refine(
+      (file) => !file || file.size <= 5 * 1024 * 1024,
+      "A imagem deve ter no máximo 5MB"
+    )
+    .refine(
+      (file) =>
+        !file || ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type),
+      "Use apenas JPG, JPEG, PNG ou WEBP"
+    )
+    */
+});
+
+// ==========================================
+// VALIDAÇÕES DA ETAPA 2: Termos de Uso
+// ==========================================
+export const stepTwoSchemaClient = z.object({
+  // Garante que o usuário precise preencher a etapa (pode ser expandido para aceitar um checkbox futuramente)
+  // Deixei flexível para o seu objeto formData atual
+});
+
+// ==========================================
+// SCHEMA UNIFICADO (Para tipagem do Cliente)
+// ==========================================
+export const registerFormSchemaClient =
+  stepOneSchemaClient.merge(stepTwoSchemaClient);
+
+// Cria a tipagem do TypeScript automaticamente baseada no Cliente
+export type RegisterFormData = z.infer<typeof registerFormSchemaClient>;
+````
+
+## File: front/src/types/auth.ts
+````typescript
+// 🔑 Dados enviados no formulário de Login (idêntico para Customer e Seller)
+export interface LoginPayload {
+  email: string;
+  password?: string; // Opcional no front dependendo do estado, mas obrigatório no envio
+}
+
+// 🔑 Resposta REAL do seu processo de Login/Autenticação
+export interface AuthResponse {
+  access_token: string; // 👈 Corrigido para snake_case como vem da API
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: "CUSTOMER" | "SELLER"; // 👈 Tipagem estrita baseada no enum do seu banco
+  };
+}
+````
+
+## File: front/src/types/customer.ts
+````typescript
+// 👤 Estrutura completa do Cliente que vem do banco
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  avatarUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Payload de registro baseado no seu CreateCostomerDto
+export interface RegisterCustomerPayload extends Omit<
+  Customer,
+  "id" | "createdAt" | "updatedAt"
+> {
+  password?: string;
+}
+````
+
+## File: front/src/types/seller.ts
+````typescript
+// 🕒 Interface auxiliar para tipar o array de horários de funcionamento
+export interface BusinessHour {
+  dayOfWeek: string; // ex: "Segunda-feira", "Tuesday" ou 0 a 6
+  openTime: string; // ex: "18:00"
+  closeTime: string; // ex: "23:00"
+}
+
+// 🏪 Estrutura completa do Seller que vem do Banco/API
+export interface Seller {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  avatarUrl?: string;
+  address: string;
+  businessHours: BusinessHour[];
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 📝 Payload de Registro do Vendedor (Espelhando o CreateSellerDto)
+export interface RegisterSellerPayload extends Omit<
+  Seller,
+  "id" | "createdAt" | "updatedAt"
+> {
+  password?: string;
+}
+````
+
+## File: front/.gitignore
+````
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+````
+
+## File: front/AGENTS.md
+````markdown
+<!-- BEGIN:nextjs-agent-rules -->
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+<!-- END:nextjs-agent-rules -->
+````
+
+## File: front/CLAUDE.md
+````markdown
+@AGENTS.md
+````
+
+## File: front/components.json
+````json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-luma",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}
+````
+
+## File: front/eslint.config.mjs
+````javascript
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+````
+
+## File: front/next.config.ts
+````typescript
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+````
+
+## File: front/postcss.config.mjs
+````javascript
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+````
+
+## File: README.md
+````markdown
+
+````
+
+## File: back/prisma/prisma.service.ts
+````typescript
+import 'dotenv/config';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from 'generated/prisma/client';
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+  redemption: any;
+  constructor() {
+    const adapter = new PrismaPg({
+      connectionString: process.env.DATABASE_URL!,
+    });
+    super({ adapter, log: ['query', 'info', 'warn', 'error'] });
+  }
+
+  async onModuleInit() {
+    try {
+      await this.$queryRaw`SELECT 1`;
+      Logger.log('Database connection established');
+    } catch (error) {
+      Logger.error('Database connection faleid', error);
+      throw error;
+    }
+    // await this.$connect();
+  }
+}
+````
+
+## File: back/src/modules/claims/dto/create-claim.dto.ts
+````typescript
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
+
+export class ValidateClaimDto {
+  @IsString()
+  @IsNotEmpty({ message: 'O código do cupom é obrigatório.' })
+  @Matches(/^PD-[A-Z0-9]{6}$/, {
+    message: 'Formato de código inválido. Exemplo esperado: PD-XXXXXX',
+  })
+  code: string;
+}
+````
+
+## File: back/src/modules/costomers/dto/create-costomer.dto.ts
+````typescript
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsOptional,
+  IsUrl,
+} from 'class-validator';
+export class CreateCostomerDto {
+  @IsString({ message: 'O nome deve ser um texto válido.' })
+  @IsNotEmpty({ message: 'O nome é obrigatório.' })
+  name: string;
+
+  @IsEmail({}, { message: 'Por favor, insira um e-mail válido.' })
+  @IsNotEmpty({ message: 'O e-mail é obrigatório.' })
+  email: string;
+
+  @IsString({ message: 'O telefone deve ser um texto válido.' })
+  @IsNotEmpty({ message: 'O telefone é obrigatório.' })
+  phone: string;
+
+  @IsString({ message: 'A senha deve ser um texto válido.' })
+  @IsNotEmpty({ message: 'A senha é obrigatória.' })
+  @MinLength(6, { message: 'A senha deve conter no mínimo 6 caracteres.' })
+  password: string;
+
+  @IsOptional() // O usuário não é obrigado a ter foto no primeiro segundo de cadastro
+  @IsString()
+  @IsUrl({}, { message: 'O avatarUrl deve ser um link válido do Supabase.' })
+  avatarUrl?: string; // Use o nome exato da sua coluna no banco (avatarUrl ou fotoUrl)
+}
+````
+
+## File: back/src/modules/costomers/dto/update-costomer.dto.ts
+````typescript
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateCostomerDto } from './create-costomer.dto';
+import { IsOptional, IsString, IsUrl } from 'class-validator';
+
+// O PartialType herda automaticamente os campos do CreateCostomerDto como opcionais
+export class UpdateCostomerDto extends PartialType(CreateCostomerDto) {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsUrl({}, { message: 'A fotoUrl deve ser um link válido do Supabase' })
+  avatarUrl?: string;
+}
+````
+
+## File: back/src/modules/costomers/costomers.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { CostomersService } from './costomers.service';
+import { CostomersController } from './costomers.controller';
+import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
+
+@Module({
+  controllers: [CostomersController],
+  providers: [CostomersService, PrismaService, StorageService],
+  exports: [CostomersService],
+})
+export class CostomersModule {}
+````
+
+## File: back/src/modules/sellers/dto/create-seller.dto.ts
+````typescript
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsArray,
+} from 'class-validator';
+
+export class CreateSellerDto {
+  @IsNotEmpty({ message: 'O nome é obrigatório' })
+  @IsString()
+  name: string;
+
+  @IsNotEmpty({ message: 'O telefone é obrigatório' })
+  @IsString()
+  phone: string;
+
+  @IsNotEmpty({ message: 'O e-mail é obrigatório' })
+  @IsEmail({}, { message: 'Insira um e-mail válido' })
+  email: string;
+
+  @IsNotEmpty({ message: 'A senha é obrigatória' })
+  @IsString()
+  // Aqui você pode adicionar uma validação de tamanho mínimo se quiser, ex: @MinLength(6)
+  password: string;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl({}, { message: 'O avatarUrl deve ser um link válido' })
+  avatarUrl?: string;
+
+  @IsNotEmpty({ message: 'O endereço é obrigatório' })
+  @IsString()
+  address: string;
+
+  @IsNotEmpty({ message: 'O horário de funcionamento é obrigatório' })
+  @IsString({
+    message: 'O horário de funcionamento deve ser uma string JSON válida',
+  })
+  businessHours: string; // 🚀 Agora aceita a string vinda do FormData
+
+  @IsNotEmpty({ message: 'A categoria é obrigatória' })
+  @IsString()
+  category: string;
+}
+````
+
+## File: back/src/modules/sellers/sellers.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { SellersService } from './sellers.service';
+import { SellersController } from './sellers.controller';
+import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
+
+@Module({
+  controllers: [SellersController],
+  providers: [SellersService, PrismaService, StorageService],
+  exports: [SellersService],
+})
+export class SellersModule {}
+````
+
+## File: back/src/shared/storage.service.ts
+````typescript
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { randomUUID } from 'crypto';
+
+@Injectable()
+export class StorageService {
+  private supabase: SupabaseClient;
+
+  constructor() {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error(
+        'SUPABASE_URL ou SUPABASE_KEY não foram configurados no arquivo .env.',
+      );
+    }
+
+    this.supabase = createClient(supabaseUrl, supabaseKey);
+  }
+
+  /**
+   * Upload de um único arquivo para o bucket 'Avatars'
+   */
+  async uploadFile(file: Express.Multer.File): Promise<string> {
+    if (!file) {
+      throw new BadRequestException('Nenhum arquivo foi enviado.');
+    }
+
+    const fileExt = file.originalname.split('.').pop()?.toLowerCase() || 'jpg';
+    const fileName = `${randomUUID()}.${fileExt}`;
+
+    const { data, error } = await this.supabase.storage
+      .from('Avatars')
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+        upsert: true,
+      });
+
+    if (error) {
+      throw new BadRequestException(
+        `Erro ao subir arquivo para o Supabase: ${error.message}`,
+      );
+    }
+
+    const { data: publicUrlData } = this.supabase.storage
+      .from('Avatars')
+      .getPublicUrl(data.path);
+
+    return publicUrlData.publicUrl;
+  }
+
+  /**
+   * Upload de múltiplos arquivos em paralelo para o bucket 'Avatars'
+   */
+  async uploadManyFiles(files: Express.Multer.File[]): Promise<string[]> {
+    if (!files || files.length === 0) {
+      return [];
+    }
+
+    const uploadPromises = files.map((file) => this.uploadFile(file));
+    return Promise.all(uploadPromises);
+  }
+}
+````
+
+## File: back/.gitignore
+````
+# compiled output
+/dist
+/node_modules
+/build
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# temp directory
+.temp
+.tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+/generated/prisma
+repomix-output
+````
+
+## File: back/tsconfig.json
+````json
+{
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
+    // "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/profile/ProfileClientContainer.tsx
+````typescript
+"use client";
+
+import { useState } from "react";
+import { UserProfileCard } from "@/components/shared/UserProfileCard";
+import { signOutAction } from "@/app/actions/auth";
+import { updateProfileCustomerAction } from "@/app/actions/customerProfileAction";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
+
+export interface CustomerProfileData {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  avatarUrl?: string;
+  role?: string;
+}
+
+interface ProfileClientContainerProps {
+  initialUser: CustomerProfileData;
+}
+
+export function ProfileClientContainer({
+  initialUser,
+}: ProfileClientContainerProps) {
+  const [user, setUser] = useState<CustomerProfileData>(initialUser);
+  const { updateUser: updateContextUser } = useAuth();
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // A função agora recebe o FormData diretamente vindo do UserProfileCard
+  const handleUpdateProfile = async (formData: FormData) => {
+    try {
+      setIsUpdating(true);
+
+      // Envia o FormData para a Server Action
+      const response = await updateProfileCustomerAction(formData);
+
+      if (response.success && response.data) {
+        const updatedCustomer = response.data;
+
+        // Sincroniza o estado local e o contexto global com os dados reais do banco
+        setUser(updatedCustomer);
+        updateContextUser(updatedCustomer);
+
+        alert("Perfil atualizado com sucesso!");
+      } else {
+        alert(`Erro ao atualizar: ${response.error || "Tente novamente."}`);
+      }
+    } catch (error: any) {
+      alert("Erro inesperado ao atualizar perfil.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  return (
+    <div className="w-full flex flex-col items-center space-y-6">
+      <UserProfileCard
+        name={user.name || "Usuário"}
+        email={user.email || "Email não informado"}
+        phone={user.phone || "(00) 00000-0000"}
+        avatarUrl={user.avatarUrl || "/images/default-avatar.png"}
+        onSaveProfile={handleUpdateProfile} // Passa o handler que aceita FormData
+        isSubmitting={isUpdating}
+      />
+
+      <button
+        type="button"
+        onClick={async () => {
+          await signOutAction();
+        }}
+        className="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 font-semibold px-4 py-2.5 rounded-xl border border-red-500/20 transition-colors cursor-pointer text-sm"
+      >
+        <LogOut className="w-4 h-4" />
+        <span>Sair da conta</span>
+      </button>
+    </div>
+  );
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/redeems/page.tsx
+````typescript
+import RedeemsList from "../../../../components/shared/RedeemsList";
+
+export default function Redeems() {
+  return (
+    <div className="w-full flex flex-col items-center justify-center ">
+      <RedeemsList />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/stores/[slug]/page.tsx
+````typescript
+import { StoreDetailsCard } from "@/components/shared/StoreDetailsCard";
+import PromoGrid from "@/components/shared/PromoGrid";
+import { api } from "@/services/api";
+import { notFound } from "next/navigation";
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+// Tipagem baseada no retorno do GET /sellers/:id do NestJS
+interface SellerDetailResponse {
+  id: string;
+  name: string;
+  address?: string;
+  category?: string;
+  businessHours?: string | any;
+  avatarUrl?: string;
+  promotions?: any[];
+}
+
+// Helper para tratar a exibição dos horários
+function formatBusinessHours(hours: any): string {
+  if (!hours) return "Horário não informado";
+  if (typeof hours === "string") return hours;
+  // Se for objeto salvo em JSON no banco, ajusta a formatação simples
+  return "08:00 às 22:00";
+}
+
+export default async function StoreProfilePage({ params }: PageProps) {
+  // 1. Pega o ID da URL dinamicamente
+  const { slug } = await params;
+
+  let store: SellerDetailResponse | null = null;
+
+  try {
+    // 2. Busca a loja no backend NestJS
+    const { data } = await api.get<SellerDetailResponse>(`/sellers/${slug}`);
+    console.log("Dados da loja recebidos do backend:", data);
+    store = data;
+  } catch (error) {
+    console.error("Erro ao buscar detalhes da loja:", error);
+    return notFound();
+  }
+
+  if (!store) {
+    return notFound();
+  }
+
+  return (
+    <div className="min-h-screen text-white p-4 w-full mx-auto flex flex-col items-center gap-6">
+      {/* 3. Preenche os dados da loja de forma dinâmica */}
+      <StoreDetailsCard
+        name={store.name}
+        imageUrl={store.avatarUrl}
+        businessHours={formatBusinessHours(store.businessHours)}
+        location={store.address || "Endereço não informado"}
+        category={store.category || "Categoria não informada"}
+      />
+
+      {/* 4. Repassa as promoções pertencentes a essa loja para o grid */}
+      <PromoGrid products={store.promotions || []} />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/stores/page.tsx
+````typescript
+import React from "react";
+import { StoreList, Store } from "@/components/shared/StoreList"; // Ajuste o caminho do seu import
+import { api } from "@/services/api";
+
+async function getStores(): Promise<Store[]> {
+  try {
+    const response = await api.get("/sellers");
+
+    // 💡 Se o backend retornar { data: [...] } em vez de direto [...], acessa response.data.data
+    const data = response.data;
+
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    if (data && Array.isArray(data.data)) {
+      return data.data;
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Erro ao buscar lojas:", error);
+    return [];
+  }
+}
+
+export default async function StoreListPage() {
+  const stores = await getStores();
+
+  return (
+    <div className="h-auto text-white p-3 flex flex-col gap-4 items-center max-w-2xl mx-auto w-full">
+      {/* <h1 className="text-xl font-black self-start mb-2">Lojas Parceiras</h1> */}
+
+      {/* 🚀 O StoreList lida com a renderização da lista */}
+      <StoreList stores={stores} />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/actions/customerProfileAction.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+
+export interface CustomerProfileData {
+  id: string;
+  name: string;
+  email: string;
+  role: "CUSTOMER";
+  avatarUrl?: string;
+  phone?: string;
+}
+
+/**
+ * Busca os dados do perfil do Cliente
+ */
+export async function getProfileCustomerAction(): Promise<CustomerProfileData | null> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+
+    if (!token) {
+      return null;
+    }
+
+    const response = await api.get<CustomerProfileData>("/costomers/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Cookie: `@PromoDay:token=${token}`,
+      },
+    });
+
+    return {
+      ...response.data,
+      role: "CUSTOMER",
+    };
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message || error?.message || "Erro desconhecido";
+
+    console.error(
+      `[getProfileCustomerAction Error ${status || ""}]:`,
+      errorMessage,
+    );
+    return null;
+  }
+}
+
+/**
+ * Atualiza os dados do perfil do Cliente
+ */
+export async function updateProfileCustomerAction(formData: FormData) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("@PromoDay:token")?.value;
+
+  if (!token) {
+    return { success: false, error: "Usuário não autenticado." };
+  }
+
+  try {
+    const response = await api.patch("/costomers/profile", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+      },
+    });
+
+    return {
+      success: true,
+      data: {
+        ...response.data,
+        role: "CUSTOMER",
+      },
+    };
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Erro ao atualizar perfil.";
+
+    console.error(
+      `[updateProfileCustomerAction Error ${status || ""}]:`,
+      errorMessage,
+    );
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/actions/get-user-claims.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+
+export interface UserClaim {
+  id: string;
+  code: string;
+  quantity: number;
+  status: string;
+  createdAt: string;
+  promotion: {
+    seller:
+      | {
+          name?: string | undefined;
+          avatarUrl?: string | undefined;
+          id?: string;
+        }
+      | undefined;
+    id: string;
+    name: string;
+    images?: string[];
+  };
+  seller: {
+    name: string;
+    avatarUrl: string;
+    id: string;
+  };
+}
+
+export async function getUserClaims(): Promise<UserClaim[]> {
+  try {
+    const cookieStore = await cookies();
+
+    const token = cookieStore.get("@PromoDay:token")?.value;
+    // Pega o valor do cookie de role (ajuste o nome se for diferente)
+    const role = cookieStore.get("@PromoDay:role")?.value;
+
+    // Se não houver token ou se o usuário logado NÃO for um 'USER' (ex: for SELLER/ADMIN), aborta
+    if (!token || role !== "CUSTOMER") {
+      return [];
+    }
+
+    const response = await api.get<UserClaim[]>("/redeems", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data || [];
+  } catch (error: any) {
+    console.error(
+      "Erro na Server Action getUserClaims:",
+      error?.response?.data || error.message,
+    );
+    return [];
+  }
+}
+````
+
+## File: front/src/app/actions/sellerProfileActions.ts
+````typescript
+"use server";
+
+import { api } from "@/services/api";
+import { cookies } from "next/headers";
+
+export interface SellerProfileData {
+  id: string;
+  name: string;
+  email: string;
+  role: "SELLER";
+  avatarUrl?: string;
+  phone?: string;
+  address?: string;
+  businessHours?: string;
+  category?: string;
+  totalPromotions?: number;
+  totalSales?: number;
+}
+
+/**
+ * Busca os dados do perfil do Vendedor
+ */
+export async function getProfileSellerAction(): Promise<SellerProfileData | null> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+
+    if (!token) {
+      return null;
+    }
+
+    const response = await api.get<SellerProfileData>("/sellers/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Cookie: `@PromoDay:token=${token}`,
+      },
+    });
+
+    return {
+      ...response.data,
+      role: "SELLER",
+    };
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message || error?.message || "Erro desconhecido";
+
+    console.error(
+      `[getProfileSellerAction Error ${status || ""}]:`,
+      errorMessage,
+    );
+    return null;
+  }
+}
+
+/**
+ * Atualiza os dados do perfil do Vendedor
+ */
+export async function updateProfileSellerAction(
+  formData: FormData, // 👈 Ajustado para receber o FormData
+) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("@PromoDay:token")?.value;
+
+  if (!token) {
+    throw new Error("Usuário não autenticado.");
+  }
+
+  try {
+    const response = await api.patch(
+      "/sellers/profile", // 👈 Verifique se a rota no NestJS é /sellers/profile ou /seller/profile
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+        },
+      },
+    );
+
+    return {
+      success: true,
+      data: {
+        ...response.data,
+        role: "SELLER",
+      },
+    };
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Erro ao atualizar perfil.";
+
+    console.error(
+      `[updateProfileSellerAction Error ${status || ""}]:`,
+      errorMessage,
+    );
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/actions/update-seller.ts
+````typescript
+// "use server";
+
+// import { api } from "@/services/api";
+// import { cookies } from "next/headers";
+// import { revalidatePath } from "next/cache";
+
+// export interface UpdateSellerData {
+//   name: string;
+//   phone: string;
+//   address: string;
+//   businessHours: string;
+//   category: string;
+//   avatarUrl?: string;
+// }
+
+// export interface UpdateSellerResponse {
+//   success: boolean;
+//   data?: any;
+//   error?: string;
+// }
+
+// export async function updateSellerAction(
+//   formData: FormData, // 👈 Ajustado para receber o FormData
+// ): Promise<UpdateSellerResponse> {
+//   try {
+//     const cookieStore = await cookies();
+
+//     const token = cookieStore.get("@PromoDay:token")?.value;
+//     const role = cookieStore.get("@PromoDay:role")?.value;
+
+//     // Garante que existe um token e que o usuário possui perfil de SELLER
+//     if (!token || role !== "SELLER") {
+//       return {
+//         success: false,
+//         error: "Sessão expirada ou usuário não autorizado.",
+//       };
+//     }
+
+//     console.log("Enviando isso para a rota patch:", formData);
+//     // Ajuste o endpoint "/sellers/profile" caso o seu backend use outra rota (ex: /sellers ou /profile)
+//     const response = await api.patch("/sellers/profile", formData, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+//       },
+//     });
+
+//     revalidatePath("/seller/profile");
+//     return {
+//       success: true,
+//       data: response.data,
+//     };
+//   } catch (error: any) {
+//     console.error(
+//       "Erro na Server Action updateSellerAction:",
+//       error?.response?.data || error.message,
+//     );
+
+//     const errorMessage =
+//       error?.response?.data?.message || "Falha ao atualizar dados do vendedor.";
+
+//     return {
+//       success: false,
+//       error: errorMessage,
+//     };
+//   }
+// }
+````
+
+## File: front/src/app/actions/updatePromotionAction.ts
+````typescript
+"use server";
+
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+import { api } from "@/services/api";
+
+export async function updatePromotionAction(
+  promotionId: string,
+  formData: FormData,
+) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("@PromoDay:token")?.value;
+
+  if (!token) {
+    return { success: false, error: "Usuário não autenticado." };
+  }
+
+  try {
+    // No Axios: api.patch(URL, DATA, CONFIG)
+    const response = await api.patch(
+      `/seller/promotions/${promotionId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+        },
+      },
+    );
+
+    revalidatePath("/seller/promotions");
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Erro ao atualizar a promoção.";
+
+    console.error(
+      `[updatePromotionAction Error ${status || ""}]:`,
+      errorMessage,
+    );
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+````
+
+## File: front/src/app/register/client/page.tsx
+````typescript
+"use-client";
+import { RegisterStepperFormClient } from "@/components/shared/RegisterStepperClient";
+
+export default function RegisterClientPage() {
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 flex items-center justify-center min-h-screen">
+      <RegisterStepperFormClient />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/register/store/page.tsx
+````typescript
+import { RegisterStepperFormStore } from "@/components/shared/RegisterStepperStore";
+
+export default function StoreRegisterPage() {
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 flex items-center justify-center min-h-screen">
+      <RegisterStepperFormStore />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/announce/page.tsx
+````typescript
+"use client";
+
+import { CreateAdForm } from "@/components/shared/CreateAdForm";
+
+export default function AnnouncePage() {
+  return (
+    <div>
+      <CreateAdForm />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/promotions/[id]/page.tsx
+````typescript
+import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
+import { api } from "@/services/api";
+import { notFound } from "next/navigation";
+
+// 1. Tipagem das props que o Next passa para rotas dinâmicas [id]
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+// 2. Tipagem dos dados retornados pelo endpoint GET /promotions/:id do NestJS
+interface PromotionDetailResponse {
+  id: string;
+  name: string;
+  description?: string;
+  requirements?: string;
+  images: string[];
+  originalPrice: number;
+  promoPrice: number;
+  stock: number;
+  limitPerUser: number;
+  endTime: string;
+  seller: {
+    id: string;
+    name: string;
+    address?: string;
+    businessHours?: any;
+  };
+}
+
+// Helper para calcular a % de desconto
+function calcDiscount(original: number, promo: number): string {
+  if (!original || original <= 0) return "0% off";
+  const pct = Math.round(((original - promo) / original) * 100);
+  return `${pct}% off`;
+}
+
+// Helper para formatar o preço
+function formatCurrency(val: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(val);
+}
+
+// 🚀 Server Component Async
+export default async function PromotionDetails({ params }: PageProps) {
+  // Acessa o id vindo da URL /promotions/[id]
+  const { id } = await params;
+
+  let promotion: PromotionDetailResponse | null = null;
+
+  try {
+    // Faz a chamada para o endpoint do NestJS (GET /promotions/:id)
+    const { data } = await api.get<PromotionDetailResponse>(
+      `/promotions/${id}`,
+    );
+    promotion = data;
+  } catch (error) {
+    console.error("Erro ao buscar detalhes da promoção:", error);
+    // Se não encontrar ou der erro 404, exibe a página de 404 do Next.js
+    return notFound();
+  }
+
+  if (!promotion) {
+    return notFound();
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center p-4">
+      <h1 className="text-xl font-black mb-4">Detalhes da promoção</h1>
+
+      <PromotionDetailCard
+        id={id}
+        imageUrl={promotion.images?.[0] || "/placeholder.png"}
+        badgeDiscount={calcDiscount(
+          promotion.originalPrice,
+          promotion.promoPrice,
+        )}
+        title={promotion.name}
+        description={
+          promotion.description || "Sem descrição informada para esta promoção."
+        }
+        requirements={
+          promotion.requirements ||
+          "Apresente o cupom de resgate no estabelecimento."
+        }
+        stock={promotion.stock}
+        userLimit={promotion.limitPerUser}
+        duration={new Date(promotion.endTime).toLocaleDateString("pt-BR")}
+        storeName={promotion.seller?.name || "Loja Parceira"}
+        storeHours="Segunda a Sexta: 09h às 18h" // Pode mapear o objeto businessHours se quiser
+        storeLocation={promotion.seller?.address || "Endereço não informado"}
+        originalPrice={formatCurrency(promotion.originalPrice)}
+        discountPrice={formatCurrency(promotion.promoPrice)}
+      />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/globals.css
+````css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Modo Claro */
+  --background: oklch(0.98 0 0); /* #FAFAFA */
+  --foreground: oklch(0.126 0.046 257.4); /* #070F22 */
+  --card: oklch(1 0 0); /* #FFFFFF */
+  --card-foreground: oklch(0.126 0.046 257.4);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.126 0.046 257.4);
+  --primary: oklch(0.518 0.253 264.5); /* #144AE0 */
+  --primary-foreground: oklch(1 0 0); /* #FFFFFF */
+  --secondary: oklch(0.94 0.01 257.4);
+  --secondary-foreground: oklch(0.126 0.046 257.4);
+  --muted: oklch(0.95 0.01 257.4);
+  --muted-foreground: oklch(0.45 0.02 257.4);
+  --accent: oklch(0.94 0.02 264.5);
+  --accent-foreground: oklch(0.518 0.253 264.5);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.01 257.4);
+  --input: oklch(0.9 0.01 257.4);
+  --ring: oklch(0.518 0.253 264.5);
+  --chart-1: oklch(0.518 0.253 264.5);
+  --chart-2: oklch(0.65 0.2 264.5);
+  --chart-3: oklch(0.35 0.15 257.4);
+  --chart-4: oklch(0.75 0.15 264.5);
+  --chart-5: oklch(0.85 0.1 264.5);
+  --radius: 0.625rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.126 0.046 257.4);
+  --sidebar-primary: oklch(0.518 0.253 264.5);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0.02 264.5);
+  --sidebar-accent-foreground: oklch(0.518 0.253 264.5);
+  --sidebar-border: oklch(0.9 0.01 257.4);
+  --sidebar-ring: oklch(0.518 0.253 264.5);
+}
+
+.dark {
+  /* Modo Escuro (Baseado em #070F22 e #144AE0) */
+  --background: oklch(0.126 0.046 257.4); /* #070F22 - Fundo Dark */
+  --foreground: oklch(1 0 0); /* #FFFFFF - Texto principal */
+  --card: oklch(
+    0.18 0.04 257.4
+  ); /* Superfície ligeiramente mais clara que o fundo */
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.18 0.04 257.4);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.518 0.253 264.5); /* #144AE0 - Azul de Ação */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.22 0.04 257.4);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.22 0.04 257.4);
+  --muted-foreground: oklch(0.7 0.02 257.4);
+  --accent: oklch(0.22 0.04 257.4);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.518 0.253 264.5);
+  --chart-1: oklch(0.518 0.253 264.5);
+  --chart-2: oklch(0.65 0.2 264.5);
+  --chart-3: oklch(0.35 0.15 257.4);
+  --chart-4: oklch(0.75 0.15 264.5);
+  --chart-5: oklch(0.85 0.1 264.5);
+  --sidebar: oklch(0.15 0.046 257.4);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.518 0.253 264.5);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.22 0.04 257.4);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.518 0.253 264.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+````
+
+## File: front/src/components/shared/EditPromotionModal.tsx
+````typescript
+"use client";
+
+import React, { useState, useEffect } from "react";
+import {
+  X,
+  Check,
+  Plus,
+  Trash2,
+  Calendar,
+  Package,
+  Users,
+  Loader2,
+  ImageIcon,
+} from "lucide-react";
+import { updatePromotionAction } from "@/app/actions/updatePromotionAction";
+
+export interface PromotionData {
+  id: string;
+  name: string;
+  sellerId: string;
+  description?: string | null;
+  requirements?: string | null;
+  stock: number;
+  limitPerUser: number;
+  endTime: string;
+  images: string[];
+}
+
+interface EditPromotionModalProps {
+  promotion: PromotionData;
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+interface LocalFilePreview {
+  id: string;
+  file: File;
+  previewUrl: string;
+}
+
+export function EditPromotionModal({
+  promotion,
+  isOpen,
+  onClose,
+  onSuccess,
+}: EditPromotionModalProps) {
+  const formatForInput = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16);
+  };
+
+  const [form, setForm] = useState({
+    description: promotion?.description || "",
+    requirements: promotion?.requirements || "",
+    stock: promotion?.stock || 1,
+    limitPerUser: promotion?.limitPerUser || 1,
+    endTime: formatForInput(promotion?.endTime),
+  });
+
+  const [existingImages, setExistingImages] = useState<string[]>(
+    promotion?.images || [],
+  );
+
+  const [newFiles, setNewFiles] = useState<LocalFilePreview[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (promotion && isOpen) {
+      setForm({
+        description: promotion.description || "",
+        requirements: promotion.requirements || "",
+        stock: promotion.stock,
+        limitPerUser: promotion.limitPerUser,
+        endTime: formatForInput(promotion.endTime),
+      });
+      setExistingImages(promotion.images || []);
+      setNewFiles([]);
+      setErrorMessage(null);
+    }
+  }, [promotion, isOpen]);
+
+  const cleanupPreviews = () => {
+    newFiles.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+  };
+
+  const handleClose = () => {
+    cleanupPreviews();
+    setNewFiles([]);
+    setErrorMessage(null);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const newEntries: LocalFilePreview[] = Array.from(files).map((file) => ({
+      id: Math.random().toString(36).substring(2, 9),
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    setNewFiles((prev) => [...prev, ...newEntries]);
+    e.target.value = "";
+  };
+
+  const handleRemoveExistingImage = (urlToRemove: string) => {
+    setExistingImages((prev) => prev.filter((url) => url !== urlToRemove));
+  };
+
+  const handleRemoveNewFile = (idToRemove: string) => {
+    setNewFiles((prev) => {
+      const fileToRemove = prev.find((item) => item.id === idToRemove);
+      if (fileToRemove) {
+        URL.revokeObjectURL(fileToRemove.previewUrl);
+      }
+      return prev.filter((item) => item.id !== idToRemove);
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (existingImages.length === 0 && newFiles.length === 0) {
+      setErrorMessage("A promoção deve conter pelo menos uma foto.");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage(null);
+
+    // Estruturação do FormData contendo todos os dados textuais e binários
+    const formData = new FormData();
+    formData.append("sellerId", promotion.sellerId);
+    formData.append("description", form.description);
+    formData.append("requirements", form.requirements);
+    formData.append("stock", String(form.stock));
+    formData.append("limitPerUser", String(form.limitPerUser));
+    formData.append("endTime", new Date(form.endTime).toISOString());
+
+    // Anexa as URLs mantidas
+    existingImages.forEach((url) => {
+      formData.append("existingImages", url);
+    });
+
+    // Anexa os novos arquivos binários para upload
+    newFiles.forEach((item) => {
+      formData.append("files", item.file);
+    });
+
+    try {
+      console.log("=== CONTEÚDO DO FORMDATA ENVIADO ===");
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`📁 File [${key}]:`, {
+            name: value.name,
+            size: value.size,
+            type: value.type,
+          });
+        } else {
+          console.log(`📝 Text [${key}]:`, value);
+        }
+      }
+      const res = await updatePromotionAction(promotion.id, formData);
+
+      if (res.success) {
+        cleanupPreviews();
+        if (onSuccess) onSuccess();
+        onClose();
+      } else {
+        const errorMsg = Array.isArray(res.error)
+          ? res.error.join(", ")
+          : res.error;
+        setErrorMessage(errorMsg || "Erro ao salvar alterações.");
+      }
+    } catch (err) {
+      setErrorMessage("Erro inesperado ao salvar os dados.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+      onClick={() => !loading && handleClose()}
+    >
+      <div
+        className="bg-white border border-slate-100 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between shrink-0">
+          <div>
+            <h3 className="text-base font-bold text-slate-950">
+              Editar Promoção
+            </h3>
+            <p className="text-xs font-medium text-slate-500 truncate max-w-[280px]">
+              {promotion.name}
+            </p>
+          </div>
+          <button
+            type="button"
+            disabled={loading}
+            onClick={handleClose}
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-all disabled:opacity-50 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+          {errorMessage && (
+            <div className="p-3 text-xs bg-red-50 text-red-600 rounded-xl border border-red-100">
+              {errorMessage}
+            </div>
+          )}
+
+          {/* GALERIA DE FOTOS */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                <ImageIcon className="w-3.5 h-3.5 text-slate-500" />
+                Galeria de Imagens ({existingImages.length + newFiles.length})
+              </label>
+              <label className="text-xs font-bold text-blue-600 hover:text-blue-700 cursor-pointer flex items-center gap-1">
+                <Plus className="w-3.5 h-3.5" />
+                <span>Adicionar fotos</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  disabled={loading}
+                  onChange={handleAddImages}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-200/80 min-h-[110px]">
+              {existingImages.map((url, idx) => (
+                <div
+                  key={`existing-${idx}`}
+                  className="relative group w-full h-24 bg-slate-200 rounded-xl overflow-hidden border border-slate-300/60 shadow-sm"
+                >
+                  <img
+                    src={url}
+                    alt={`Foto ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handleRemoveExistingImage(url)}
+                    className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 shadow-md"
+                    title="Excluir foto"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+
+              {newFiles.map((item) => (
+                <div
+                  key={item.id}
+                  className="relative group w-full h-24 bg-slate-200 rounded-xl overflow-hidden border-2 border-blue-400 shadow-sm"
+                >
+                  <img
+                    src={item.previewUrl}
+                    alt="Nova foto"
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute bottom-1 left-1 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                    Nova
+                  </span>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handleRemoveNewFile(item.id)}
+                    className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 shadow-md"
+                    title="Remover foto"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+
+              {existingImages.length === 0 && newFiles.length === 0 && (
+                <label className="col-span-3 flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-100/60 transition-colors">
+                  <Plus className="w-6 h-6 text-slate-400 mb-1" />
+                  <span className="text-xs text-slate-500 font-medium">
+                    Clique para adicionar imagens
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={loading}
+                    onChange={handleAddImages}
+                    className="hidden"
+                  />
+                </label>
+              )}
+            </div>
+          </div>
+
+          {/* Descrição */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              Descrição
+            </label>
+            <textarea
+              rows={3}
+              value={form.description}
+              disabled={loading}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 transition-all resize-none disabled:opacity-60"
+              placeholder="Detalhes adicionais..."
+            />
+          </div>
+
+          {/* Requisitos */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              Requisitos (Opcional)
+            </label>
+            <input
+              type="text"
+              value={form.requirements}
+              disabled={loading}
+              onChange={(e) =>
+                setForm({ ...form, requirements: e.target.value })
+              }
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 transition-all disabled:opacity-60"
+              placeholder="Ex: Apresentar documento com foto..."
+            />
+          </div>
+
+          {/* Estoque e Limite */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Estoque Total
+              </label>
+              <div className="relative">
+                <Package className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="number"
+                  min={1}
+                  value={form.stock}
+                  disabled={loading}
+                  onChange={(e) =>
+                    setForm({ ...form, stock: Number(e.target.value) })
+                  }
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 disabled:opacity-60"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Limite / Cliente
+              </label>
+              <div className="relative">
+                <Users className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="number"
+                  min={1}
+                  value={form.limitPerUser}
+                  disabled={loading}
+                  onChange={(e) =>
+                    setForm({ ...form, limitPerUser: Number(e.target.value) })
+                  }
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 disabled:opacity-60"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Fim da Oferta */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              Prorrogar Fim da Oferta
+            </label>
+            <div className="relative">
+              <Calendar className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="datetime-local"
+                value={form.endTime}
+                disabled={loading}
+                onChange={(e) => setForm({ ...form, endTime: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 disabled:opacity-60"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="pt-3 flex gap-2 shrink-0">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={handleClose}
+              className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all disabled:opacity-50 cursor-pointer"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 disabled:opacity-50 cursor-pointer"
+            >
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  <Check className="w-4 h-4" />
+                  Salvar Alterações
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/RegisterStepperClient.tsx
+````typescript
+"use client";
+
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+import {
+  stepOneSchemaClient,
+  stepTwoSchemaClient,
+} from "../../schemas/register-client-schema";
+import { useRouter } from "next/navigation";
+import { registerCustomerAction } from "@/app/actions/auth";
+
+export function RegisterStepperFormClient() {
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  // 1. Estado limpo focado puramente nos dados do Cliente comprador
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    avatarFile: null as File | null,
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  // 2. Atualização dinâmica dos inputs simples
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+
+    // 1. Criamos o objeto FormData nativo do navegador
+    const data = new FormData();
+
+    // 2. Anexamos os textos usando as chaves exatas que o seu NestJS espera no DTO
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("password", formData.password);
+
+    // 3. Se o usuário escolheu uma foto, anexamos o arquivo bruto
+    // Mude o primeiro parâmetro ("avatar") para o nome exato que o seu NestJS @UploadedFile('campo') espera!
+    if (formData.avatarFile) {
+      data.append("avatar", formData.avatarFile);
+    }
+
+    // 4. Envia o FormData para a Server Action
+    const result = await registerCustomerAction(data);
+
+    setLoading(false);
+
+    if (result.success) {
+      alert("Cadastro do cliente realizado com sucesso!");
+      router.push("/login"); // 🔀 Redireciona o cliente para fazer o primeiro login
+    } else {
+      alert(result.error || "Erro ao efetuar o cadastro.");
+    }
+  };
+
+  const nextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // --- VALIDAÇÃO DA ETAPA 1 (Dados principais) ---
+    if (currentStep === 1) {
+      const validacao = stepOneSchemaClient.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação nos dados principais";
+        alert(primeiroErro);
+        return; // Trava o avanço
+      }
+
+      setCurrentStep(2);
+      return;
+    }
+
+    // // --- VALIDAÇÃO DA ETAPA 2 (Termos e Condições) ---
+    if (currentStep === 2) {
+      const validacao = stepTwoSchemaClient.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Você precisa aceitar os termos para continuar.";
+        alert(primeiroErro);
+        return;
+      }
+
+      // Se passou da etapa 2, envia os dados pro banco
+      handleFinalSubmit();
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep((prev) => prev - 1);
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-6 text-center">
+      {/* Cabeçalho */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-black text-black tracking-tight ">
+          Seja bem vindo, cliente amigo!
+        </h1>
+        <p className="text-sm font-medium text-neutral-500">
+          Preencha os dados para começar a resgatar ofertas:
+        </p>
+
+        {/* Stepper Simplificado de 2 Etapas */}
+        <div className="relative flex items-center justify-between w-32 mx-auto py-4">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-200 z-0 rounded-full" />
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black z-0 transition-all duration-300 rounded-full"
+            style={{ width: `${((currentStep - 1) / 1) * 100}%` }}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${
+              currentStep >= 1
+                ? "bg-black border-black"
+                : "bg-neutral-200 border-neutral-200"
+            }`}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${
+              currentStep === 2
+                ? "bg-black border-black"
+                : "bg-neutral-200 border-neutral-200"
+            }`}
+          />
+        </div>
+      </div>
+
+      {/* Card do Formulário */}
+      <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
+        <CardContent className="p-0">
+          <form onSubmit={nextStep} className="space-y-5">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-400 text-center pb-2">
+              {currentStep === 1 && "Passo 1: Identificação"}
+              {currentStep === 2 && "Passo 2: Termos de Uso"}
+            </h2>
+
+            {/* ETAPA 1: Cadastro completo do Cliente */}
+            {currentStep === 1 && (
+              <div className="space-y-4 animate-in fade-in duration-200">
+                {/* UPLOAD DA FOTO DE PERFIL */}
+                <div className="flex flex-col items-center space-y-2 pb-2">
+                  <label
+                    htmlFor="avatar"
+                    className="w-24 h-24 rounded-full bg-neutral-200 hover:bg-neutral-300 transition-colors cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-300 group relative"
+                  >
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-[10px] font-black text-neutral-500 uppercase tracking-wider group-hover:text-black transition-colors">
+                        Adicionar
+                      </span>
+                    )}
+                    <input
+                      id="avatar"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setAvatarPreview(URL.createObjectURL(file));
+                          setFormData((prev) => ({
+                            ...prev,
+                            avatarFile: file,
+                          }));
+                        }
+                      }}
+                    />
+                  </label>
+                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                    Foto de perfil
+                  </span>
+                </div>
+
+                {/* CAMPO: Nome Completo */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="name"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Nome completo:
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Digite seu nome completo"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+                  />
+                </div>
+
+                {/* CAMPO: Telefone */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="phone"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Telefone:
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    required
+                    placeholder="(11) 99999-9999"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+                  />
+                </div>
+
+                {/* CAMPO: Email */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="email"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Email:
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="seu@email.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+                  />
+                </div>
+
+                {/* CAMPO: Senha com Olhinho */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="password"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Senha:
+                  </Label>
+                  <div className="relative flex items-center">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="rounded-full bg-neutral-200 border-none h-11 pl-5 pr-12 text-black w-full focus-visible:ring-2 focus-visible:ring-black"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-colors rounded-full focus:outline-none"
+                    >
+                      {showPassword ? (
+                        <Eye className="h-5 w-5" />
+                      ) : (
+                        <EyeOff className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ETAPA 2: Termos e Condições */}
+            {currentStep === 2 && (
+              <div className="space-y-4 animate-in fade-in duration-200 py-6 text-center">
+                <div className="max-w-md mx-auto space-y-3">
+                  <h3 className="text-lg font-black uppercase tracking-tight">
+                    Termos e Condições
+                  </h3>
+                  <p className="text-sm text-neutral-500 leading-relaxed">
+                    [Texto legal, políticas de privacidade e regras de resgate
+                    do PromoDay serão inseridos aqui futuramente...]
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* BARRA DE BOTÕES DE NAVEGAÇÃO */}
+            <div className="flex items-center justify-between pt-4 border-t border-neutral-200/50">
+              {currentStep > 1 ? (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="text-sm font-bold text-neutral-500 hover:text-black hover:underline transition-colors ml-2"
+                >
+                  Voltar
+                </button>
+              ) : (
+                <div />
+              )}
+
+              <Button
+                type="submit"
+                className="rounded-full bg-black hover:bg-neutral-900 text-white px-8 h-10 font-bold text-sm transition-all"
+              >
+                {currentStep === 2 ? "Finalizar" : "Continuar"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/SellerProfileCard.tsx
+````typescript
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Pencil,
+  Store,
+  ShoppingBag,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Tag,
+  Camera,
+  X,
+  Check,
+  Building2,
+  Loader2,
+  AlertCircle,
+  ChevronDown,
+  Sparkles,
+  Calendar,
+  Layers,
+} from "lucide-react";
+import { formatBusinessHours } from "@/utils/formatHours";
+import {
+  updateProfileSellerAction,
+  SellerProfileData,
+} from "@/app/actions/sellerProfileActions";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSellerMetrics } from "@/hooks/useSellerMetrics";
+
+export type DayKey =
+  | "segunda"
+  | "terca"
+  | "quarta"
+  | "quinta"
+  | "sexta"
+  | "sabado"
+  | "domingo";
+
+export interface DaySchedule {
+  aberto: boolean;
+  inicio: string;
+  fim: string;
+}
+
+export type BusinessHoursState = Record<DayKey, DaySchedule>;
+
+const DAY_LABELS: Record<DayKey, string> = {
+  segunda: "Segunda-feira",
+  terca: "Terça-feira",
+  quarta: "Quarta-feira",
+  quinta: "Quinta-feira",
+  sexta: "Sexta-feira",
+  sabado: "Sábado",
+  domingo: "Domingo",
+};
+
+const DAY_KEYS_ORDER: DayKey[] = [
+  "segunda",
+  "terca",
+  "quarta",
+  "quinta",
+  "sexta",
+  "sabado",
+  "domingo",
+];
+
+const JS_DAY_MAP: Record<number, DayKey> = {
+  0: "domingo",
+  1: "segunda",
+  2: "terca",
+  3: "quarta",
+  4: "quinta",
+  5: "sexta",
+  6: "sabado",
+};
+
+const DEFAULT_HOURS: BusinessHoursState = {
+  segunda: { aberto: true, inicio: "08:00", fim: "18:00" },
+  terca: { aberto: true, inicio: "08:00", fim: "18:00" },
+  quarta: { aberto: true, inicio: "08:00", fim: "18:00" },
+  quinta: { aberto: true, inicio: "08:00", fim: "18:00" },
+  sexta: { aberto: true, inicio: "08:00", fim: "18:00" },
+  sabado: { aberto: false, inicio: "09:00", fim: "13:00" },
+  domingo: { aberto: false, inicio: "00:00", fim: "00:00" },
+};
+
+function parseBusinessHours(
+  hoursInput: string | object | null | undefined,
+): BusinessHoursState {
+  if (!hoursInput) return DEFAULT_HOURS;
+
+  let parsed = hoursInput;
+
+  if (typeof hoursInput === "string") {
+    try {
+      parsed = JSON.parse(hoursInput);
+    } catch {
+      return DEFAULT_HOURS;
+    }
+  }
+
+  if (typeof parsed === "object" && parsed !== null) {
+    const merged = { ...DEFAULT_HOURS };
+
+    Object.keys(parsed).forEach((key) => {
+      const lowerKey = key.toLowerCase() as DayKey;
+      if (lowerKey in merged) {
+        merged[lowerKey] = {
+          ...merged[lowerKey],
+          ...(parsed as Record<string, Partial<DaySchedule>>)[key],
+        };
+      }
+    });
+
+    return merged;
+  }
+
+  return DEFAULT_HOURS;
+}
+
+interface SellerProfileCardProps {
+  avatarUrl?: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  businessHours: string;
+  category: string;
+  isSubmitting?: boolean;
+  onSaveProfile?: (data: Partial<SellerProfileData>) => void;
+}
+
+export function SellerProfileCard({
+  avatarUrl: initialAvatar,
+  name: initialName,
+  email,
+  phone: initialPhone,
+  address: initialAddress,
+  businessHours: initialBusinessHours,
+  category: initialCategory,
+  onSaveProfile,
+}: SellerProfileCardProps) {
+  const { updateUser } = useAuth();
+  const { metrics, isLoading: isLoadingMetrics, isError: isMetricsError } =
+    useSellerMetrics();
+
+  const [sellerData, setSellerData] = useState({
+    name: initialName || "Seller sem nome",
+    phone: initialPhone || "Não informado",
+    address: initialAddress || "Endereço não informado",
+    businessHours: initialBusinessHours || "",
+    category: initialCategory || "Geral",
+    avatarUrl: initialAvatar,
+  });
+
+  useEffect(() => {
+    setSellerData({
+      name: initialName || "Seller sem nome",
+      phone: initialPhone || "Não informado",
+      address: initialAddress || "Endereço não informado",
+      businessHours: initialBusinessHours || "",
+      category: initialCategory || "Geral",
+      avatarUrl: initialAvatar,
+    });
+  }, [
+    initialName,
+    initialPhone,
+    initialAddress,
+    initialBusinessHours,
+    initialCategory,
+    initialAvatar,
+  ]);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState<"general" | "hours">("general");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showFullSchedule, setShowFullSchedule] = useState(false);
+
+  // Estados para o formulário
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: sellerData.name,
+    phone: sellerData.phone,
+    address: sellerData.address,
+    category: sellerData.category,
+    avatarUrl: sellerData.avatarUrl,
+    businessHours: parseBusinessHours(sellerData.businessHours),
+  });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isEditing && !isSubmitting) {
+        setIsEditing(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isEditing, isSubmitting]);
+
+  const handleOpenEdit = () => {
+    setSelectedFile(null);
+    setErrorMessage(null);
+    setActiveTab("general");
+    setEditForm({
+      name: sellerData.name,
+      phone: sellerData.phone,
+      address: sellerData.address,
+      category: sellerData.category,
+      avatarUrl: sellerData.avatarUrl,
+      businessHours: parseBusinessHours(sellerData.businessHours),
+    });
+    setIsEditing(true);
+  };
+
+  const handleHoursChange = (
+    dia: DayKey,
+    campo: "aberto" | "inicio" | "fim",
+    valor: boolean | string,
+  ) => {
+    setEditForm((prev) => ({
+      ...prev,
+      businessHours: {
+        ...prev.businessHours,
+        [dia]: {
+          ...prev.businessHours[dia],
+          [campo]: valor,
+        },
+      },
+    }));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setEditForm((prev) => ({ ...prev, avatarUrl: previewUrl }));
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    const jsonBusinessHours = JSON.stringify(editForm.businessHours);
+
+    const formData = new FormData();
+    formData.append("name", editForm.name);
+    formData.append("phone", editForm.phone);
+    formData.append("address", editForm.address);
+    formData.append("category", editForm.category);
+    formData.append("businessHours", jsonBusinessHours);
+
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    try {
+      const response = await updateProfileSellerAction(formData);
+
+      if (response.success) {
+        const newAvatarUrl = response.data?.avatarUrl || editForm.avatarUrl;
+
+        const updatedData = {
+          name: editForm.name,
+          phone: editForm.phone,
+          address: editForm.address,
+          category: editForm.category,
+          avatarUrl: newAvatarUrl,
+          businessHours: jsonBusinessHours,
+        };
+
+        setSellerData(updatedData);
+        setIsEditing(false);
+
+        updateUser({
+          name: updatedData.name,
+          phone: updatedData.phone,
+          address: updatedData.address,
+          businessHours: updatedData.businessHours,
+          category: updatedData.category,
+          avatarUrl: updatedData.avatarUrl,
+        });
+
+        if (onSaveProfile) {
+          onSaveProfile(updatedData);
+        }
+      } else {
+        setErrorMessage(
+          response.error?.message ||
+          response.error ||
+          "Não foi possível atualizar o perfil.",
+        );
+      }
+    } catch (error: any) {
+      setErrorMessage(
+        error?.message || "Ocorreu um erro inesperado ao salvar os dados.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Status de funcionamento em tempo real
+  const currentHoursParsed = useMemo(() => {
+    return parseBusinessHours(sellerData.businessHours);
+  }, [sellerData.businessHours]);
+
+  const isStoreOpenNow = useMemo(() => {
+    const now = new Date();
+    const currentDayKey = JS_DAY_MAP[now.getDay()];
+    const todaySchedule = currentHoursParsed[currentDayKey];
+
+    if (!todaySchedule || !todaySchedule.aberto) return false;
+
+    const currentTimeStr = `${String(now.getHours()).padStart(2, "0")}:${String(
+      now.getMinutes(),
+    ).padStart(2, "0")}`;
+
+    return (
+      currentTimeStr >= todaySchedule.inicio &&
+      currentTimeStr <= todaySchedule.fim
+    );
+  }, [currentHoursParsed]);
+
+  return (
+    <>
+      {/* PAINEL PRINCIPAL DE PERFIL DO VENDEDOR (MINIMALISTA & MODERNO) */}
+      <div className="w-full max-w-4xl flex flex-col gap-5">
+
+        {/* HERO CARD COM IDENTIDADE VISUAL */}
+        <Card className="relative overflow-hidden bg-card border border-border/70 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+
+          {/* Top Banner Accent Sutil */}
+          <div className="h-28 w-full bg-gradient-to-r from-primary/15 via-primary/5 to-transparent relative border-b border-border/40">
+            <div className="absolute inset-0 bg-[radial-gradient(#144ae0_1px,transparent_1px)] [background-size:16px_16px] opacity-20" />
+
+            {/* Tag de Conta de Vendedor Verificada */}
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-background/80 backdrop-blur-md border border-border/60 text-foreground shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
+                Painel do Lojista
+              </span>
+            </div>
+          </div>
+
+          <CardContent className="px-6 pb-6 pt-0 sm:px-8 sm:pb-8">
+            {/* Header: Avatar, Identidade e Ação */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 -mt-12 mb-6">
+
+              {/* Avatar Squircle de Alto Padrão */}
+              <div className="flex items-end gap-4">
+                <div className="relative group">
+                  <div className="w-24 h-24 rounded-3xl bg-background border-4 border-card shadow-lg flex items-center justify-center overflow-hidden shrink-0">
+                    {sellerData.avatarUrl ? (
+                      <img
+                        src={sellerData.avatarUrl}
+                        alt={sellerData.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-muted flex items-center justify-center">
+                        <span className="text-foreground font-black text-2xl uppercase tracking-wider">
+                          {sellerData.name.substring(0, 2)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Status Indicator Dot */}
+                  <span
+                    className={`absolute bottom-1 right-1 w-4 h-4 rounded-full border-2 border-card ${isStoreOpenNow ? "bg-emerald-500" : "bg-muted-foreground/40"
+                      }`}
+                    title={isStoreOpenNow ? "Loja aberta agora" : "Loja fechada"}
+                  />
+                </div>
+
+                {/* Título & Categoria (Mobile Stack / Desktop Row) */}
+                <div className="pb-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                      {sellerData.name}
+                    </h1>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-primary/10 text-primary px-2.5 py-0.5 rounded-full border border-primary/20 capitalize">
+                      <Tag className="w-3 h-3" />
+                      {sellerData.category}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-1">
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-medium ${isStoreOpenNow
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-muted-foreground"
+                        }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${isStoreOpenNow ? "bg-emerald-500 animate-pulse" : "bg-muted-foreground/50"
+                          }`}
+                      />
+                      {isStoreOpenNow ? "Aberto agora" : "Fechado no momento"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botão de Edição Primário */}
+              <button
+                type="button"
+                onClick={handleOpenEdit}
+                className="w-full sm:w-auto h-10 px-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xs hover:shadow active:scale-[0.98] cursor-pointer"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+                <span>Editar Estabelecimento</span>
+              </button>
+            </div>
+
+            {/* GRID DE INFORMAÇÕES DE CONTATO E HORÁRIOS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4 border-t border-border/50">
+
+              {/* E-mail */}
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-background border border-border/60 flex items-center justify-center text-muted-foreground shrink-0 shadow-2xs">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    E-mail de Contato
+                  </span>
+                  <span className="text-xs font-medium text-foreground truncate mt-0.5">
+                    {email}
+                  </span>
+                </div>
+              </div>
+
+              {/* Telefone */}
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-background border border-border/60 flex items-center justify-center text-muted-foreground shrink-0 shadow-2xs">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    Telefone / WhatsApp
+                  </span>
+                  <span className="text-xs font-medium text-foreground truncate mt-0.5">
+                    {sellerData.phone}
+                  </span>
+                </div>
+              </div>
+
+              {/* Endereço */}
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors md:col-span-2">
+                <div className="w-9 h-9 rounded-xl bg-background border border-border/60 flex items-center justify-center text-muted-foreground shrink-0 shadow-2xs">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    Localização da Loja
+                  </span>
+                  <span className="text-xs font-medium text-foreground truncate mt-0.5">
+                    {sellerData.address}
+                  </span>
+                </div>
+              </div>
+
+              {/* Horários (Accordion Interativo Minimalista) */}
+              <div className="flex flex-col p-3.5 rounded-2xl bg-muted/30 border border-border/40 md:col-span-2 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-9 h-9 rounded-xl bg-background border border-border/60 flex items-center justify-center text-primary shrink-0 shadow-2xs">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                        Horários de Atendimento
+                      </span>
+                      <span className="text-xs font-semibold text-foreground truncate mt-0.5">
+                        {formatBusinessHours(sellerData.businessHours)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowFullSchedule(!showFullSchedule)}
+                    className="px-2.5 py-1 text-[11px] font-semibold text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/15 rounded-lg border border-primary/20 transition-all flex items-center gap-1 cursor-pointer shrink-0 ml-2"
+                  >
+                    <span>{showFullSchedule ? "Recolher" : "Ver semana"}</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${showFullSchedule ? "rotate-180" : ""
+                        }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Lista Sanfona de Horários da Semana */}
+                {showFullSchedule && (
+                  <div className="mt-3 pt-3 border-t border-border/60 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs animate-in fade-in duration-200">
+                    {DAY_KEYS_ORDER.map((dayKey) => {
+                      const daySchedule = currentHoursParsed[dayKey];
+                      const isToday =
+                        JS_DAY_MAP[new Date().getDay()] === dayKey;
+
+                      return (
+                        <div
+                          key={dayKey}
+                          className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors ${isToday
+                            ? "bg-primary/10 font-semibold text-primary border border-primary/20"
+                            : "bg-background/60 border border-border/40 text-muted-foreground"
+                            }`}
+                        >
+                          <span className="capitalize text-xs">
+                            {DAY_LABELS[dayKey]} {isToday && "(Hoje)"}
+                          </span>
+                          {daySchedule?.aberto ? (
+                            <span className="font-medium text-foreground text-xs">
+                              {daySchedule.inicio} às {daySchedule.fim}
+                            </span>
+                          ) : (
+                            <span className="italic text-muted-foreground/70 text-xs">
+                              Fechado
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* STAT CARDS / MÉTRICAS DE PERFORMANCE DO LOJISTA */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          {/* Card: Total de Promoções */}
+          <div className="group relative overflow-hidden bg-card border border-border/70 rounded-3xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <Store className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Ofertas Publicadas
+                </span>
+                <span className="text-2xl font-black text-foreground tabular-nums tracking-tight mt-0.5">
+                  {isLoadingMetrics ? (
+                    <span className="animate-pulse text-muted-foreground">...</span>
+                  ) : isMetricsError ? (
+                    <span className="text-destructive text-sm font-medium">Erro</span>
+                  ) : (
+                    (metrics?.totalPromotions ?? 0)
+                  )}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Card: Total de Vendas */}
+          <div className="group relative overflow-hidden bg-card border border-border/70 rounded-3xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <ShoppingBag className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Cupons Validados
+                </span>
+                <span className="text-2xl font-black text-foreground tabular-nums tracking-tight mt-0.5">
+                  {isLoadingMetrics ? (
+                    <span className="animate-pulse text-muted-foreground">...</span>
+                  ) : isMetricsError ? (
+                    <span className="text-destructive text-sm font-medium">Erro</span>
+                  ) : (
+                    (metrics?.totalSales ?? 0)
+                  )}
+                </span>
+              </div>
+            </div>
+            <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+              Vendas
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* MODAL DE EDIÇÃO MINIMALISTA & ESTRUTURADO */}
+      {isEditing && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md p-4 animate-in fade-in duration-200"
+          onClick={() => !isSubmitting && setIsEditing(false)}
+        >
+          <div
+            className="bg-card text-card-foreground border border-border w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header Modal com Abas */}
+            <div className="px-6 pt-5 pb-3 border-b border-border/60 shrink-0">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    Configurações do Estabelecimento
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Gerencie os dados cadastrais e horários da sua loja
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => setIsEditing(false)}
+                  className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Segmented Control / Tabs */}
+              <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/60">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("general")}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeTab === "general"
+                    ? "bg-background text-foreground shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground"
+                    }`}
+                >
+                  <Building2 className="w-3.5 h-3.5" />
+                  <span>Dados Gerais</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("hours")}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeTab === "hours"
+                    ? "bg-background text-foreground shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground"
+                    }`}
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Horários</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Form Content */}
+            <form onSubmit={handleSave} className="flex flex-col flex-1 overflow-hidden">
+              <div className="p-6 space-y-4 overflow-y-auto flex-1">
+
+                {/* Banner de Erro Inline */}
+                {errorMessage && (
+                  <div className="flex items-center gap-2 p-3 text-xs bg-destructive/10 text-destructive rounded-xl border border-destructive/20 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
+                {/* TAB 1: DADOS GERAIS */}
+                {activeTab === "general" && (
+                  <div className="space-y-4 animate-in fade-in duration-150">
+                    {/* Upload de Avatar */}
+                    <div className="flex flex-col items-center justify-center pb-2">
+                      <div className="relative group cursor-pointer">
+                        <div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center overflow-hidden border-2 border-border shadow-sm">
+                          {editForm.avatarUrl ? (
+                            <img
+                              src={editForm.avatarUrl}
+                              alt="Preview"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-foreground font-bold text-xl uppercase">
+                              {editForm.name.substring(0, 2)}
+                            </span>
+                          )}
+                        </div>
+                        <label className="absolute inset-0 bg-background/70 backdrop-blur-xs rounded-2xl flex items-center justify-center text-foreground opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                          <Camera className="w-5 h-5" />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            disabled={isSubmitting}
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                      <span className="text-[11px] text-muted-foreground mt-2 font-medium">
+                        Clique para alterar o logo da loja
+                      </span>
+                    </div>
+
+                    {/* Nome da Loja */}
+                    <div>
+                      <label className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                        Nome da Loja
+                      </label>
+                      <div className="relative">
+                        <Building2 className="w-4 h-4 text-muted-foreground/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          disabled={isSubmitting}
+                          value={editForm.name}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, name: e.target.value })
+                          }
+                          className="w-full bg-muted/40 border border-border focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-foreground outline-none transition-all disabled:opacity-60"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Categoria & Telefone */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                          Categoria
+                        </label>
+                        <select
+                          disabled={isSubmitting}
+                          value={editForm.category}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, category: e.target.value })
+                          }
+                          className="w-full bg-muted/40 border border-border focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 rounded-xl py-2.5 px-3 text-sm font-medium text-foreground outline-none transition-all disabled:opacity-60 capitalize cursor-pointer"
+                          required
+                        >
+                          <option value="" disabled>
+                            Selecione...
+                          </option>
+                          <option value="alimentacao">Alimentação / Restaurante</option>
+                          <option value="vestuario">Vestuário / Roupas</option>
+                          <option value="servicos">Prestação de Serviços</option>
+                          <option value="outros">Outros</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                          Telefone
+                        </label>
+                        <div className="relative">
+                          <Phone className="w-4 h-4 text-muted-foreground/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                          <input
+                            type="text"
+                            disabled={isSubmitting}
+                            value={editForm.phone}
+                            onChange={(e) =>
+                              setEditForm({ ...editForm, phone: e.target.value })
+                            }
+                            className="w-full bg-muted/40 border border-border focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-foreground outline-none transition-all disabled:opacity-60"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Endereço */}
+                    <div>
+                      <label className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                        Endereço Completo
+                      </label>
+                      <div className="relative">
+                        <MapPin className="w-4 h-4 text-muted-foreground/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          disabled={isSubmitting}
+                          value={editForm.address}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, address: e.target.value })
+                          }
+                          className="w-full bg-muted/40 border border-border focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-foreground outline-none transition-all disabled:opacity-60"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 2: HORÁRIOS DE ATENDIMENTO */}
+                {activeTab === "hours" && (
+                  <div className="space-y-3 animate-in fade-in duration-150">
+                    <p className="text-xs text-muted-foreground">
+                      Configure os horários de abertura e fechamento para cada dia da semana:
+                    </p>
+
+                    <div className="space-y-2">
+                      {DAY_KEYS_ORDER.map((dia) => {
+                        const infoDia = editForm.businessHours[dia];
+                        return (
+                          <div
+                            key={dia}
+                            className="flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded-xl border border-border/60 bg-muted/20 hover:bg-muted/40 transition-colors gap-2"
+                          >
+                            <label
+                              htmlFor={`edit-check-${dia}`}
+                              className="flex items-center gap-2.5 cursor-pointer select-none"
+                            >
+                              <input
+                                type="checkbox"
+                                id={`edit-check-${dia}`}
+                                disabled={isSubmitting}
+                                checked={infoDia.aberto}
+                                onChange={(e) =>
+                                  handleHoursChange(
+                                    dia,
+                                    "aberto",
+                                    e.target.checked,
+                                  )
+                                }
+                                className="w-4 h-4 accent-primary rounded cursor-pointer"
+                              />
+                              <span
+                                className={`text-xs font-semibold ${infoDia.aberto
+                                  ? "text-foreground"
+                                  : "text-muted-foreground/60"
+                                  }`}
+                              >
+                                {DAY_LABELS[dia]}
+                              </span>
+                            </label>
+
+                            {infoDia.aberto ? (
+                              <div className="flex items-center gap-1.5 self-end sm:self-auto">
+                                <input
+                                  type="time"
+                                  disabled={isSubmitting}
+                                  value={infoDia.inicio}
+                                  onChange={(e) =>
+                                    handleHoursChange(
+                                      dia,
+                                      "inicio",
+                                      e.target.value,
+                                    )
+                                  }
+                                  className="bg-background text-foreground text-xs font-semibold rounded-lg px-2 py-1 border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                                <span className="text-muted-foreground text-xs">
+                                  às
+                                </span>
+                                <input
+                                  type="time"
+                                  disabled={isSubmitting}
+                                  value={infoDia.fim}
+                                  onChange={(e) =>
+                                    handleHoursChange(dia, "fim", e.target.value)
+                                  }
+                                  className="bg-background text-foreground text-xs font-semibold rounded-lg px-2 py-1 border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                              </div>
+                            ) : (
+                              <span className="text-xs font-medium text-muted-foreground/60 self-end sm:self-auto pr-2">
+                                Fechado
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Sticky Footer com Ações */}
+              <div className="p-4 px-6 border-t border-border/60 bg-muted/10 flex items-center gap-3 shrink-0">
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 py-2.5 px-4 bg-muted hover:bg-muted/80 text-foreground font-semibold text-xs rounded-xl transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 py-2.5 px-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 cursor-pointer"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Salvando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Salvar Alterações</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+````
+
+## File: front/src/components/shared/SellerPromoActions.tsx
+````typescript
+"use client";
+
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Trash2, PauseCircle, PlayCircle, Edit } from "lucide-react";
+
+import { deletePromotionAction } from "@/app/actions/deletePromotionAction";
+import { pausePromotionAction } from "@/app/actions/pausePromotionAction";
+import {
+  EditPromotionModal,
+  PromotionData,
+} from "@/components/shared/EditPromotionModal";
+
+interface SellerPromoActionsProps {
+  productId: string;
+  isActive?: boolean;
+  promotion?: PromotionData; // 👈 Passamos os dados atuais da promoção
+  onUpdate?: () => void; // 👈 Opcional: callback para recarregar a lista (ex: SWR mutate)
+}
+
+export function SellerPromoActions({
+  productId,
+  isActive,
+  promotion,
+  onUpdate,
+}: SellerPromoActionsProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPausing, setIsPausing] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [activeState, setActiveState] = useState(isActive);
+
+  const handleDelete = async () => {
+    if (!window.confirm("Tem certeza que deseja excluir esta promoção?"))
+      return;
+
+    try {
+      setIsDeleting(true);
+      await deletePromotionAction(productId);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error("Erro ao excluir promoção:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handlePause = async () => {
+    try {
+      setIsPausing(true);
+      const res = await pausePromotionAction(productId);
+
+      if (res?.success) {
+        setActiveState((prev) => !prev);
+        if (onUpdate) onUpdate();
+      }
+    } catch (error) {
+      console.error("Erro ao alternar status da promoção:", error);
+    } finally {
+      setIsPausing(false);
+    }
+  };
+
+  return (
+    <>
+      <div className="w-full grid grid-cols-3 gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-destructive/30 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors cursor-pointer"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+          {isDeleting ? "..." : "Excluir"}
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handlePause}
+          disabled={isPausing}
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-border/80 hover:bg-accent transition-colors cursor-pointer"
+        >
+          {activeState ? (
+            <>
+              <PauseCircle className="w-3.5 h-3.5" />
+              {isPausing ? "..." : "Pausar"}
+            </>
+          ) : (
+            <>
+              <PlayCircle className="w-3.5 h-3.5 text-emerald-600" />
+              {isPausing ? "..." : "Ativar"}
+            </>
+          )}
+        </Button>
+
+        <Button
+          size="sm"
+          onClick={() => setIsEditOpen(true)}
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+        >
+          <Edit className="w-3.5 h-3.5" />
+          Editar
+        </Button>
+      </div>
+
+      {/* MODAL DE EDIÇÃO */}
+      {promotion && (
+        <EditPromotionModal
+          promotion={promotion}
+          isOpen={isEditOpen}
+          onClose={() => setIsEditOpen(false)}
+          onSuccess={onUpdate}
+        />
+      )}
+    </>
+  );
+}
+````
+
+## File: front/src/components/shared/ValidateCodeModal.tsx
+````typescript
+"use client";
+
+import { useState, useRef } from "react";
+// Assumindo que a action e as validações permanecem as mesmas
+import { validateClaimAction } from "@/app/actions/validate-claim";
+import {
+  QrCode,
+  Keyboard,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  Scan,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
+
+// Mantenho a interface intacta pois é tipagem
+interface ValidationResult {
+  success: boolean;
+  customerName?: string;
+  promotionName?: string;
+  quantity?: number;
+  message?: string;
+}
+
+export function ValidateCodeModal() {
+  // Lógica permanece inalterada
+  const [mode, setMode] = useState<"manual" | "scanner">("manual");
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<ValidationResult | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (value.length > 2) {
+      value = `${value.slice(0, 2)}-${value.slice(2, 8)}`;
+    }
+    setCode(value);
+  };
+
+  const handleValidate = async (codeToValidate?: string) => {
+    const targetCode = codeToValidate || code;
+    if (!targetCode || targetCode.length < 9) return;
+
+    setLoading(true);
+    setResult(null);
+
+    const res = await validateClaimAction(targetCode);
+
+    setLoading(false);
+
+    if (res.success && res.data) {
+      setResult({
+        success: true,
+        customerName: res.data.user?.name || "Cliente",
+        promotionName: res.data.promotion?.name || "Promoção",
+        quantity: res.data.quantity || 1,
+        message: res.message || "Cupom validado com sucesso.",
+      });
+    } else {
+      setResult({
+        success: false,
+        message: res.message || "Código inválido ou expirado.",
+      });
+    }
+  };
+
+  const handleReset = () => {
+    setCode("");
+    setResult(null);
+    if (mode === "manual") {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  };
+
+  // --- INÍCIO DA REESTILIZAÇÃO VISUAL ---
+  // Cores aplicadas baseadas no tema Claro (Light Mode) fornecido:
+  // Fundo: #FAFAFA, Card: #FFFFFF, Texto Principal: #070F22, Primária: #144AE0
+
+  return (
+    // Container Principal: Agora branco, com sombra suave e bordas sutis (Light Mode)
+    <div className="w-full max-w-lvh mx-auto bg-white border border-slate-100 rounded-3xl shadow-xl shadow-slate-950/5 overflow-hidden font-sans">
+      {/* Header do Card: Fundo levemente cinza (#FAFAFA), divisória sutil */}
+      <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            {/* Ícone: Fundo suave e cor Primária (#144AE0) */}
+            <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+              <Zap className="w-5 h-5" />
+            </div>
+            <div>
+              {/* Título: Texto Escuro (#070F22) */}
+              <h2 className="text-xl font-bold text-slate-950 tracking-tight leading-tight">
+                Validar Cupom
+              </h2>
+              {/* Subtítulo: Texto secundário (cinza) */}
+              <p className="text-sm text-slate-600">
+                Central de verificação do parceiro
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Abas de Alternância: Fundo cinza claro, visual 'pílula' */}
+        <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/70">
+          <button
+            onClick={() => {
+              setMode("manual");
+              setResult(null);
+            }}
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+              mode === "manual"
+                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50" // Ativo: Branco, texto Primária
+                : "text-slate-600 hover:text-slate-900 hover:bg-white/50" // Inativo: Texto cinza
+            }`}
+          >
+            <Keyboard className="w-4 h-4" />
+            Digitar Código
+          </button>
+          <button
+            onClick={() => {
+              setMode("scanner");
+              setResult(null);
+            }}
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+              mode === "scanner"
+                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+            }`}
+          >
+            <QrCode className="w-4 h-4" />
+            Ler QR Code
+          </button>
+        </div>
+      </div>
+
+      {/* Conteúdo Principal */}
+      <div className="p-6">
+        {!result ? (
+          <>
+            {mode === "manual" ? (
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2.5">
+                    Informe o código do cliente (PD-XXXXXX):
+                  </label>
+                  <div className="relative">
+                    {/* Input: Fundo branco, borda sutil, foco na cor Primária */}
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      maxLength={9}
+                      value={code}
+                      onChange={handleInputChange}
+                      placeholder="PD-000000"
+                      className="w-full bg-white border-2 border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-center text-3xl font-mono tracking-[0.2em] text-slate-950 placeholder:text-slate-300 rounded-2xl py-5 px-4 outline-none transition-all uppercase shadow-inner shadow-slate-950/5"
+                    />
+                    {code.length === 9 && !loading && (
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 text-xs font-bold bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+                        Pronto
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Botão Principal: Cor Primária (#144AE0), Texto Branco */}
+                <button
+                  onClick={() => handleValidate()}
+                  disabled={code.length < 9 || loading}
+                  className="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-500 text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 disabled:shadow-none"
+                >
+                  {loading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      Confirmar Resgate
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            ) : (
+              /* Modo Câmera: Cores de escaneamento ajustadas para o tema claro */
+              <div className="flex flex-col items-center justify-center space-y-5">
+                <div className="relative w-full aspect-square max-w-[260px] bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center overflow-hidden group">
+                  {/* Overlay Efeito Scanner: Agora usando azul primário suave */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent animate-pulse" />
+                  <div className="w-full h-0.5 bg-blue-500 shadow-[0_0_15px_#144AE0] absolute top-1/2 -translate-y-1/2 animate-bounce" />
+
+                  <Scan className="w-14 h-14 text-slate-400 mb-3 group-hover:text-blue-600 transition-colors duration-300" />
+                  <p className="text-sm text-slate-500 text-center px-6 leading-relaxed">
+                    Posicione o QR Code do cliente em frente à câmera
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => handleValidate("PD-DEMO12")}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium underline underline-offset-4 pt-2"
+                >
+                  [ Simular leitura de QR Code ]
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          /* Estado de Resultado: Cores de Feedback (Verde/Vermelho) mantidas, mas suavizadas */
+          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
+            {result.success ? (
+              // Sucesso: Fundo verde suave, texto verde escuro
+              <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100 text-center">
+                <CheckCircle2 className="w-14 h-14 text-emerald-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-emerald-900 tracking-tight">
+                  Cupom Validado!
+                </h3>
+                <p className="text-sm text-emerald-700 mt-1.5 leading-relaxed">
+                  {result.message}
+                </p>
+
+                {/* Detalhes: Linhas divisórias sutis em verde */}
+                <div className="mt-5 pt-5 border-t border-emerald-100 text-left space-y-3">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-emerald-700/80">Cliente</span>
+                    <span className="font-semibold text-emerald-950 bg-white px-2 py-0.5 rounded-md border border-emerald-100">
+                      {result.customerName}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-emerald-700/80">Oferta</span>
+                    <span className="font-semibold text-emerald-950 bg-white px-2 py-0.5 rounded-md border border-emerald-100 max-w-[200px] truncate">
+                      {result.promotionName}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm pt-2 border-t border-emerald-100/50">
+                    <span className="text-emerald-700 font-medium">
+                      Quantidade a entregar
+                    </span>
+                    <span className="font-extrabold text-xl text-emerald-600">
+                      {result.quantity} un.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Erro: Fundo vermelho suave, texto vermelho escuro
+              <div className="p-6 rounded-2xl bg-red-50 border border-red-100 text-center">
+                <XCircle className="w-14 h-14 text-red-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-red-900 tracking-tight">
+                  Falha na Validação
+                </h3>
+                <p className="text-sm text-red-700 mt-1.5 leading-relaxed">
+                  {result.message}
+                </p>
+              </div>
+            )}
+
+            {/* Botão Secundário: Fundo branco/cinza, borda, texto escuro */}
+            <button
+              onClick={handleReset}
+              className="w-full py-3.5 px-6 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base rounded-2xl transition-all border border-slate-200 shadow-sm shadow-slate-950/5"
+            >
+              Validar Novo Código
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+````
+
+## File: front/src/schemas/register-schema.ts
+````typescript
+import { z } from "zod";
+
+// ==========================================
+// VALIDAÇÕES DA ETAPA 1: Dados Principais
+// ==========================================
+export const stepOneSchema = z.object({
+  name: z
+    .string()
+    .min(3, "O nome da empresa deve ter pelo menos 3 caracteres")
+    .max(50, "Nome longo demais"),
+
+  phone: z
+    .string()
+    .min(10, "Telefone incompleto. Insira o DDD + Número")
+    .max(15, "Telefone longo demais")
+    .regex(/^\d+$/, "O telefone deve conter apenas números"), // Garante apenas dígitos
+
+  email: z
+    .string()
+    .min(1, "O e-mail é obrigatório")
+    .email("Insira um formato de e-mail válido (ex: nome@empresa.com)"),
+
+  password: z
+    .string()
+    .min(8, "A senha deve ter pelo menos 8 caracteres")
+    .regex(/[A-Za-z]/, "A senha deve conter pelo menos uma letra")
+    .regex(/\d/, "A senha deve conter pelo menos um número"),
+});
+
+// ==========================================
+// VALIDAÇÕES DA ETAPA 2: Dados Jurídicos
+// ==========================================
+export const stepTwoSchema = z.object({
+  // avatar: z
+  //   .any()
+  //   .refine((file) => file instanceof File, "A foto de perfil é obrigatória")
+  //   .refine(
+  //     (file) => file?.size <= 5 * 1024 * 1024,
+  //     "A imagem deve ter no máximo 5MB",
+  //   )
+  //   .refine(
+  //     (file) =>
+  //       ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(
+  //         file?.type,
+  //       ),
+  //     "Formato inválido. Use apenas JPG, JPEG, PNG ou WEBP",
+  //   ),
+  address: z
+    .string()
+    .min(5, "Por favor, insira o endereço completo da sua empresa"),
+  category: z
+    .string({ required_error: "Selecione uma categoria" })
+    .min(1, "Selecione uma categoria para o seu negócio"),
+  businessHours: z
+    .record(
+      z.object({
+        aberto: z.boolean(),
+        // 🚀 Ajuste: Permite que venha vazio ou undefined caso o dia esteja fechado
+        inicio: z.string().optional().or(z.literal("")),
+        fim: z.string().optional().or(z.literal("")),
+      }),
+    )
+    .refine(
+      (hours) => {
+        // Regra 1: A loja precisa abrir pelo menos um dia na semana
+        const temDiaAberto = Object.values(hours).some((dia) => dia.aberto);
+        return temDiaAberto;
+      },
+      {
+        message: "Você precisa selecionar pelo menos um dia de funcionamento!",
+      },
+    )
+    .refine(
+      (hours) => {
+        // Regra 2: Se o dia está aberto, a hora de término não pode ser menor ou igual à inicial
+        for (const dia in hours) {
+          if (hours[dia].aberto) {
+            // Se por acaso vier undefined mesmo aberto, joga um fallback "00:00" para não quebrar o split
+            const horaInicioStr = hours[dia].inicio || "00:00";
+            const horaFimStr = hours[dia].fim || "00:00";
+
+            const [horaInicio, minInicio] = horaInicioStr
+              .split(":")
+              .map(Number);
+            const [horaFim, minFim] = horaFimStr.split(":").map(Number);
+
+            const totalMinInicio = horaInicio * 60 + minInicio;
+            const totalMinFim = horaFim * 60 + minFim;
+
+            if (totalMinFim <= totalMinInicio) return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: "O horário de término deve ser maior que o horário de início!",
+      },
+    ),
+});
+
+// ==========================================
+// VALIDAÇÕES DA ETAPA 3: Dados Complementares
+// ==========================================
+export const stepThreeSchema = z.object({
+  // Validamos o arquivo binário da imagem do avatar
+  // Validamos a estrutura aninhada do Horário de Funcionamento semanal
+});
+
+// ==========================================
+// SCHEMA UNIFICADO (Para tipagem se necessário)
+// ==========================================
+export const registerFormSchema = stepOneSchema
+  .merge(stepTwoSchema)
+  .merge(stepThreeSchema);
+
+// Cria o tipo do TypeScript automaticamente baseado nas regras do Zod
+export type RegisterFormData = z.infer<typeof registerFormSchema>;
+````
+
+## File: front/src/utils/formatHours.ts
+````typescript
+const DIAS_SEMANA: {
+  [key: string]: { nome: string; abrev: string; ordem: number };
+} = {
+  domingo: { nome: "Domingo", abrev: "Dom", ordem: 0 },
+  segunda: { nome: "Segunda", abrev: "Seg", ordem: 1 },
+  terca: { nome: "Terça", abrev: "Ter", ordem: 2 },
+  quarta: { nome: "Quarta", abrev: "Qua", ordem: 3 },
+  quinta: { nome: "Quinta", abrev: "Qui", ordem: 4 },
+  sexta: { nome: "Sexta", abrev: "Sex", ordem: 5 },
+  sabado: { nome: "Sábado", abrev: "Sáb", ordem: 6 },
+};
+
+export function formatBusinessHours(businessHoursData: any): string {
+  if (!businessHoursData) return "Horário não informado";
+
+  let hours = businessHoursData;
+
+  // Se vier como string JSON (FormData/Escapado), faz a conversão
+  if (typeof businessHoursData === "string") {
+    try {
+      hours = JSON.parse(businessHoursData);
+    } catch {
+      return businessHoursData; // Retorna como string se for texto simples
+    }
+  }
+
+  // Filtra apenas os dias em que o estabelecimento está ABERTO
+  const openDays = Object.entries(hours)
+    .filter(
+      ([_, value]: [string, any]) =>
+        value?.aberto === true && value?.inicio && value?.fim,
+    )
+    .map(([day, value]: [string, any]) => ({
+      key: day,
+      info: DIAS_SEMANA[day.toLowerCase()],
+      inicio: value.inicio,
+      fim: value.fim,
+    }))
+    .filter((d) => d.info !== undefined)
+    .sort((a, b) => a.info.ordem - b.info.ordem);
+
+  if (openDays.length === 0) {
+    return "Fechado temporariamente";
+  }
+
+  // CASO 1: Todos os dias abertos possuem o mesmo horário de início e fim
+  const firstHours = `${openDays[0].inicio} às ${openDays[0].fim}`;
+  const sameHoursAllDays = openDays.every(
+    (d) => `${d.inicio} às ${d.fim}` === firstHours,
+  );
+
+  if (sameHoursAllDays) {
+    if (openDays.length === 7) {
+      return `Todos os dias: ${firstHours}`;
+    }
+
+    // Verifica se os dias são consecutivos (ex: Seg(1), Ter(2), Qua(3))
+    const isConsecutive = openDays.every((day, index) => {
+      if (index === 0) return true;
+      return day.info.ordem === openDays[index - 1].info.ordem + 1;
+    });
+
+    if (isConsecutive) {
+      const firstDayName = openDays[0].info.abrev;
+      const lastDayName = openDays[openDays.length - 1].info.abrev;
+      return `${firstDayName} a ${lastDayName}: ${firstHours}`;
+    }
+
+    // Se NÃO forem consecutivos (ex: Seg, Qua, Sex), lista os dias separados por vírgula
+    const daysList = openDays.map((d) => d.info.abrev).join(", ");
+    return `${daysList}: ${firstHours}`;
+  }
+
+  // CASO 2: Horários variados por dia -> Pega o horário de HOJE para priorizar contexto útil
+  const todayIndex = new Date().getDay(); // 0 = Domingo, 1 = Segunda...
+  const todayEntry = openDays.find((d) => d.info.ordem === todayIndex);
+
+  if (todayEntry) {
+    return `Hoje (${todayEntry.info.abrev}): ${todayEntry.inicio} às ${todayEntry.fim}`;
+  }
+
+  // CASO 3: Se hoje estiver FECHADO, mostra o próximo dia em que abre
+  const nextOpen = openDays[0];
+  return `${nextOpen.info.abrev}: ${nextOpen.inicio} às ${nextOpen.fim}`;
+}
+````
+
+## File: front/tsconfig.json
+````json
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+````
+
+## File: back/src/modules/auth/auth.module.ts
+````typescript
+import { Global, Module } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { CostomersModule } from '../costomers/costomers.module'; // ajuste o caminho se necessário
+import { SellersModule } from '../sellers/sellers.module';
+
+@Global()
+@Module({
+  imports: [
+    CostomersModule,
+    SellersModule,
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '7d' }, // Token vale por 7 dias
+    }),
+  ],
+  providers: [AuthService],
+  controllers: [AuthController],
+  exports: [JwtModule],
+})
+export class AuthModule {}
+````
+
+## File: back/src/modules/claims/claims.controller.ts
+````typescript
+import {
+  Controller,
+  Post,
+  Patch,
+  Get,
+  Param,
+  Body,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  Req,
+} from '@nestjs/common';
+import { ClaimsService } from './claims.service';
+import { ValidateClaimDto } from './dto/create-claim.dto';
+import { ClaimPromotionDto } from './dto/claim-promotion.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../guards/decorators/roles.decorator';
+
+@Controller()
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class ClaimsController {
+  constructor(private readonly claimsService: ClaimsService) {}
+
+  @Post('/promotions/:id/redeem')
+  @Roles('CUSTOMER')
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Param('id') promotionId: string,
+    @Body() dto: ClaimPromotionDto,
+    @Req() req: any,
+  ) {
+    const userId = req.user.sub;
+    const quantity = Number(dto?.quantity) > 0 ? Number(dto.quantity) : 1;
+
+    return await this.claimsService.execute({
+      userId,
+      promotionId,
+      quantity,
+    });
+  }
+
+  @Post('redeems')
+  @Roles('CUSTOMER')
+  @HttpCode(HttpStatus.CREATED)
+  async createFromRedeemsRoute(
+    @Body() dto: { promotionId: string; quantity?: number },
+    @Req() req: any,
+  ) {
+    const userId = req.user.sub;
+    const quantity = Number(dto?.quantity) > 0 ? Number(dto.quantity) : 1;
+
+    return await this.claimsService.execute({
+      userId,
+      promotionId: dto.promotionId,
+      quantity,
+    });
+  }
+
+  @Patch('seller/claims/validate')
+  @Roles('SELLER')
+  @HttpCode(HttpStatus.OK)
+  async validateClaim(@Req() req: any, @Body() dto: ValidateClaimDto) {
+    const sellerId = req.user.sub;
+    return await this.claimsService.validateClaim(sellerId, dto.code);
+  }
+
+  @Get('redeems')
+  @Roles('CUSTOMER')
+  async getMyClaims(@Req() req: any) {
+    const customerId = req.user.sub;
+    return await this.claimsService.getCustomerClaims(customerId);
+  }
+
+  @Get('promotion/:promotionId/total-quantity')
+  @UseGuards(JwtAuthGuard)
+  async getUserRedeemedTotal(
+    @Param('promotionId') promotionId: string,
+    @Req() req: any,
+  ) {
+    // Pega o ID do usuário diretamente do payload decodificado do JWT
+    const userId = req.user.sub;
+
+    const total = await this.claimsService.getUserRedeemedQuantityByPromotion(
+      promotionId,
+      userId,
+    );
+
+    return { total };
+  }
+}
+````
+
+## File: back/src/modules/promotions/dto/create-promotion.dto.ts
+````typescript
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  IsNumber,
+  IsArray,
+  IsDateString,
+  Min,
+} from 'class-validator';
+
+import { Type } from 'class-transformer';
+
+export class CreatePromotionDto {
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  requirements?: string;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  stock: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  limitPerUser: number;
+
+  @IsDateString()
+  startTime: string; // O front envia como string ISO (ex: "2026-06-16T18:00:00.000Z")
+
+  @IsDateString()
+  endTime: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  originalPrice: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  promoPrice: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
+  images: string[];
+}
+````
+
+## File: back/src/modules/promotions/promotions.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { PromotionsService } from './promotions.service';
+import { PromotionsController } from './promotions.controller';
+import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
+import { SellerPromotionsController } from './seller-promotions.controller';
+
+@Module({
+  controllers: [PromotionsController, SellerPromotionsController],
+  providers: [PromotionsService, PrismaService, StorageService],
+})
+export class PromotionsModule {}
+````
+
+## File: back/src/modules/promotions/seller-promotions.controller.ts
+````typescript
+// src/promotions/seller-promotions.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+  UseInterceptors,
+  UploadedFiles,
+  BadRequestException,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { PromotionsService } from './promotions.service';
+import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { StorageService } from 'src/shared/storage.service';
+
+@Controller('seller/promotions') // 🚀 Rota base: /seller/promotions
+@UseGuards(JwtAuthGuard) // Guard aplicado para toda a classe
+export class SellerPromotionsController {
+  constructor(
+    private readonly promotionsService: PromotionsService,
+    private readonly storageService: StorageService,
+  ) {}
+
+  // GET /seller/promotions
+  @Get()
+  async findSellerPromotions(@Request() req: any) {
+    const sellerId = req.user.sub;
+
+    if (!sellerId) {
+      throw new BadRequestException('ID do vendedor ausente no token.');
+    }
+
+    return this.promotionsService.findAllBySeller(sellerId);
+  }
+
+  // POST /seller/promotions
+  @Post()
+  @UseInterceptors(FilesInterceptor('files', 3))
+  async create(
+    @Request() req: any,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createPromotionDto: CreatePromotionDto,
+  ) {
+    const sellerId = req.user.sub;
+    const imageUrls: string[] = [];
+
+    if (files && files.length > 0) {
+      imageUrls.push(...(await this.storageService.uploadManyFiles(files)));
+    }
+
+    return this.promotionsService.create(
+      { ...createPromotionDto, images: imageUrls },
+      sellerId,
+    );
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FilesInterceptor('files', 3))
+  async update(
+    @Param('id') id: string,
+    @Request() req: any,
+    @Body() dto: UpdatePromotionDto,
+    @UploadedFiles() files?: Express.Multer.File[],
+  ) {
+    const sellerId = req.user.sub;
+    return this.promotionsService.update(id, sellerId, dto, files);
+  }
+
+  // DELETE /seller/promotions/:id
+  @Delete(':id')
+  remove(@Param('id') id: string, @Request() req: any) {
+    return this.promotionsService.remove(id, req.user.sub);
+  }
+}
+// // PATCH /seller/promotions/:id
+// @Patch(':id')
+// update(
+//   @Param('id') id: string,
+//   @Request() req: any,
+//   @Body() updatePromotionDto: UpdatePromotionDto,
+// ) {
+//   return this.promotionsService.update(id, req.user.sub, updatePromotionDto);
+// }
+````
+
+## File: back/src/modules/sellers/dto/update-seller.dto.ts
+````typescript
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateSellerDto } from './create-seller.dto';
+import { IsOptional, IsString, IsUrl, IsNotEmpty } from 'class-validator';
+
+// O PartialType herda automaticamente os campos do CreateCostomerDto como opcionais
+export class UpdateSellerDto extends PartialType(CreateSellerDto) {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl({}, { message: 'O avatarUrl deve ser um link válido' })
+  avatarUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  // No seu create-seller.dto.ts
+
+  @IsNotEmpty({ message: 'O horário de funcionamento é obrigatório' })
+  @IsString({
+    message: 'O horário de funcionamento deve ser uma string JSON válida',
+  })
+  businessHours: string; // 🚀 Agora aceita a string vinda do FormData
+
+  @IsOptional()
+  @IsString()
+  category?: string;
+
+  @IsOptional()
+  file?: any;
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/profile/page.tsx
+````typescript
+import { getProfileCustomerAction } from "@/app/actions/customerProfileAction"; // Ou o caminho das suas actions
+import { ProfileClientContainer } from "@/app/(Customer)/(navegation)/profile/ProfileClientContainer";
+import { redirect } from "next/navigation";
+
+export default async function Profile() {
+  // 1. Busca os dados no servidor Node do Next.js antes de renderizar
+  const initialUser = await getProfileCustomerAction();
+
+  // 2. Se o cookie não existir ou for inválido, redireciona antes de montar a tela
+  if (!initialUser) {
+    redirect("/login");
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
+
+      {/* 3. Delega a interatividade, edições e logout para um Client Component wrapper */}
+      <ProfileClientContainer initialUser={initialUser} />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/promotions/page.tsx
+````typescript
+import PromoGrid, { PromotionFromBackend } from "@/components/shared/PromoGrid";
+import { api } from "@/services/api";
+
+async function getAllPromotions(): Promise<PromotionFromBackend[]> {
+  try {
+    // Busca na rota pública sem enviar token de autorização
+    const { data } = await api.get("/promotions", {
+      timeout: 5000,
+      next: { revalidate: 30 }, // Atualiza o cache a cada 30s
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Erro ao buscar promoções públicas:", error);
+    return [];
+  }
+}
+
+export default async function AllPromotionsPage() {
+  const promotions = await getAllPromotions();
+
+  return (
+    <main className="w-full min-h-screen py-6">
+      <PromoGrid products={promotions} role="CUSTOMER" />
+    </main>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/promotions/page.tsx
+````typescript
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import PromoGrid, { PromotionFromBackend } from "@/components/shared/PromoGrid";
+import { api } from "@/services/api";
+
+async function getSellerPromotions(): Promise<PromotionFromBackend[]> {
+  const cookieStore = await cookies();
+  // Altere 'token' caso o nome do seu cookie seja outro (ex: '@PromoDay:token')
+  const token = cookieStore.get("@PromoDay:token")?.value;
+
+  // Se não houver cookie de autenticação, redireciona o usuário antes de montar a página
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const { data } = await api.get("/seller/promotions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      timeout: 5000, // Previne que a chamada fique pendente
+    });
+
+    return data || [];
+  } catch (error) {
+    console.error("Erro ao buscar promoções do vendedor no servidor:", error);
+    return [];
+  }
+}
+
+export default async function SellerPromotionsPage() {
+  const promotions = await getSellerPromotions();
+
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-6">
+      <PromoGrid products={promotions} role="SELLER" />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/seller/(navegation)/redeems/page.tsx
+````typescript
+import { ValidateCodeModal } from "@/components/shared/ValidateCodeModal";
+import RedeemsList from "../../../../components/shared/RedeemsList";
+
+export default function Redeems() {
+  return (
+    <div className="w-full flex flex-col items-center justify-center ">
+      <ValidateCodeModal />
+      {/* <RedeemsList /> */}
+    </div>
+  );
+}
+````
+
+## File: front/src/app/layout.tsx
+````typescript
+import type { Metadata } from "next";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
+import "./globals.css";
+import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/contexts/AuthContext";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="pt-br"
+      suppressHydrationWarning={true}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+      )}
+    >
+      <body className="min-h-full flex flex-col bg-color-[ECF0F1]">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
+    </html>
+  );
+}
+````
+
+## File: front/src/components/shared/RedeemsList.tsx
+````typescript
+import { RedemptionCodeCard } from "./RedemptionCodeCard";
+import { getUserClaims } from "@/app/actions/get-user-claims";
+
+const CARD_VARIANTS = ["green", "blue", "amber"] as const;
+
+export default async function RedeemsList() {
+  const claims = await getUserClaims();
+
+  if (claims.length === 0) {
+    return (
+      <div className="h-auto text-muted-foreground p-8 flex flex-col items-center justify-center w-full max-w-xl mx-auto text-center bg-card border border-border/60 rounded-3xl mt-4">
+        <p className="text-base font-semibold text-foreground">
+          Nenhum cupom resgatado
+        </p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Explore as ofertas disponíveis e resgate cupons para visualizá-los aqui.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-auto p-2 sm:p-4 flex flex-col gap-4 items-center w-full max-w-xl mx-auto">
+      {claims.map((claim, index) => {
+        const mainImage =
+          claim.promotion?.images && claim.promotion.images.length > 0
+            ? claim.promotion.images[0]
+            : "/placeholder.png";
+
+        const variant = CARD_VARIANTS[index % CARD_VARIANTS.length];
+
+        return (
+          <RedemptionCodeCard
+            key={claim.id}
+            imageUrl={mainImage}
+            productName={claim.promotion?.name || "Produto em promoção"}
+            quantity={claim.quantity || 1}
+            code={claim.code}
+            status={claim.status}
+            seller={claim.promotion?.seller}
+            variant={variant}
+          />
+        );
+      })}
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/RegisterStepperStore.tsx
+````typescript
+"use client";
+
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+import {
+  stepOneSchema,
+  stepTwoSchema,
+  stepThreeSchema,
+} from "../../schemas/register-schema";
+import { registerSellerAction } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
+
+export function RegisterStepperFormStore() {
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  // 1. Criamos um único estado para armazenar todos os dados do formulário
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    address: "",
+    category: "",
+    avatarFile: null as File | null, // Para guardar o arquivo selecionado no input de avatar
+    // Deixei esses campos prontos para as suas próximas etapas:
+    businessHours: {
+      segunda: { aberto: true, inicio: "08:00", fim: "18:00" },
+      terca: { aberto: true, inicio: "08:00", fim: "18:00" },
+      quarta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      quinta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      sexta: { aberto: true, inicio: "08:00", fim: "18:00" },
+      sabado: { aberto: false, inicio: "09:00", fim: "13:00" }, // Começa fechado por padrão
+      domingo: { aberto: false, inicio: "00:00", fim: "00:00" }, // Começa fechado por padrão
+    },
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  // 2. Função genérica para atualizar o estado quando o usuário digita
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value, // Atualiza dinamicamente o campo com base no id do input
+    }));
+  };
+
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+    const data = new FormData();
+
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("password", formData.password);
+    data.append("address", formData.address);
+    data.append("category", formData.category);
+    data.append("businessHours", JSON.stringify(formData.businessHours)); // Enviamos os horários como string JSON
+    if (formData.avatarFile) {
+      data.append("avatar", formData.avatarFile);
+    }
+
+    // 4. Envia o FormData para a Server Action
+    const result = await registerSellerAction(data);
+
+    setLoading(false);
+    if (result.success) {
+      alert("Cadastro do vendedor realizado com sucesso!");
+      router.push("/auth/login"); // 🔀 Redireciona o vendedor para fazer o primeiro login
+    } else {
+      alert(result.error || "Erro ao efetuar o cadastro.");
+    }
+    alert("Cadastro realizado com sucesso!");
+  };
+
+  const nextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    // --- VALIDAÇÃO DA ETAPA 1 ---
+    if (currentStep === 1) {
+      const validacao = stepOneSchema.safeParse({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (!validacao.success) {
+        // Pega a primeira mensagem de erro que o Zod encontrar
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro); // Depois podemos trocar esse alert por um estado de erro bonitinho na tela
+        return; // Trava o fluxo aqui! O usuário não avança.
+      }
+    }
+
+    // --- VALIDAÇÃO DA ETAPA 2 ---
+    if (currentStep === 2) {
+      const validacao = stepTwoSchema.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro);
+        return; // Trava o fluxo aqui!
+      }
+    }
+
+    // --- VALIDAÇÃO FINAL (ETAPA 3) ---
+    if (currentStep === 3) {
+      const validacao = stepThreeSchema.safeParse(formData);
+
+      if (!validacao.success) {
+        const primeiroErro =
+          validacao.error?.issues?.[0]?.message ||
+          "Erro de validação desconhecido";
+        alert(primeiroErro);
+        return; // Trava o fluxo aqui!
+      }
+
+      // Se chegou aqui, TODOS os dados do formulário passaram com sucesso pelo Zod!
+      handleFinalSubmit();
+      return;
+    }
+    if (currentStep < 3) setCurrentStep((prev) => prev + 1);
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep((prev) => prev - 1);
+  };
+
+  // Atualiza o estado de um dia específico (se está aberto, hora de início ou fim)
+  const handleHoursChange = (
+    dia: keyof typeof formData.businessHours,
+    campo: "aberto" | "inicio" | "fim",
+    valor: any,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      businessHours: {
+        ...prev.businessHours,
+        [dia]: {
+          ...prev.businessHours[dia],
+          [campo]: valor,
+        },
+      },
+    }));
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-6 text-center ">
+      {/* Cabeçalho */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-black text-black tracking-tight">
+          Seja bem vindo, empreendedor(a)!
+        </h1>
+        <p className="text-sm font-bold text-neutral-800">
+          Preencha os dados abaixo para continuar:
+        </p>
+
+        {/* Stepper */}
+        <div className="relative flex items-center justify-between w-48 mx-auto py-4">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-200 z-0 rounded-full" />
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black z-0 transition-all duration-300 rounded-full"
+            style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 1 ? "bg-neutral-800 border-neutral-800" : "bg-neutral-200 border-neutral-200"}`}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 2 ? "bg-neutral-500 border-neutral-500" : "bg-neutral-200 border-neutral-200"}`}
+          />
+          <div
+            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep === 3 ? "bg-neutral-400 border-neutral-400" : "bg-neutral-200 border-neutral-200"}`}
+          />
+        </div>
+      </div>
+
+      {/* Card do Formulário */}
+      <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
+        <CardContent className="p-0">
+          <form onSubmit={nextStep} className="space-y-5">
+            <h2 className="text-xl font-black text-black tracking-tight text-center pb-2">
+              {currentStep === 1 && "Dados principais"}
+              {currentStep === 2 && "Dados adicionais"}
+              {currentStep === 3 && "Confirmação"}
+            </h2>
+
+            {/* ETAPA 1 */}
+            {currentStep === 1 && (
+              <div className="space-y-4 animate-in fade-in duration-200">
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="name"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Nome da empresa:
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Digite o nome da sua empresa"
+                    required
+                    value={formData.name} // 3. Vincula o valor ao estado
+                    onChange={handleChange} // 4. Dispara a atualização ao digitar
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="phone"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Telefone:
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    required
+                    placeholder="(00) 99999-9999"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="email"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Email:
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="seu@email.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="password"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Senha:
+                  </Label>
+
+                  {/* Container relativo para segurar o botão absoluto dentro dele */}
+                  <div className="relative flex items-center">
+                    <Input
+                      id="password"
+                      // Se showPassword for true, vira "text" (visível), se não, continua "password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={formData.password}
+                      onChange={handleChange}
+                      // Adicionamos pr-12 para o texto digitado não ficar por baixo do olho
+                      className="rounded-full bg-neutral-200 border-none h-11 pl-5 pr-12 text-black w-full focus-visible:ring-2 focus-visible:ring-black"
+                    />
+
+                    {/* Botão do Olhinho */}
+                    <button
+                      type="button" // OBRIGATÓRIO para não dar submit no formulário sem querer
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-colors rounded-full focus:outline-none focus:ring-1 focus:ring-black"
+                      aria-label={
+                        showPassword ? "Esconder senha" : "Mostrar senha"
+                      }
+                    >
+                      {showPassword ? (
+                        // Ícone de Olho Aberto (Importe do lucide-react)
+                        <Eye className="h-5 w-5" />
+                      ) : (
+                        // Ícone de Olho Fechado/Cortado (Importe do lucide-react)
+                        <EyeOff className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ETAPA 2 */}
+            {currentStep === 2 && (
+              <div className="space-y-5 animate-in fade-in duration-200">
+                {/* Título da Etapa */}
+
+                {/* SEÇÃO: FOTO DE PERFIL (Upload Customizado) */}
+                <div className="flex flex-col items-center space-y-2 pb-2">
+                  <label
+                    htmlFor="avatar"
+                    className="w-24 h-24 rounded-full bg-neutral-300 hover:bg-neutral-400 transition-colors cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-400 group relative"
+                  >
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-[10px] font-bold text-neutral-600 group-hover:text-neutral-800 transition-colors">
+                        Adicionar
+                      </span>
+                    )}
+                    <input
+                      id="avatar"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setAvatarPreview(URL.createObjectURL(file));
+                          setFormData((prev) => ({
+                            ...prev,
+                            avatarFile: file,
+                          }));
+                        }
+                      }}
+                    />
+                  </label>
+                  <span className="text-xs font-bold text-neutral-500">
+                    Foto de perfil
+                  </span>
+                </div>
+
+                {/* CAMPO: Endereço Detalhado */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="address"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Endereço:
+                  </Label>
+                  <Input
+                    id="address"
+                    placeholder="Rua Exemplo, 123 - Bairro, Cidade"
+                    required
+                    value={formData.address}
+                    onChange={handleChange}
+                    className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+                  />
+                </div>
+
+                {/* CAMPO: Horário de Funcionamento */}
+                {/* SELETOR SEMANAL DE HORÁRIOS */}
+                <div className="space-y-3 bg-neutral-50 p-4 rounded-3xl border border-neutral-200">
+                  <Label className="text-neutral-700 font-black ml-1 text-sm block border-b border-neutral-200 pb-2">
+                    Horários de Funcionamento:
+                  </Label>
+
+                  <div className="space-y-2 max-h-auto overflow-y-auto pr-1">
+                    {(
+                      Object.keys(formData.businessHours) as Array<
+                        keyof typeof formData.businessHours
+                      >
+                    ).map((dia) => {
+                      const infoDia = formData.businessHours[dia];
+                      return (
+                        <div
+                          key={dia}
+                          className="flex items-center justify-between text-sm py-1 border-b border-neutral-100 last:border-none"
+                        >
+                          {/* Nome do dia capitalizado + Switch Simples */}
+                          <div className="flex items-center space-x-3 w-28">
+                            <input
+                              type="checkbox"
+                              id={`check-${dia}`}
+                              checked={infoDia.aberto}
+                              onChange={(e) =>
+                                handleHoursChange(
+                                  dia,
+                                  "aberto",
+                                  e.target.checked,
+                                )
+                              }
+                              className="w-4 h-4 accent-black cursor-pointer"
+                            />
+                            <Label
+                              htmlFor={`check-${dia}`}
+                              className="capitalize font-bold text-neutral-800 cursor-pointer text-xs"
+                            >
+                              {dia}
+                            </Label>
+                          </div>
+
+                          {/* Inputs de Hora (Só aparecem se o dia estiver ativo/marcado) */}
+                          {infoDia.aberto ? (
+                            <div className="flex items-center space-x-2 animate-in fade-in duration-150">
+                              <input
+                                type="time"
+                                value={infoDia.inicio}
+                                onChange={(e) =>
+                                  handleHoursChange(
+                                    dia,
+                                    "inicio",
+                                    e.target.value,
+                                  )
+                                }
+                                className="bg-neutral-200 text-black text-xs font-bold rounded-full px-2 py-1 border-none focus:outline-none focus:ring-1 focus:ring-black"
+                              />
+                              <span className="text-neutral-400 text-xs">
+                                às
+                              </span>
+                              <input
+                                type="time"
+                                value={infoDia.fim}
+                                onChange={(e) =>
+                                  handleHoursChange(dia, "fim", e.target.value)
+                                }
+                                className="bg-neutral-200 text-black text-xs font-bold rounded-full px-2 py-1 border-none focus:outline-none focus:ring-1 focus:ring-black"
+                              />
+                            </div>
+                          ) : (
+                            <span className="text-xs font-bold text-neutral-400 pr-8 animate-in fade-in duration-150">
+                              Fechado
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* CAMPO: Categoria (Usando select nativo estilizado no padrão pílula) */}
+                <div className="space-y-1.5">
+                  <Label
+                    htmlFor="category"
+                    className="text-neutral-700 font-bold ml-1 text-sm"
+                  >
+                    Categoria:
+                  </Label>
+                  <div className="relative">
+                    <select
+                      id="category"
+                      required
+                      value={formData.category}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                      className="w-full rounded-full bg-neutral-200 border-none h-11 px-5 text-black text-sm appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black font-medium"
+                    >
+                      <option value="" disabled>
+                        Selecione uma categoria...
+                      </option>
+                      <option value="alimentacao">
+                        Alimentação / Restaurante
+                      </option>
+                      <option value="vestuario">Vestuário / Roupas</option>
+                      <option value="servicos">Prestação de Serviços</option>
+                      <option value="outros">Outros</option>
+                    </select>
+                    {/* Seta customizada do select para não quebrar o visual minimalista */}
+                    <div className="pointer-events-none absolute inset-y-0 right-5 flex items-center text-neutral-500">
+                      <svg
+                        className="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/01/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ETAPA 3 */}
+            {currentStep === 3 && (
+              <div className="space-y-4 animate-in fade-in duration-200">
+                <p className="text-center text-neutral-500 py-8">
+                  Conteúdo da Etapa 3 (Confirmação / Finalização)
+                </p>
+              </div>
+            )}
+
+            {/* Botões de Navegação */}
+            <div className="flex items-center justify-between pt-4">
+              {currentStep > 1 ? (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="text-sm font-bold text-neutral-600 hover:text-black hover:underline transition-colors ml-2"
+                >
+                  Voltar
+                </button>
+              ) : (
+                <div />
+              )}
+
+              <Button
+                type="submit"
+                className="rounded-full bg-black hover:bg-neutral-800 text-white px-8 h-9 font-bold text-sm transition-all"
+              >
+                {currentStep === 3 ? "Finalizar" : "Continuar"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/StoreDetailsCard.tsx
+````typescript
+"use client";
+
+import React, { useState } from "react";
+import { ChevronDown, Clock, MapPin } from "lucide-react";
+
+interface StoreDetailsCardProps {
+  name: string;
+  imageUrl?: string;
+  businessHours: any;
+  location: string;
+  category: string;
+}
+
+const DIAS_ORDEM = [
+  { key: "segunda", label: "Segunda-feira" },
+  { key: "terca", label: "Terça-feira" },
+  { key: "quarta", label: "Quarta-feira" },
+  { key: "quinta", label: "Quinta-feira" },
+  { key: "sexta", label: "Sexta-feira" },
+  { key: "sabado", label: "Sábado" },
+  { key: "domingo", label: "Domingo" },
+];
+
+const DAY_KEYS = [
+  "domingo",
+  "segunda",
+  "terca",
+  "quarta",
+  "quinta",
+  "sexta",
+  "sabado",
+];
+
+export function StoreDetailsCard({
+  name,
+  imageUrl,
+  businessHours,
+  location,
+  category,
+}: StoreDetailsCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Faz o parse do JSON caso venha como string
+  const parsedHours = React.useMemo(() => {
+    if (!businessHours) return null;
+    if (typeof businessHours === "string") {
+      try {
+        return JSON.parse(businessHours);
+      } catch {
+        return null;
+      }
+    }
+    return businessHours;
+  }, [businessHours]);
+
+  const todayKey = DAY_KEYS[new Date().getDay()];
+
+  // Resumo para exibir quando o menu está fechado
+  const summaryText = React.useMemo(() => {
+    if (!parsedHours) return "Horário não informado";
+
+    const todayData = parsedHours[todayKey];
+
+    if (todayData?.aberto) {
+      return `Hoje: ${todayData.inicio} às ${todayData.fim}`;
+    }
+
+    return "Ver horários da semana";
+  }, [parsedHours, todayKey]);
+
+  return (
+    <div className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-5 flex flex-col gap-4">
+      {/* Linha principal do card */}
+      <div className="flex items-center gap-4">
+        {/* Imagem de perfil / iniciais */}
+        <div className="w-16 h-16 rounded-full bg-muted border border-border/50 flex-shrink-0 overflow-hidden flex items-center justify-center">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-muted-foreground font-bold text-lg uppercase">
+              {name ? name.substring(0, 2) : "SL"}
+            </span>
+          )}
+        </div>
+
+        {/* Informações principais */}
+        <div className="flex flex-col gap-2 flex-1 min-w-0">
+          <h2 className="text-lg font-bold text-foreground tracking-tight truncate">
+            {name}
+          </h2>
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+            {/* Botão interativo de horários — único toque de azul, bem suave */}
+            <button
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-1.5 text-primary font-semibold bg-primary/10 hover:bg-primary/15 px-2.5 py-1 rounded-md border border-primary/20 transition-colors"
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>{summaryText}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  isOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {/* Localização */}
+            <span className="flex items-center gap-1 text-muted-foreground font-medium min-w-0">
+              <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="truncate">{location}</span>
+            </span>
+
+            {/* Categoria */}
+            <span className="text-foreground/80 bg-muted px-2 py-0.5 rounded-md border border-border/60 font-medium tracking-wide capitalize">
+              {category}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Lista sanfona (dropdown) da semana toda */}
+      {isOpen && parsedHours && (
+        <div className="pt-3 border-t border-border/60 flex flex-col gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+            Horário de funcionamento
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5 text-xs">
+            {DIAS_ORDEM.map(({ key, label }) => {
+              const dayData = parsedHours[key];
+              const isAberto = dayData?.aberto;
+              const isToday = key === todayKey;
+
+              return (
+                <div
+                  key={key}
+                  className={`flex items-center justify-between px-2 -mx-2 py-1.5 rounded-md border-b border-border/40 last:border-none ${
+                    isToday ? "bg-primary/5" : ""
+                  }`}
+                >
+                  <span
+                    className={`font-medium ${
+                      isToday ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  {isAberto ? (
+                    <span className="text-foreground font-semibold">
+                      {dayData.inicio} às {dayData.fim}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground/70 italic">
+                      Fechado
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/StoreList.tsx
+````typescript
+import React from "react";
+import { StoreCard } from "../shared/StoreCard";
+
+// Tipagem da loja que vem da API
+export interface Store {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  _count?: {
+    promotions: number;
+  };
+  offersCount?: number;
+  isOpen?: boolean;
+  category?: string;
+}
+
+interface StoreListProps {
+  stores: Store[];
+}
+
+export function StoreList({ stores }: StoreListProps) {
+  if (!stores || stores.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-zinc-400 font-medium">
+          Nenhuma loja encontrada no momento.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4 w-full items-center">
+      {stores.map((store) => {
+        const count = store.offersCount ?? store._count?.promotions ?? 0;
+
+        return (
+          <StoreCard
+            key={store.id}
+            id={store.id}
+            name={store.name}
+            avatarUrl={store.avatarUrl}
+            offersCount={count}
+            isOpen={store.isOpen ?? true}
+            category={store.category || "Categoria não informada"}
+          />
+        );
+      })}
+    </div>
+  );
+}
+````
+
+## File: front/src/services/api.ts
+````typescript
+import axios from "axios";
+import Cookies from "js-cookie";
+
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      // 🚀 Nome EXATO do cookie revelado pela sua Server Action
+      const token = Cookies.get("@PromoDay:token");
+
+      if (token) {
+        config.headers.set
+          ? config.headers.set("Authorization", `Bearer ${token}`)
+          : (config.headers.Authorization = `Bearer ${token}`);
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+````
+
+## File: front/src/middleware.ts
+````typescript
+import { NextResponse, NextRequest } from "next/server";
+
+// 1. Rotas comuns que exigem apenas autenticação (acessíveis por CUSTOMER e SELLER)
+// Adicionamos /promotions aqui para que Sellers também vejam os detalhes das promoções
+const rotasProtegidasComuns = [
+  "/profile",
+  "/redeems",
+  "/promotions",
+  "/promotions/:path*",
+  "/stores",
+];
+
+// 2. Rotas exclusivas por perfil
+const rotasExclusivasSeller = ["/seller"];
+
+// 3. Deixe aqui apenas páginas estritamente exclusivas do Cliente (se houver)
+const rotasExclusivasCustomer: string[] = [
+  // Exemplo: "/checkout", "/my-orders" (se existirem no seu app)
+];
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get("@PromoDay:token")?.value;
+  const userRole = request.cookies.get("@PromoDay:role")?.value;
+
+  const { pathname } = request.nextUrl;
+
+  const isComunRoute = rotasProtegidasComuns.some((r) =>
+    pathname.startsWith(r),
+  );
+  const isSellerRoute = rotasExclusivasSeller.some((r) =>
+    pathname.startsWith(r),
+  );
+  const isCustomerRoute = rotasExclusivasCustomer.some((r) =>
+    pathname.startsWith(r),
+  );
+
+  const isProtectedRoute = isComunRoute || isSellerRoute || isCustomerRoute;
+  const isAuthRoute = pathname === "/login" || pathname.startsWith("/register");
+
+  // REGRA 1: Não autenticado tentando acessar qualquer rota protegida
+  if (isProtectedRoute && !token) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirectTo", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // REGRA 2: Logado tentando acessar Login/Registro
+  if (isAuthRoute && token) {
+    if (userRole === "SELLER") {
+      return NextResponse.redirect(new URL("/seller/promotions", request.url));
+    }
+    return NextResponse.redirect(new URL("/promotions", request.url));
+  }
+
+  // REGRA 3: Bloqueio de acesso cruzado
+  if (token && userRole) {
+    // CUSTOMER tentando acessar área do Vendedor
+    if (isSellerRoute && userRole !== "SELLER") {
+      return NextResponse.redirect(new URL("/promotions", request.url));
+    }
+
+    // SELLER tentando acessar rotas EXCLUSIVAS de Cliente
+    if (isCustomerRoute && userRole === "SELLER") {
+      return NextResponse.redirect(new URL("/seller/promotions", request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    "/promotions/:path*",
+    "/seller/:path*",
+    "/stores/:path*",
+    "/redeems/:path*",
+    "/profile/:path*",
+    "/login",
+    "/register/:path*",
+  ],
+};
+````
+
+## File: front/README.md
+````markdown
+FORM DE CADASTRO DE USER
+Ajustar o setDataForm para receber o input de image do user ( de acordo como o nest deve receber)
+Mudar o alert de erro do form de cadastro de user(vendedor) para um metodo melhor
+Button de avancar para a proxima etapa do form nao funciona no mobile
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+````
+
+## File: back/src/modules/claims/claims.service.ts
+````typescript
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
+import { PrismaService } from 'prisma/prisma.service';
+import { generateClaimCode } from 'src/utils/generate-code';
+
+export interface ExecuteClaimInput {
+  userId: string;
+  promotionId: string;
+  quantity?: number;
+}
+
+@Injectable()
+export class ClaimsService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  /**
+   * 1. RESGATAR PROMOÇÃO (Cliente)
+   * Alias 'execute' para manter compatibilidade com a chamada do Controller
+   */
+  async execute({
+    userId,
+    promotionId,
+    quantity = 1,
+  }: {
+    userId: string;
+    promotionId: string;
+    quantity: number;
+  }) {
+    return await this.prisma.$transaction(async (tx) => {
+      // 1. Busca a promoção
+      const promotion = await tx.promotion.findUnique({
+        where: { id: promotionId, isActive: true },
+      });
+
+      if (!promotion) {
+        throw new NotFoundException('Promoção não encontrada ou indisponivel.');
+      }
+
+      // 2. Valida estoque geral
+      if (promotion.stock < quantity) {
+        throw new BadRequestException(
+          `Estoque insuficiente. Restam apenas ${promotion.stock} unidade(s).`,
+        );
+      }
+
+      // 3. Valida limite por usuário baseado no ACUMULADO (usando limitPerUser e tx.claim)
+      if (promotion.limitPerUser > 0) {
+        const userClaimsAggregate = await tx.claim.aggregate({
+          where: {
+            customerId: userId,
+            promotionId: promotionId,
+            status: { not: 'CANCELLED' },
+          },
+          _sum: {
+            quantity: true,
+          },
+        });
+
+        const totalAlreadyRedeemed = userClaimsAggregate._sum.quantity || 0;
+
+        if (totalAlreadyRedeemed + quantity > promotion.limitPerUser) {
+          const remainingAllowed = Math.max(
+            0,
+            promotion.limitPerUser - totalAlreadyRedeemed,
+          );
+          throw new BadRequestException(
+            `Limite de resgates excedido. Você já resgatou ${totalAlreadyRedeemed} unidade(s). Restam ${remainingAllowed} disponíveis.`,
+          );
+        }
+      }
+
+      // 4. Gera um novo código único para este cupom
+
+      const code = generateClaimCode();
+
+      // 5. CRIA UM NOVO REGISTRO na tabela claim
+      const newClaim = await tx.claim.create({
+        data: {
+          customerId: userId,
+          promotionId: promotionId,
+          quantity: quantity,
+          code: code,
+          status: 'PENDING',
+        },
+        include: {
+          promotion: {
+            select: {
+              name: true,
+              promoPrice: true,
+              images: true,
+            },
+          },
+        },
+      });
+
+      // 6. Atualiza e abate o estoque geral
+      await tx.promotion.update({
+        where: { id: promotionId },
+        data: {
+          stock: {
+            decrement: quantity,
+          },
+        },
+      });
+
+      return newClaim;
+    });
+  }
+
+  async claimPromotion(
+    customerId: string,
+    promotionId: string,
+    quantity: number = 1,
+  ) {
+    return this.execute({ userId: customerId, promotionId, quantity });
+  }
+
+  /**
+   * 2. VALIDAR CUPOM NO BALCÃO (Vendedor)
+   */
+  async validateClaim(sellerId: string, code: string) {
+    return await this.prisma.$transaction(async (tx) => {
+      const claim = await tx.claim.findUnique({
+        where: { code: code.toUpperCase() },
+        include: {
+          promotion: true,
+          customer: { select: { id: true, name: true, email: true } },
+        },
+      });
+
+      if (!claim) {
+        throw new NotFoundException('Código de cupom não encontrado.');
+      }
+
+      if (claim.promotion.sellerId !== sellerId) {
+        throw new ForbiddenException('Este cupom pertence a outra loja.');
+      }
+
+      // Verificação de expiração pelo endTime da promoção
+      const now = new Date();
+      if (claim.promotion.endTime && new Date(claim.promotion.endTime) <= now) {
+        // 1. Apaga todas as claims vinculadas a esta promoção expirada
+        await tx.claim.deleteMany({
+          where: { promotionId: claim.promotionId },
+        });
+
+        // 2. Apaga a promoção do banco de dados
+        await tx.promotion.delete({
+          where: { id: claim.promotionId },
+        });
+
+        throw new BadRequestException(
+          'Esta promoção expirou e foi removida do sistema.',
+        );
+      }
+
+      if (claim.status === 'USED') {
+        throw new BadRequestException(
+          'Este cupom já foi utilizado anteriormente.',
+        );
+      }
+
+      if (claim.status !== 'PENDING') {
+        throw new BadRequestException('Este cupom não está mais disponível.');
+      }
+
+      // 1. Cálculo do valor economizado pelo cliente nesta compra
+      const savedPerUnit =
+        Number(claim.promotion.originalPrice) -
+        Number(claim.promotion.promoPrice);
+      const totalSavedInThisClaim = savedPerUnit * claim.quantity;
+
+      // 2. Incrementar contadores do Cliente
+      await tx.customer.update({
+        where: { id: claim.customerId },
+        data: {
+          totalRedemptions: { increment: claim.quantity },
+          totalSavedAmount: { increment: totalSavedInThisClaim },
+        },
+      });
+
+      // 3. Incrementar contador de vendas do Vendedor
+      await tx.seller.update({
+        where: { id: sellerId },
+        data: {
+          totalSales: { increment: claim.quantity },
+        },
+      });
+
+      // 4. Marcar o cupom como utilizado e retornar o resultado
+      return await tx.claim.update({
+        where: { id: claim.id },
+        data: {
+          status: 'USED',
+          usedAt: new Date(),
+        },
+        include: {
+          customer: { select: { name: true } },
+          promotion: { select: { name: true, promoPrice: true } },
+        },
+      });
+    });
+  }
+
+  /**
+   * 3. LISTAR MEUS RESGATES (Cliente)
+   */
+  async getCustomerClaims(customerId: string) {
+    return await this.prisma.claim.findMany({
+      where: { customerId },
+      include: {
+        promotion: {
+          include: {
+            seller: { select: { name: true, avatarUrl: true, id: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async getUserRedeemedQuantityByPromotion(
+    promotionId: string,
+    userId: string,
+  ): Promise<number> {
+    const result = await this.prisma.claim.aggregate({
+      _sum: {
+        quantity: true,
+      },
+      where: {
+        promotionId: promotionId,
+        customerId: userId, // 👈 Filtra também pelo ID do cliente
+        status: {
+          not: 'CANCELLED',
+        },
+      },
+    });
+
+    return result._sum.quantity ?? 0;
+  }
+}
+````
+
+## File: back/package.json
+````json
+{
+  "name": "back",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/schedule": "^6.1.3",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@supabase/supabase-js": "^2.108.1",
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "nanoid": "^6.0.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.21.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^24.0.0",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/supertest": "^7.0.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "globals": "^17.0.0",
+    "jest": "^30.0.0",
+    "prettier": "^3.4.2",
+    "prisma": "^7.8.0",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
+````
+
+## File: front/src/app/(Customer)/(navegation)/promotions/[id]/page.tsx
+````typescript
+import { getUserRedeemedCount } from "../../../../actions/get-user-redeemed-count";
+import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
+import { api } from "@/services/api";
+import { notFound } from "next/navigation";
+
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+interface PromotionDetailResponse {
+  id: string;
+  name: string;
+  description?: string;
+  requirements?: string;
+  images: string[];
+  originalPrice: number;
+  promoPrice: number;
+  stock: number;
+  limitPerUser: number;
+  endTime: string;
+  seller: {
+    id: string;
+    name: string;
+    avatarUrl?: string;
+    address?: string;
+    businessHours?: any;
+  };
+}
+
+function calcDiscount(original: number, promo: number): string {
+  if (!original || original <= 0) return "0% off";
+  const pct = Math.round(((original - promo) / original) * 100);
+  return `${pct}% off`;
+}
+
+function formatCurrency(val: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(val);
+}
+
+export default async function PromotionDetails({ params }: PageProps) {
+  const { id } = await params;
+
+  let promotion: PromotionDetailResponse | null = null;
+  let userRedeemedCount = 0;
+
+  try {
+    // Busca em paralelo:
+    // 1. Dados públicos da promoção (`GET /promotions/:id`)
+    // 2. Soma otimizada vinda da nova Server Action (`GET /redeems/promotion/:id/total-quantity`)
+    const [promotionRes, totalRedeemed] = await Promise.all([
+      api.get<PromotionDetailResponse>(`/promotions/${id}`),
+      getUserRedeemedCount(id),
+    ]);
+
+    promotion = promotionRes.data;
+    userRedeemedCount = totalRedeemed;
+  } catch (error) {
+    console.error("Erro ao carregar detalhes da promoção:", error);
+    return notFound();
+  }
+
+  if (!promotion) {
+    return notFound();
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center p-4">
+
+      <PromotionDetailCard
+        id={promotion.id}
+        images={
+          promotion.images && promotion.images.length > 0
+            ? promotion.images
+            : ["/placeholder.png"]
+        }
+        badgeDiscount={calcDiscount(
+          promotion.originalPrice,
+          promotion.promoPrice,
+        )}
+        title={promotion.name}
+        description={
+          promotion.description || "Sem descrição informada para esta promoção."
+        }
+        requirements={
+          promotion.requirements ||
+          "Apresente o cupom de resgate no estabelecimento."
+        }
+        stock={promotion.stock}
+        userLimit={promotion.limitPerUser}
+        userRedeemedCount={userRedeemedCount}
+        duration={new Date(promotion.endTime).toLocaleDateString("pt-BR")}
+        timeLeft={promotion.endTime}
+        storeName={promotion.seller?.name || "Loja Parceira"}
+        avatarUrl={promotion.seller?.avatarUrl || undefined}
+        storeHours={promotion.seller?.businessHours || undefined}
+        storeLocation={promotion.seller?.address || "Endereço não informado"}
+        originalPrice={formatCurrency(promotion.originalPrice)}
+        discountPrice={formatCurrency(promotion.promoPrice)}
+      />
+    </div>
+  );
+}
+````
+
+## File: front/src/app/actions/promotions.ts
+````typescript
+"use server";
+
+import { cookies } from "next/headers";
+
+export async function createPromotionAction(formData: FormData) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("@PromoDay:token")?.value;
+
+    if (!token) {
+      return {
+        success: false,
+        error: "Sessão expirada. Por favor, faça login novamente.",
+      };
+    }
+
+    const payload = new FormData();
+
+    // 1. Copia todos os campos de texto ignorando 'files'
+    formData.forEach((value, key) => {
+      if (key !== "files") {
+        payload.append(key, value);
+      }
+    });
+
+    // 2. Obtém todos os arquivos enviados sob a chave 'files'
+    const files = formData.getAll("files");
+
+    // 3. Re-anexa no payload apenas arquivos válidos e com conteúdo
+    files.forEach((file) => {
+      if (file instanceof File && file.size > 0) {
+        payload.append("files", file);
+      }
+    });
+
+    // 4. Envia o payload para o NestJS
+    const response = await fetch("http://localhost:3001/seller/promotions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: payload,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      const errorMsg = Array.isArray(result.message)
+        ? result.message.join(", ")
+        : result.message || "Erro ao cadastrar a promoção.";
+
+      return { success: false, error: errorMsg };
+    }
+
+    return { success: true, data: result };
+  } catch (error: any) {
+    console.error("Erro na Server Action:", error);
+    return {
+      success: false,
+      error: "Ocorreu um erro ao conectar com o servidor.",
+    };
+  }
+}
+````
+
+## File: front/src/app/seller/(navegation)/profile/page.tsx
+````typescript
+import { getProfileSellerAction } from "@/app/actions/sellerProfileActions"; // Ou o caminho das suas actions
+import { SellerClientContainer } from "./SellerClientContainer";
+import { redirect } from "next/navigation";
+
+export default async function SellerProfilePage() {
+  // 1. Busca os dados do vendedor diretamente no servidor (Node.js/NestJS)
+  const initialUser = await getProfileSellerAction();
+
+  // 2. Redireciona para o login caso não esteja autenticado ou a session expire
+  if (!initialUser) {
+    redirect("/login");
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
+
+      {/* 3. Renderiza o container de cliente passando os dados pré-carregados */}
+      <SellerClientContainer initialUser={initialUser} />
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/PromotionDetailsCard.tsx
+````typescript
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { redeemPromotionAction } from "@/app/actions/redeem-promotion";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Minus,
+  Plus,
+  MapPin,
+  Clock,
+  ChevronLeft,
+  ChevronRight,
+  PackageCheck,
+  UserCheck,
+  Timer,
+  Loader2,
+} from "lucide-react";
+import { formatBusinessHours } from "@/utils/formatHours";
+
+interface PromotionDetailCardProps {
+  id: string;
+  images?: string[] | string;
+  imageUrl?: string;
+  badgeDiscount?: string;
+  discountPercentage?: number;
+  title: string;
+  description: string;
+  requirements: string;
+  stock: number;
+  userLimit: number;
+  duration: string;
+  timeLeft?: string;
+  storeName: string;
+  avatarUrl?: string;
+  storeHours?: string;
+  storeLocation?: string;
+  originalPrice: string;
+  discountPrice: string;
+  userRedeemedCount?: number;
+  onRedeem?: (
+    quantity: number,
+  ) => Promise<{ success: boolean; error?: string } | void> | void;
+}
+
+export function PromotionDetailCard({
+  id,
+  images,
+  imageUrl,
+  badgeDiscount = "20% off",
+  discountPercentage,
+  title,
+  description,
+  requirements,
+  stock,
+  userLimit,
+  duration,
+  timeLeft,
+  storeName,
+  avatarUrl,
+  storeHours = "Horário de funcionamento",
+  storeLocation = "Localização",
+  originalPrice,
+  discountPrice,
+  onRedeem,
+  userRedeemedCount = 0,
+}: PromotionDetailCardProps) {
+  const router = useRouter();
+
+  // Normaliza entrada de imagens
+  const imageList = useMemo(() => {
+    let list: string[] = [];
+
+    if (Array.isArray(images)) {
+      list = images;
+    } else if (typeof images === "string" && images.trim().length > 0) {
+      try {
+        const parsed = JSON.parse(images);
+        if (Array.isArray(parsed)) list = parsed;
+        else list = [images];
+      } catch {
+        list = images.includes(",")
+          ? images.split(",").map((s) => s.trim())
+          : [images];
+      }
+    } else if (imageUrl) {
+      list = [imageUrl];
+    }
+
+    return list.filter((url) => typeof url === "string" && url.trim() !== "");
+  }, [images, imageUrl]);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Unidades restantes permitidas para o limite do usuário
+  const remainingUserLimit =
+    userLimit > 0 ? Math.max(0, userLimit - userRedeemedCount) : stock;
+
+  // O máximo selecionável no botão "+" é o menor valor entre estoque geral e saldo do usuário
+  const maxAvailable =
+    userLimit > 0 ? Math.min(stock, remainingUserLimit) : stock;
+
+  // Inicializa a quantidade com 1 caso haja estoque/limite disponível, caso contrário 0
+  const [quantity, setQuantity] = useState(() => (maxAvailable > 0 ? 1 : 0));
+
+  // Sincroniza a quantidade se maxAvailable mudar dinamicamente
+  useEffect(() => {
+    if (maxAvailable <= 0) {
+      setQuantity(0);
+    } else if (quantity === 0 || quantity > maxAvailable) {
+      setQuantity(1);
+    }
+  }, [maxAvailable]);
+
+  const increment = () => {
+    if (maxAvailable > 0 && quantity < maxAvailable) {
+      setQuantity((prev) => prev + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (quantity > 1) setQuantity((prev) => prev - 1);
+  };
+
+  const handleRedeemClick = async () => {
+    if (stock === 0 || maxAvailable === 0 || isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+
+      const result = await redeemPromotionAction({
+        promotionId: id,
+        quantity,
+      });
+
+      if (!result.success) {
+        toast.error(result.error || "Não foi possível resgatar a promoção.");
+        return;
+      }
+
+      toast.success("Cupom resgatado com sucesso!");
+      router.push("/redeems");
+    } catch (error) {
+      console.error("Erro ao resgatar promoção:", error);
+      toast.error("Ocorreu um erro inesperado. Tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? imageList.length - 1 : prev - 1,
+    );
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) =>
+      prev === imageList.length - 1 ? 0 : prev + 1,
+    );
+  };
+
+  // Extrai o número do desconto
+  const resolvedDiscount = useMemo(() => {
+    if (discountPercentage !== undefined) return discountPercentage;
+    const match = badgeDiscount.match(/\d+/);
+    return match ? Number(match[0]) : null;
+  }, [discountPercentage, badgeDiscount]);
+
+  // Cronômetro de tempo restante
+  const [timeRemaining, setTimeRemaining] = useState({ hours: 0, minutes: 0 });
+
+  useEffect(() => {
+    if (!timeLeft) return;
+
+    const calculateTimeLeft = () => {
+      const targetDate = new Date(timeLeft).getTime();
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const totalMinutes = Math.floor(difference / (1000 * 60));
+        setTimeRemaining({
+          hours: Math.floor(totalMinutes / 60),
+          minutes: totalMinutes % 60,
+        });
+      } else {
+        setTimeRemaining({ hours: 0, minutes: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 60000);
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+
+  return (
+    <Card className="w-full max-w-4xl bg-card text-card-foreground border border-border/50 rounded-[28px] p-6 shadow-sm">
+      <CardContent className="p-0 flex flex-col md:flex-row gap-6">
+        {/* COLUNA ESQUERDA: imagens e loja */}
+        <div className="flex flex-col flex-1 gap-4">
+          <div className="relative aspect-[4/3] w-full bg-muted rounded-2xl overflow-hidden border border-border/20">
+            {imageList.length > 0 ? (
+              <img
+                src={imageList[currentImageIndex]}
+                alt={`${title} - imagem ${currentImageIndex + 1}`}
+                className="w-full h-full object-cover select-none"
+              />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
+                Sem imagem
+              </div>
+            )}
+
+            {imageList.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handlePrevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all active:scale-95 backdrop-blur-sm cursor-pointer"
+                  aria-label="Imagem anterior"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleNextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all active:scale-95 backdrop-blur-sm cursor-pointer"
+                  aria-label="Próxima imagem"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/50 backdrop-blur-sm rounded-full">
+                  {imageList.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                        index === currentImageIndex
+                          ? "w-5 bg-white"
+                          : "w-1.5 bg-white/50 hover:bg-white/80"
+                      }`}
+                      aria-label={`Ir para imagem ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Selo de desconto */}
+            <div
+              className="absolute top-3 right-3 z-10 w-16 h-16 bg-primary text-primary-foreground flex flex-col items-center justify-center leading-none shadow-sm"
+              style={{
+                clipPath:
+                  "polygon(100% 50%, 93.3% 62.94%, 97.55% 76.6%, 84.55% 82.14%, 82.14% 94.55%, 68.6% 92.45%, 59.48% 100%, 46.22% 94.55%, 33.68% 97.55%, 25% 86.6%, 12.5% 82.14%, 10.45% 68.6%, 0% 59.48%, 5.45% 46.22%, 2.45% 33.68%, 13.4% 25%, 17.86% 12.5%, 31.4% 10.45%, 40.52% 0%, 53.78% 5.45%, 66.32% 2.45%, 75% 13.4%, 87.5% 17.86%, 89.55% 31.4%)",
+              }}
+            >
+              {resolvedDiscount !== null ? (
+                <>
+                  <span className="text-sm font-black">
+                    {resolvedDiscount}%
+                  </span>
+                  <span className="text-[9px] font-bold uppercase mt-0.5">
+                    off
+                  </span>
+                </>
+              ) : (
+                <span className="text-[9px] font-black uppercase text-center px-1">
+                  {badgeDiscount}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Dados da loja */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0 overflow-hidden">
+                {avatarUrl && avatarUrl.trim() !== "" ? (
+                  <img
+                    src={avatarUrl}
+                    alt={storeName || "Loja"}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  storeName?.charAt(0).toUpperCase()
+                )}
+              </div>
+              <span className="font-semibold text-base text-foreground">
+                {storeName}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1 text-xs text-muted-foreground pl-0.5">
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{formatBusinessHours(storeHours)}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{storeLocation}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* COLUNA DIREITA: informações e ações */}
+        <div className="flex flex-col flex-1 justify-between gap-6">
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-snug">
+                {title}
+              </h1>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            {/* Requisitos */}
+            <div className="space-y-1 pt-4 border-t border-border/60">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                Requisitos
+              </p>
+              <p className="text-sm text-foreground font-medium leading-relaxed">
+                {requirements}
+              </p>
+            </div>
+
+            {/* Cards de estatística */}
+            <div className="grid grid-cols-3 gap-2">
+              <div className="flex flex-col gap-1 bg-muted/40 border border-border/40 rounded-xl px-3 py-2.5">
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <PackageCheck className="w-3.5 h-3.5" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide">
+                    Disponível
+                  </span>
+                </div>
+                <span className="text-sm font-bold text-foreground">
+                  {stock} und
+                </span>
+              </div>
+
+              {/* Card de Limite com alerta visual quando zerado */}
+              <div
+                className={`flex flex-col gap-1 border rounded-xl px-3 py-2.5 transition-colors ${
+                  userLimit > 0 && remainingUserLimit === 0
+                    ? "bg-destructive/10 border-destructive/30"
+                    : "bg-muted/40 border-border/40"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <UserCheck
+                    className={`w-3.5 h-3.5 ${
+                      userLimit > 0 && remainingUserLimit === 0
+                        ? "text-destructive"
+                        : ""
+                    }`}
+                  />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide">
+                    Limite
+                  </span>
+                </div>
+                <span
+                  className={`text-sm font-bold ${
+                    userLimit > 0 && remainingUserLimit === 0
+                      ? "text-destructive"
+                      : "text-foreground"
+                  }`}
+                >
+                  {userLimit > 0
+                    ? `${userRedeemedCount}/${userLimit} un.`
+                    : "Sem limite"}
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1 bg-muted/40 border border-border/40 rounded-xl px-3 py-2.5">
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <Timer className="w-3.5 h-3.5" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide">
+                    Duração
+                  </span>
+                </div>
+                <span className="text-sm font-bold text-foreground">
+                  {duration}
+                </span>
+              </div>
+            </div>
+
+            {/* Cronômetro de expiração */}
+            {timeLeft && (
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 w-fit px-2.5 py-1 rounded-md border border-border/30">
+                <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                <span>
+                  Expira em{" "}
+                  <strong className="text-foreground font-semibold">
+                    {timeRemaining.hours}h {timeRemaining.minutes}m
+                  </strong>
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Bloco de preço */}
+          <div className="space-y-1.5 pt-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Promoção
+            </span>
+            <div className="flex items-baseline gap-3 flex-wrap">
+              <span className="text-3xl font-bold tracking-tight text-foreground">
+                {discountPrice}
+              </span>
+              <span className="text-sm font-medium text-muted-foreground line-through decoration-muted-foreground/50">
+                {originalPrice}
+              </span>
+            </div>
+          </div>
+
+          {/* Quantidade e ação de resgate */}
+          <div className="flex flex-col gap-2 pt-4 border-t border-border/60">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center h-11 bg-muted/60 border border-border/60 rounded-xl overflow-hidden shrink-0">
+                <button
+                  type="button"
+                  onClick={decrement}
+                  disabled={quantity <= 1 || isSubmitting || maxAvailable === 0}
+                  className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  aria-label="Diminuir quantidade"
+                >
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
+
+                <span className="w-8 text-center font-semibold text-sm text-foreground select-none">
+                  {quantity}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={increment}
+                  disabled={
+                    quantity >= maxAvailable ||
+                    maxAvailable === 0 ||
+                    isSubmitting
+                  }
+                  className="w-9 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  aria-label="Aumentar quantidade"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <Button
+                type="button"
+                disabled={stock === 0 || maxAvailable === 0 || isSubmitting}
+                onClick={handleRedeemClick}
+                className="flex-1 relative h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm rounded-md transition-all border border-dashed border-primary-foreground/40 group overflow-hidden disabled:opacity-50 cursor-pointer"
+              >
+                <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-primary-foreground/40" />
+
+                <span className="flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Resgatando...</span>
+                    </>
+                  ) : stock === 0 ? (
+                    "Estoque Esgotado"
+                  ) : maxAvailable === 0 ? (
+                    "Limite de Resgates Atingido"
+                  ) : (
+                    "Resgatar Promoção"
+                  )}
+                </span>
+
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-primary-foreground/40" />
+              </Button>
+            </div>
+
+            {/* Mensagem de alerta quando atinge o limite individual */}
+            {userLimit > 0 && remainingUserLimit === 0 && stock > 0 && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 font-medium text-center">
+                Você já atingiu o limite máximo de {userLimit}{" "}
+                {userLimit === 1 ? "resgate" : "resgates"} para esta oferta.
+              </p>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+````
+
+## File: front/src/components/shared/RedemptionCodeCard.tsx
+````typescript
+"use client";
+
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Eye,
+  EyeOff,
+  Ticket,
+  CheckCircle2,
+  Clock,
+  XCircle,
+  Store,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+
+interface RedemptionCodeCardProps {
+  imageUrl?: string;
+  productName: string;
+  quantity: number;
+  code: string;
+  status?: "ACTIVE" | "USED" | "EXPIRED" | string;
+  className?: string;
+  seller?: {
+    name?: string;
+    avatarUrl?: string;
+    id?: string;
+  };
+  variant?: "green" | "blue" | "amber" | string;
+}
+
+export function RedemptionCodeCard({
+  imageUrl,
+  productName,
+  quantity,
+  code,
+  status = "ACTIVE",
+  className,
+  seller,
+  variant = "blue",
+}: RedemptionCodeCardProps) {
+  const [isCodeVisible, setIsCodeVisible] = useState(false);
+
+  // Mapeamento das 3 cores vibrantes e gradientes idênticos ao design de referência
+  const getVariantStyles = () => {
+    switch (variant) {
+      case "green":
+        return "bg-gradient-to-r from-[#0DA059] to-[#0A8749]";
+      case "amber":
+        return "bg-gradient-to-r from-[#F7C647] to-[#E5AC24]";
+      case "blue":
+      default:
+        return "bg-gradient-to-r from-[#2D62EA] to-[#1E4DC2]";
+    }
+  };
+
+  const isAmber = variant === "amber";
+
+  const renderStatusBadge = () => {
+    switch (status?.toUpperCase()) {
+      case "USED":
+        return (
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-xs">
+            <CheckCircle2 className="w-3 h-3" /> Resgatado
+          </span>
+        );
+      case "EXPIRED":
+        return (
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-rose-950/30 text-rose-100 border border-rose-300/30 backdrop-blur-xs">
+            <XCircle className="w-3 h-3" /> Expirado
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-xs">
+            <Clock className="w-3 h-3" /> Disponível
+          </span>
+        );
+    }
+  };
+
+  return (
+    <Card
+      className={cn(
+        "relative w-full max-w-xl text-white overflow-hidden shadow-md hover:shadow-lg transition-all duration-300",
+        getVariantStyles(),
+        "border-none rounded-[26px] p-0",
+        className,
+      )}
+    >
+      {/* Recorte Semicircular de Cupom/Ticket na Lateral Direita */}
+      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full pointer-events-none" />
+
+      <CardContent className="flex items-stretch p-0 relative min-h-[118px]">
+        {/* SEÇÃO DA ESQUERDA: Imagem do Produto (Estilo Flutuante / Squircle) */}
+        <div className="flex items-center justify-center p-3.5 w-1/3 min-w-[105px] max-w-[125px] relative">
+          <div className="w-full h-22 flex items-center justify-center overflow-hidden relative rounded-2xl bg-white/15 p-1.5 backdrop-blur-xs shadow-inner">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={productName}
+                className="w-full h-full object-contain p-0.5 drop-shadow-sm transition-transform hover:scale-105"
+                sizes="(max-width: 768px) 100px, 150px"
+              />
+            ) : (
+              <Ticket className="w-9 h-9 text-white/50" />
+            )}
+          </div>
+        </div>
+
+        {/* PERFURAÇÃO — Linha Pontilhada Vertical */}
+        <div className="w-0 shrink-0 border-l border-dashed border-white/30 my-3 z-10" />
+
+        {/* SEÇÃO DA DIREITA: Informações, Código e Ações */}
+        <div className="flex flex-col justify-between flex-1 min-w-0 p-4 pl-4 pr-7 relative">
+          {/* Top: Header, Nome e Vendedor */}
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              {seller?.name ? (
+                <Link
+                  href={seller.id ? `/stores/${seller.id}` : "#"}
+                  className="flex items-center gap-1.5 text-xs text-white/80 hover:text-white font-medium truncate transition-colors"
+                >
+                  <Store className="w-3 h-3 shrink-0 opacity-80" />
+                  <span className="truncate">{seller.name}</span>
+                </Link>
+              ) : (
+                <span className="text-[11px] text-white/70 font-medium tracking-wide">
+                  Cupom Promocional
+                </span>
+              )}
+
+              {renderStatusBadge()}
+            </div>
+
+            <h2
+              className="text-base sm:text-lg font-bold text-white leading-tight truncate mt-0.5"
+              title={productName}
+            >
+              {productName}
+            </h2>
+          </div>
+
+          {/* Bottom: Código e Botão Pill Branco */}
+          <div className="flex items-end justify-between gap-3 mt-3">
+            {/* Código / Preço com Tipografia de Destaque */}
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-white/75">
+                {quantity} {quantity === 1 ? "unidade" : "unidades"}
+              </span>
+              <span className="text-lg sm:text-xl font-mono font-black tracking-wider text-white">
+                {isCodeVisible ? code : "••••••••"}
+              </span>
+            </div>
+
+            {/* Botão Pill Branco idêntico ao Design System de referência */}
+            <button
+              type="button"
+              onClick={() => setIsCodeVisible(!isCodeVisible)}
+              className={cn(
+                "flex items-center justify-center gap-1.5 px-3.5 py-1.5",
+                "bg-white text-slate-950 shadow-xs",
+                "rounded-full hover:bg-white/95 hover:scale-105 active:scale-95 transition-all group cursor-pointer shrink-0 font-bold text-xs",
+              )}
+            >
+              {isCodeVisible ? (
+                <>
+                  <EyeOff className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
+                  <span>Ocultar</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
+                  <span>Ver Código</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+````
+
+## File: front/src/components/shared/StoreCard.tsx
+````typescript
+import Link from "next/link";
+import React from "react";
+
+interface StoreCardProps {
+  id: string;
+  name: string;
+  category?: string;
+  avatarUrl?: string;
+  offersCount: number;
+  isOpen: boolean;
+}
+
+export function StoreCard({
+  id,
+  name,
+  category,
+  avatarUrl,
+  offersCount,
+  isOpen,
+}: StoreCardProps) {
+  return (
+    <Link href={`/stores/${id}`} className="w-full max-w-xl block">
+      <div className="flex items-center justify-between gap-4 p-4 bg-card border border-border/50 rounded-2xl hover:border-border hover:shadow-sm transition-all group cursor-pointer w-full">
+        {/* Lado esquerdo: imagem + nome */}
+        <div className="flex items-center gap-3.5 min-w-0">
+          <div className="w-12 h-12 rounded-xl bg-muted border border-border/50 flex-shrink-0 overflow-hidden flex items-center justify-center group-hover:border-border transition-colors">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-muted-foreground font-semibold text-sm uppercase">
+                {name.charAt(0)}
+              </span>
+            )}
+          </div>
+
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-foreground tracking-tight truncate">
+              {name}
+            </h3>
+            {category && (
+              <p className="text-xs text-muted-foreground truncate mt-0.5 capitalize">
+                {category}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Lado direito: ofertas + status */}
+        <div className="flex items-center gap-5 text-sm flex-shrink-0">
+          <span className="text-muted-foreground font-medium hidden sm:inline">
+            {offersCount} {offersCount === 1 ? "oferta" : "ofertas"}
+          </span>
+
+          <span className="inline-flex items-center gap-1.5 font-medium text-xs text-muted-foreground">
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isOpen ? "bg-emerald-500" : "bg-muted-foreground/40"
+              }`}
+            />
+            {isOpen ? "Aberto" : "Fechado"}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+````
+
+## File: front/src/components/shared/UserTypeSelector.tsx
+````typescript
+"use client";
+
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
+
+export function UserTypeSelector() {
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-3 text-center flex flex-col items-center justify-center">
+      {/* Título Principal */}
+      <h1 className="text-4xl font-black text-black tracking-tight">Você é</h1>
+
+      {/* Grid de Escolha */}
+      <div className="flex flex-col sm:flex-row items-center gap-6 w-full justify-center">
+        {/* Opção Cliente */}
+        <Link href="/register/client" className="w-full sm:w-64 h-36">
+          {" "}
+          <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
+            <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
+              Cliente
+            </span>
+          </Card>
+        </Link>
+
+        {/* Texto Intermediário "ou" */}
+        <span className="text-lg font-bold text-neutral-800 px-2">ou</span>
+
+        {/* Opção Vendedor(a) */}
+        <Link href="/register/store" className="w-full sm:w-64 h-36">
+          <Card className="w-full sm:w-64 h-36 bg-neutral-100 hover:bg-black hover:text-white border border-neutral-200 hover:border-black rounded-[2rem] flex items-center justify-center cursor-pointer transition-all duration-200 group shadow-sm active:scale-95">
+            <span className="text-xl font-black text-neutral-900 group-hover:text-white tracking-tight">
+              Vendedor(a)
+            </span>
+          </Card>
+        </Link>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: front/src/services/auth.ts
+````typescript
+import { api } from "./api";
+import { LoginPayload, AuthResponse } from "@/types/auth";
+// import { RegisterCustomerPayload } from "@/types/customer";
+import { RegisterSellerPayload } from "@/types/seller";
+
+export const authService = {
+  // 🔐 Função de Login Única
+  login: async (credentials: LoginPayload) => {
+    // Como seu backend centralizou o login com e-mail e senha, batemos no endpoint geral
+    const data = await api.post<AuthResponse>("auth/login", credentials);
+    return data;
+  },
+
+  // 👤 Cadastro de Cliente
+  registerCustomer: async (formData: FormData) => {
+    const { data } = await api.post("/costomers", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+      },
+    });
+
+    return data;
+  },
+
+  // 🏪 Cadastro de Vendedor
+  registerSeller: async (formData: FormData) => {
+    const { data } = await api.post("/sellers", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+      },
+    });
+    return data;
+  },
+
+  getPromotions: async () => {
+    // Faz a chamada GET para o endpoint do NestJS
+    const { data } = await api.get("/promotions");
+    return data;
+  },
+};
+````
+
+## File: back/src/modules/promotions/dto/update-promotion.dto.ts
+````typescript
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  Min,
+  IsDateString,
+  IsArray,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class UpdatePromotionDto {
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  requirements?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1, { message: 'O estoque deve ser de pelo menos 1.' })
+  stock?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1, { message: 'O limite por usuário deve ser de pelo menos 1.' })
+  limitPerUser?: number;
+
+  @IsOptional()
+  @IsDateString({}, { message: 'A data final deve ser uma data válida.' })
+  endTime?: string;
+
+  @IsOptional()
+  existingImages?: string | string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true }) // Valida que cada item dentro do array é uma string (URL)
+  images?: string[];
+
+  @IsOptional()
+  sellerId?: string;
+
+  @IsOptional()
+  claims?: any;
+}
+````
+
+## File: back/src/main.ts
+````typescript
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import cookieParser from 'cookie-parser';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  // Ativa a validação automática em todas as rotas da API baseada nos DTOs
+  app.use(cookieParser());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Ignora campos extras não mapeados no DTO
+      forbidNonWhitelisted: true, // Lança erro 400 se enviarem campos não permitidos
+      transform: true, // Converte automaticamente os tipos definidos no DTO
+    }),
+  );
+
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'], // Inclui ambas as resoluções locais para evitar bloqueios
+    credentials: true,
+  });
+
+  // 🚀 Inicia o servidor HTTP na porta 3001 (ou na porta definida nas variáveis de ambiente)
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
+  console.log(`Servidor rodando em: http://localhost:${port}`);
+}
+bootstrap();
+````
+
+## File: front/src/app/actions/auth.ts
+````typescript
+"use server"; // 👈 Roda estritamente no servidor do Next.js
+
+import { cookies } from "next/headers";
+import { authService } from "@/services/auth";
+import { LoginPayload } from "@/types/auth";
+// import { RegisterCustomerPayload } from "@/types/customer";
+import { RegisterSellerPayload } from "@/types/seller";
+import { AxiosError } from "axios";
+import { redirect } from "next/navigation";
+
+/**
+ * Action para realizar o login e salvar os cookies seguros
+ */
+export async function signInAction(credentials: LoginPayload) {
+  try {
+    // Chama o serviço HTTP que retorna access_token e os dados do usuário (incluindo a role)
+    const { data } = await authService.login(credentials);
+
+    const cookieStore = await cookies();
+
+    // Configurações padrão dos cookies para reuso
+    const cookieOptions = {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict" as const,
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: "/",
+    };
+
+    // 1. Grava o token blindado contra XSS
+    cookieStore.set("@PromoDay:token", data.access_token, {
+      ...cookieOptions,
+      httpOnly: true,
+    });
+
+    // 2. 👈 NOVO: Grava a Role para o middleware ler instantaneamente
+    if (data.user?.role) {
+      cookieStore.set("@PromoDay:role", data.user.role, {
+        ...cookieOptions,
+        httpOnly: true,
+      });
+    }
+
+    return { success: true, user: data.user };
+  } catch (error) {
+    console.error("ERRO COMPLETO NA ACTION DE LOGIN:", error);
+    const axiosError = error as AxiosError<{ message: string }>;
+    return {
+      success: false,
+      error: axiosError.response?.data?.message || "Falha na autenticação.",
+    };
+  }
+}
+
+/**
+ * Action para registrar um Cliente (Customer)
+ */
+export async function registerCustomerAction(formdata: FormData) {
+  try {
+    await authService.registerCustomer(formdata);
+    return { success: true };
+  } catch (error) {
+    const axiosError = error as AxiosError<{ message: string }>;
+    return {
+      success: false,
+      error: axiosError.response?.data?.message || "Erro ao cadastrar cliente.",
+    };
+  }
+}
+
+/**
+ * Action para registrar um Vendedor (Seller)
+ */
+export async function registerSellerAction(formdata: FormData) {
+  try {
+    await authService.registerSeller(formdata);
+    return { success: true };
+  } catch (error) {
+    const axiosError = error as AxiosError<{ message: string }>;
+    return {
+      success: false,
+      error:
+        axiosError.response?.data?.message || "Erro ao cadastrar vendedor.",
+    };
+  }
+}
+
+/**
+ * Action para limpar a sessão
+ */
+export async function signOutAction() {
+  const cookieStore = await cookies();
+
+  // Limpa ambos os cookies na saída
+  cookieStore.delete("@PromoDay:token");
+  cookieStore.delete("@PromoDay:role"); // 👈 NOVO: Deleta o cookie da role
+
+  redirect("/auth/login");
+}
+
+export async function getTokenAction(): Promise<string | undefined> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("@PromoDay:token")?.value;
+  return token;
+}
+````
+
+## File: front/src/components/shared/login.tsx
+````typescript
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signInAction } from "@/app/actions/auth"; // 👈 Importa a Action que acabamos de ajustar
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
+export function LoginCard() {
+  const router = useRouter();
+  const { setUser } = useAuth(); // Função do contexto para atualizar o usuário globalmente
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    // 🚀 Chama a Server Action passando as credenciais puras (aqui usamos JSON normal)
+    const result = await signInAction({ email, password });
+
+    setLoading(false);
+    console.log("Resultado da Action:", result.user);
+    if (result.success && result.user) {
+      // 1. Salva o usuário no Contexto para o Front-end renderizar o nome/foto dele na tela
+      setUser(result.user);
+
+      // 2. Redirecionamento inteligente baseado no Role que veio do seu NestJS
+      if (result.user.role === "SELLER") {
+        router.push("/seller/announce");
+      } else {
+        router.push("/promotions");
+      }
+    } else {
+      // Exibe na tela o erro exato retornado pelo NestJS
+      setError(result.error || "Falha ao tentar entrar.");
+    }
+  };
+  return (
+    <div className="w-full max-w-md mx-auto space-y-6 text-center">
+      {/* Título */}
+      <h1 className="text-3xl font-black text-black tracking-tight">
+        Entrar no Promoday
+      </h1>
+
+      {/* Card Principal */}
+      <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
+        <CardContent className="p-0 space-y-5">
+          {/* Campo Email */}
+          <form onSubmit={handleLogin} method="POST">
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="email"
+                className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider"
+              >
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+              />
+            </div>
+
+            {/* Campo Senha */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="senha"
+                className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider mt-4"
+              >
+                Senha
+              </Label>
+              <Input
+                id="senha"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black focus-visible:ring-2 focus-visible:ring-black"
+              />
+            </div>
+
+            {/* Ações de Entrada */}
+            <div className="flex flex-col gap-2 pt-2 items-center">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="rounded-full bg-black hover:bg-neutral-800 cursor-pointer text-white w-32 h-9 font-bold text-sm transition-all"
+              >
+                {loading ? "Entrando..." : "Entrar"}
+              </Button>
+              <Button
+                variant="link"
+                className="text-black font-bold text-xs hover:underline p-0 h-auto cursor-pointer"
+              >
+                Entrar como convidado
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* Rodapé: Criar Conta */}
+      <div className="space-y-2 pt-2">
+        <p className="text-sm font-medium text-neutral-600">Não tem conta?</p>
+        <Link href="/register">
+          <Button
+            variant="outline"
+            className="rounded-full border-black bg-transparent cursor-pointer text-black hover:bg-black hover:text-white px-6 h-9 font-bold text-sm transition-all"
+          >
+            Criar conta
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/SearchBar.tsx
+````typescript
+"use client"; // Obrigatório aqui em cima, pois o componente agora gerencia estado próprio
+
+import React, { useState } from "react";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import Link from "next/link";
+
+interface Category {
+  value: string;
+  label: string;
+}
+
+interface SearchBarProps {
+  placeholder?: string;
+  categories?: Category[];
+  // Caso a página ainda queira saber o valor final para fazer a busca no NestJS:
+  onSearchSubmit?: (termo: string, categoria: string) => void;
+}
+
+const defaultCategories: Category[] = [
+  { value: "todas", label: "Todos" },
+  { value: "eletronicos", label: "Eletrônicos" },
+  { value: "acessorios", label: "Acessórios" },
+  { value: "servicos", label: "Serviços" },
+];
+
+export function SearchBar({
+  placeholder = "Buscar produtos, lojas ou cupons...",
+  categories = defaultCategories,
+  onSearchSubmit,
+}: SearchBarProps) {
+  // 1. Criamos os estados internos do componente
+  const [termo, setTermo] = useState("");
+  const [categoria, setCategoria] = useState("todas");
+
+  // 2. A FUNÇÃO INTERNA: Ela gerencia a mudança e, se necessário, avisa a página externa
+  const handleCategoryChange = (novaCategoria: string) => {
+    setCategoria(novaCategoria);
+    console.log("Estado interno atualizado no componente:", novaCategoria);
+
+    // Opcional: Se a página passou a prop de submit, avisa ela com os dados atualizados
+    if (onSearchSubmit) {
+      onSearchSubmit(termo, novaCategoria);
+    }
+  };
+
+  return (
+    <div className="bg-primary p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
+      <Link href="/promotions">
+        <h1 className="text-2xl font-bold text-card">Promoday</h1>
+      </Link>
+      <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
+        {/* Área do Input */}
+        <div className="relative flex-1 h-full flex items-center">
+          <Input
+            type="text"
+            placeholder={placeholder}
+            onChange={(e) => setTermo(e.target.value)} // Atualiza o termo internamente
+            className="w-full h-full bg-transparent border-none text-black placeholder:text-neutral-400 pl-6 pr-12 text-base rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          <button className="absolute right-4 text-neutral-400 cursor-pointer hover:text-neutral-600 transition-colors">
+            <Search className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="h-6 w-[1px] bg-neutral-300" />
+
+        {/* 3. Conectamos a nossa função interna no Select do Shadcn */}
+        <Select defaultValue="todas" onValueChange={handleCategoryChange}>
+          <SelectTrigger className="h-full w-[140px]  bg-white hover:bg-primary text-primary hover:text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-primary/70">
+            <SelectValue placeholder="Categoria" />
+          </SelectTrigger>
+
+          <SelectContent className="bg-white border border-neutral-200 text-black rounded-xl shadow-lg">
+            {categories.map((cat) => (
+              <SelectItem
+                key={cat.value}
+                value={cat.value}
+                className="cursor-pointer font-medium focus:bg-neutral-100 focus:text-black transition-colors"
+              >
+                {cat.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/UserProfileCard.tsx
+````typescript
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Pencil,
+  Ticket,
+  PiggyBank,
+  Mail,
+  Phone,
+  Camera,
+  X,
+  Check,
+  User,
+  Loader2,
+} from "lucide-react";
+import { useCustomerMetrics } from "@/hooks/useCustomerMetric";
+
+interface UserProfileCardProps {
+  avatarUrl?: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalRedemptions?: number;
+  totalSavedAmount?: number;
+  isSubmitting?: boolean;
+  onSaveProfile?: (formData: FormData) => Promise<void> | void; // 👈 Ajustado para aceitar FormData
+}
+
+export function UserProfileCard({
+  avatarUrl: initialAvatar,
+  name: initialName,
+  email,
+  phone: initialPhone,
+  totalRedemptions = 0,
+  totalSavedAmount = 0,
+  isSubmitting = false,
+  onSaveProfile,
+}: UserProfileCardProps) {
+  // Estados para dados exibidos no Card
+  const [userData, setUserData] = useState({
+    name: initialName,
+    phone: initialPhone,
+    avatarUrl: initialAvatar,
+  });
+
+  // Estados do Modal de Edição
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState(userData);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // 👈 Guarda o arquivo binário real
+  const [localLoading, setLocalLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Sincroniza o estado interno quando as props mudarem
+  useEffect(() => {
+    setUserData({
+      name: initialName,
+      phone: initialPhone,
+      avatarUrl: initialAvatar,
+    });
+  }, [initialName, initialPhone, initialAvatar]);
+
+  const handleOpenEdit = () => {
+    setEditForm(userData);
+    setSelectedFile(null); // Reseta o arquivo selecionado
+    setErrorMessage(null);
+    setIsEditing(true);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file); // Guarda o objeto File para envio no FormData
+      const previewUrl = URL.createObjectURL(file); // Blob apenas para a prévia visual no modal
+      setEditForm((prev) => ({ ...prev, avatarUrl: previewUrl }));
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    // 1. Monta o FormData para enviar os textos + arquivo para o container/action
+    const formData = new FormData();
+    formData.append("name", editForm.name);
+    formData.append("phone", editForm.phone);
+
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    if (onSaveProfile) {
+      try {
+        setLocalLoading(true);
+        // 2. Dispara a callback passando o FormData montado
+        await onSaveProfile(formData);
+        setIsEditing(false); // O container/action cuida da atualização do userData via props
+      } catch (error: any) {
+        setErrorMessage(
+          error?.message || "Erro ao salvar alterações. Tente novamente.",
+        );
+      } finally {
+        setLocalLoading(false);
+      }
+    } else {
+      setIsEditing(false);
+    }
+  };
+
+  const { metrics } = useCustomerMetrics();
+
+  const formattedSaved = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(metrics?.totalSavedAmount ?? totalSavedAmount);
+
+  const isPending = isSubmitting || localLoading;
+
+  return (
+    <>
+      <Card className="w-full max-w-4xl bg-white border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-950/5 overflow-hidden">
+        <CardContent className="p-6 md:p-8">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            {/* PARTE ESQUERDA: Avatar + Infos Pessoais */}
+            <div className="flex flex-col sm:flex-row items-center gap-5 w-full lg:w-auto text-center sm:text-left">
+              <div className="relative group shrink-0">
+                <div className="w-20 h-20 sm:w-22 sm:h-22 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border-2 border-slate-100 shadow-md">
+                  {userData.avatarUrl ? (
+                    <img
+                      src={userData.avatarUrl}
+                      alt={userData.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white font-extrabold text-2xl uppercase select-none">
+                      {userData.name?.substring(0, 2) || "US"}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Detalhes do Usuário */}
+              <div className="space-y-1.5 min-w-0">
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <h2 className="text-xl font-bold text-slate-950 truncate tracking-tight">
+                    {userData.name}
+                  </h2>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs font-medium text-slate-600">
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="truncate">{email}</span>
+                  </div>
+                  <span className="hidden sm:inline text-slate-300">•</span>
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span>{userData.phone}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* DIVISÓRIA MOBILE/DESKTOP */}
+            <div className="w-full h-[1px] lg:w-[1px] lg:h-16 bg-slate-100" />
+
+            {/* PARTE DIREITA: Métricas + Botão Editar */}
+            <div className="flex items-center justify-between lg:justify-end gap-4 w-full lg:w-auto">
+              <div className="grid grid-cols-2 gap-3 w-full sm:w-auto">
+                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3 px-4 flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100/60 shrink-0">
+                    <Ticket className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                      Resgates
+                    </span>
+                    <span className="text-base font-extrabold text-slate-950">
+                      {metrics?.totalRedemptions ?? totalRedemptions}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-50/50 border border-emerald-100/80 rounded-2xl p-3 px-4 flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-emerald-100/70 text-emerald-600 shrink-0">
+                    <PiggyBank className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
+                      Economizado
+                    </span>
+                    <span className="text-base font-extrabold text-emerald-950">
+                      {formattedSaved}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleOpenEdit}
+                className="p-3 bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-950 rounded-2xl transition-all border border-slate-200/60 shrink-0 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer"
+                title="Editar Perfil"
+              >
+                <Pencil className="w-4 h-4" />
+                <span className="hidden xl:inline">Editar</span>
+              </button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* MODAL DE EDIÇÃO DE DADOS */}
+      {isEditing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-100 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Header Modal */}
+            <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-950">
+                Editar Dados Pessoais
+              </h3>
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => setIsEditing(false)}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-all disabled:opacity-50"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Form Modal */}
+            <form onSubmit={handleSave} className="p-6 space-y-4">
+              {errorMessage && (
+                <div className="p-3 text-xs bg-red-50 text-red-600 rounded-xl border border-red-100">
+                  {errorMessage}
+                </div>
+              )}
+
+              {/* Foto de Perfil */}
+              <div className="flex flex-col items-center justify-center mb-2">
+                <div className="relative group cursor-pointer">
+                  <div className="w-20 h-20 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border-2 border-slate-200 shadow-sm">
+                    {editForm.avatarUrl ? (
+                      <img
+                        src={editForm.avatarUrl}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-xl uppercase">
+                        {editForm.name?.substring(0, 2) || "US"}
+                      </span>
+                    )}
+                  </div>
+                  <label className="absolute inset-0 bg-slate-950/40 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                    <Camera className="w-6 h-6" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={isPending}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <span className="text-xs text-slate-600 mt-2">
+                  Clique na foto para alterar
+                </span>
+              </div>
+
+              {/* Campo Nome */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Nome Completo
+                </label>
+                <div className="relative">
+                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={editForm.name}
+                    disabled={isPending}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, name: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Campo Telefone */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Telefone
+                </label>
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={editForm.phone}
+                    disabled={isPending}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, phone: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Botões do Form */}
+              <div className="pt-3 flex gap-2">
+                <button
+                  type="button"
+                  disabled={isPending}
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-xl transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-blue-500/20 disabled:opacity-50 cursor-pointer"
+                >
+                  {isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Salvar
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+````
+
+## File: front/src/contexts/AuthContext.tsx
+````typescript
+"use client";
+
+import { createContext, useContext, useState, ReactNode } from "react";
+import { signOutAction } from "@/app/actions/auth";
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: "CUSTOMER" | "SELLER";
+  avatarUrl?: string;
+  phone?: string;
+  imageUrl?: string;
+  businessHours?: string;
+  address?: string;
+  category?: string;
+  totalPromotions?: number;
+  totalSales?: number;
+}
+
+interface AuthContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  logout: () => Promise<void>;
+  isAuthenticated: boolean;
+  updateUser: (updatedFields: Partial<User>) => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+interface AuthProviderProps {
+  children: ReactNode;
+  initialUser?: User | null; // Permite inicializar vindo do Server Component
+}
+
+export function AuthProvider({
+  children,
+  initialUser = null,
+}: AuthProviderProps) {
+  // Inicializa o estado com o usuário vindo do servidor, se houver
+  const [user, setUser] = useState<User | null>(initialUser);
+
+  const logout = async () => {
+    setUser(null);
+    await signOutAction(); // Executa a Server Action de logout
+  };
+
+  const updateUser = (updatedFields: Partial<User>) => {
+    setUser((prevUser) =>
+      prevUser ? { ...prevUser, ...updatedFields } : null,
+    );
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        logout,
+        isAuthenticated: !!user,
+        updateUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  }
+  return context;
+}
+````
+
+## File: front/package.json
+````json
+{
+  "name": "blinksale-front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "axios": "^1.18.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "js-cookie": "^3.0.8",
+    "lucide-react": "^1.16.0",
+    "next": "16.2.6",
+    "radix-ui": "^1.4.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.76.0",
+    "shadcn": "^4.7.0",
+    "sonner": "^2.0.8",
+    "swr": "^2.5.1",
+    "tailwind-merge": "^3.6.0",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+````
+
+## File: back/src/modules/auth/auth.service.ts
+````typescript
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { CostomersService } from '../costomers/costomers.service';
+import { SellersService } from '../sellers/sellers.service';
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    private costomersService: CostomersService,
+    private jwtService: JwtService,
+    private sellersService: SellersService,
+  ) {}
+
+  async validateUser(email: string, pass: string): Promise<any> {
+    // 1. Busca como cliente
+    const customer = await this.costomersService.findByEmail(email);
+
+    if (customer) {
+      if (
+        customer.password &&
+        (await bcrypt.compare(pass, customer.password))
+      ) {
+        const { password, ...result } = customer;
+        return {
+          ...result,
+          role: (customer as any).role || 'CUSTOMER',
+        };
+      }
+      return null;
+    }
+
+    // 2. Se não for cliente, busca como vendedor
+    const seller = await this.sellersService.findByEmail(email);
+
+    if (seller) {
+      if (seller.password && (await bcrypt.compare(pass, seller.password))) {
+        const { password, ...result } = seller;
+        return {
+          ...result,
+          role: (seller as any).role || 'SELLER',
+        };
+      }
+      return null;
+    }
+
+    return null;
+  }
+  async login(user: any) {
+    // Payload contendo o id, e-mail e role para assinatura do JWT
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      role: user.role,
+    };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role, // 👈 Agora este campo é garantido
+        phone: user.phone,
+        avatarUrl: user.avatarUrl || null,
+        totalPromotions: user.totalPromotions,
+        totalSales: user.totalSales,
+        ...(user.businessHours && { businessHours: user.businessHours }),
+        ...(user.address && { address: user.address }),
+        ...(user.category && { category: user.category }),
+      },
+    };
+  }
+}
+````
+
+## File: back/src/modules/costomers/costomers.controller.ts
+````typescript
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { CostomersService } from './costomers.service';
+import { CreateCostomerDto } from './dto/create-costomer.dto';
+import { UpdateCostomerDto } from './dto/update-costomer.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+
+@Controller('costomers')
+export class CostomersController {
+  constructor(private readonly costomersService: CostomersService) {}
+
+  @Post()
+  @UseInterceptors(FileInterceptor('avatar'))
+  create(
+    @Body() createCostomerDto: CreateCostomerDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.costomersService.create(createCostomerDto, file);
+  }
+
+  @Patch('profile')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file')) // Intercepta a chave 'file' do FormData
+  async update(
+    @Request() req: any,
+    @Body() updateCostomerDto: UpdateCostomerDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const userId = req.user.sub;
+    return this.costomersService.update(userId, updateCostomerDto, file);
+  }
+
+  @Delete('profile') // 👈 Rota: DELETE costomers/account (sem expor ID na URL)
+  @UseGuards(JwtAuthGuard) // 🔒 Apenas usuários logados podem acessar
+  remove(@Request() req) {
+    // Pegamos o ID do usuário de dentro do token decodificado
+    const userId = req.user.sub;
+
+    return this.costomersService.remove(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  async getProfile(@Request() req) {
+    // Extrai o ID do cliente do payload do JWT injetado no req.user
+    const customerId = req.user.sub;
+    return this.costomersService.getProfile(customerId);
+  }
+
+  @Get()
+  findAll() {
+    return this.costomersService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('metrics')
+  getMetrics(@Request() req) {
+    // req.user é injetado pelo JwtAuthGuard após validar o JWT
+    const customerId = req.user.sub;
+
+    return this.costomersService.getMetrics(customerId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.costomersService.findOne(id);
+  }
+}
+````
+
+## File: back/src/app.module.ts
+````typescript
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { CostomersModule } from './modules/costomers/costomers.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { SellersModule } from './modules/sellers/sellers.module';
+import { PromotionsModule } from './modules/promotions/promotions.module';
+import { ClaimsModule } from './modules/claims/claims.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './modules/tasks/tasks.module';
+
+@Module({
+  imports: [
+    CostomersModule,
+    AuthModule,
+    SellersModule,
+    PromotionsModule,
+    ClaimsModule,
+    ScheduleModule.forRoot(),
+    TasksModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+````
+
+## File: front/src/app/playground/page.tsx
+````typescript
+import { LoginCard } from "@/components/shared/login";
+import { UserTypeSelector } from "@/components/shared/UserTypeSelector";
+import { RegisterStepperForm } from "@/components/shared/RegisterStepperStore";
+import { PromoCard } from "@/components/shared/PromoCard";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { BottomNav } from "@/components/shared/BottomNav";
+import { CreateAdForm } from "@/components/shared/CreateAdForm";
+import { RedeemedProductBadge } from "@/components/shared/RedeemedProductBadge";
+import { RedemptionCodeCard } from "@/components/shared/RedemptionCodeCard";
+import { UserProfileCard } from "@/components/shared/UserProfileCard";
+import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
+import { RegisterStepperFormClient } from "@/components/shared/RegisterStepperClient";
+import { RegisterStepperFormStore } from "@/components/shared/RegisterStepperStore";
+
+export default function Playground() {
+  return (
+    <div>
+      {/* <h1 className="text-center">Playground</h1> */}
+      {/* <LoginCard /> */}
+      {/* <UserTypeSelector /> */}
+      {/* <RegisterStepperForm /> */}
+      {/* <PromoCard /> */}
+      {/* <SearchBar /> */}
+      {/* <BottomNav />
+      <CreateAdForm /> */}
+      {/* <RedeemedProductBadge
+        imageUrl=""
+        productName="Produto Exemplo"
+        quantity={5}
+      />
+      <RedemptionCodeCard
+        imageUrl=""
+        productName="Produto Exemplo"
+        quantity={5}
+        code="ABC123"
+      />
+
+      <UserProfileCard
+        name="Marcos César Marinho"
+        email="marcos.marinho@email.com"
+        phone="(11) 99999-9999"
+      /> */}
+
+      {/* <PromotionDetailCard
+        imageUrl="https://images.unsplash.com/photo-1622445262465-2481c4574875?w=800&q=80" // Imagem mock do Unsplash (Carregador)
+        badgeDiscount="20% off"
+        title="Carregador tipo C"
+        description="Compatível com uma ampla gama de modelos de smartphones, incluindo Xiaomi, Samsung e outras marcas de ponta com suporte a carregamento rápido Turbo Power."
+        requirements="Comprar 50 reais em compras no estabelecimento."
+        stock={4} // Quantidade em estoque
+        userLimit={2} // Limite máximo por utilizador (o stepper vai travar aqui!)
+        duration="1d:12h"
+        storeName="Super Cell"
+        storeHours="Segunda a Sexta: 09h às 18h"
+        storeLocation="Rua Principal, 123 - Centro"
+        originalPrice="R$ 49,90"
+        discountPrice="R$ 39,90"
+      /> */}
+
+      {/* <RegisterStepperFormStore /> */}
+      <RegisterStepperFormClient />
+      <CreateAdForm />
+    </div>
+  );
+}
+````
+
+## File: front/src/components/shared/BottomNav.tsx
+````typescript
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ShoppingBag, Store, Ticket, User, PlusCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+
+export function BottomNav() {
+  const pathname = usePathname();
+  const { user } = useAuth();
+
+  // Verifica se o usuário é vendedor (seja pela role do context ou pela URL atual)
+  const isSeller = user?.role === "SELLER" || pathname.startsWith("/seller");
+
+  // Define o prefixo '/seller' para as URLs caso seja vendedor
+  const basePath = isSeller ? "/seller" : "";
+
+  // Estrutura de rotas base
+  const baseItems = [
+    {
+      label: isSeller ? "Minhas Ofertas" : "Promoções",
+      path: "/promotions",
+      icon: ShoppingBag,
+    },
+    {
+      label: "Lojas",
+      path: "/stores",
+      icon: Store,
+    },
+    {
+      label: isSeller ? "Validar Cupom" : "Resgates",
+      path: "/redeems",
+      icon: Ticket,
+    },
+    {
+      label: "Conta",
+      path: "/profile",
+      icon: User,
+    },
+  ];
+
+  // 2. Filtra a aba "Lojas" se for Seller
+  let navItems = isSeller
+    ? baseItems.filter((item) => item.path !== "/stores")
+    : baseItems;
+
+  if (isSeller) {
+    navItems.splice(0, 0, {
+      label: "Anunciar",
+      path: "/announce", // Exemplo de rota de criação
+      icon: PlusCircle,
+    });
+  }
+
+  return (
+    <div className="sticky bottom-0 left-0 right-0 z-50 bg-primary border-t px-4 pb-safe">
+      <nav className="flex justify-around items-center h-16 max-w-md mx-auto bg-primary">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+
+          // Monta a URL completa baseada na role (ex: /seller/promotions ou /promotions)
+          const href = `${basePath}${item.path}`;
+
+          // Verifica se a rota atual é exatamente a URL montada
+          const isActive = pathname === href;
+
+          return (
+            <Link
+              key={item.path}
+              href={href}
+              className={`flex flex-col items-center justify-center w-16 h-full transition-all gap-1 cursor-pointer
+                ${isActive ? "text-white scale-105" : "text-white/50 hover:text-neutral-300"}`}
+            >
+              <Icon
+                className="w-6 h-6 transition-transform"
+                strokeWidth={isActive ? 2.5 : 2}
+              />
+
+              <span
+                className={`text-xs font-semibold tracking-wide transition-all whitespace-nowrap text-center
+                ${isActive ? "font-bold text-white" : "text-white/50"}`}
+              >
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
+````
+
+## File: back/src/modules/costomers/costomers.service.ts
+````typescript
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { CreateCostomerDto } from './dto/create-costomer.dto';
+import { UpdateCostomerDto } from './dto/update-costomer.dto';
+import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class CostomersService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private StorageService: StorageService,
+  ) {}
+
+  async create(
+    createCustomerDto: CreateCostomerDto,
+    file: Express.Multer.File,
+  ) {
+    const { name, email, phone, password } = createCustomerDto;
+
+    // 2. Regra de Negócio: Verificar se o e-mail já está cadastrado
+    const emailExists = await this.prisma.customer.findUnique({
+      where: { email },
+    });
+
+    if (emailExists) {
+      // O NestJS já tem exceções HTTP prontas. Essa joga um erro 409 (Conflict) na tela
+      throw new ConflictException(
+        'Este e-mail já está cadastrado no PromoDay.',
+      );
+    }
+
+    let avatarUrl: string | null = null;
+    if (file) {
+      avatarUrl = await this.StorageService.uploadFile(file);
+    }
+
+    // 3. Segurança: Criptografar a senha do usuário
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 4. Persistência: Gravar no PostgreSQL usando o Prisma v7
+    const customerData = await this.prisma.customer.create({
+      data: {
+        name,
+        email,
+        phone,
+        password: hashedPassword, // Salvamos a senha segura, nunca a limpa!
+        avatarUrl,
+      },
+    });
+
+    // 5. Forma moderna e segura de remover a senha no TypeScript (Substitui o 'delete')
+    const { password: _, ...customerWithoutPassword } = customerData;
+
+    return customerWithoutPassword;
+  }
+
+  async getProfile(id: string) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+      },
+    });
+
+    if (!customer) {
+      throw new NotFoundException('Cliente não encontrado.');
+    }
+
+    return customer;
+  }
+
+  async findByEmail(email: string) {
+    // Busca no banco um cliente onde o e-mail seja exatamente o digitado
+    const customer = await this.prisma.customer.findUnique({
+      where: { email },
+    });
+
+    return customer;
+  }
+
+  async update(
+    id: string,
+    updateCostomerDto: UpdateCostomerDto,
+    file?: Express.Multer.File,
+  ) {
+    try {
+      // 1. Busca o cliente atual para preservar o avatarUrl se não houver nova imagem
+      const customer = await this.prisma.customer.findUnique({
+        where: { id },
+      });
+
+      if (!customer) {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+
+      let avatarUrl = customer.avatarUrl;
+
+      // 2. Faz o upload para o Supabase se um novo arquivo tiver sido enviado
+      if (file) {
+        avatarUrl = await this.StorageService.uploadFile(file);
+      }
+
+      // 3. Atualiza os dados no banco
+      const customerAtualizado = await this.prisma.customer.update({
+        where: { id },
+        data: {
+          ...updateCostomerDto,
+          avatarUrl, // Atualiza a URL apenas se um novo arquivo foi enviado
+        },
+        select: {
+          name: true,
+          phone: true,
+          avatarUrl: true,
+        },
+      });
+
+      // 4. Omitir a senha no retorno
+      return customerAtualizado;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
+      if (error.code === 'P2025') {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+
+      console.error('Erro no update do customer:', error);
+      throw new HttpException(
+        'Erro ao atualizar o perfil.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      // Deleta o cliente no banco baseado no ID do token
+      await this.prisma.customer.delete({
+        where: { id },
+      });
+
+      // Retornamos uma mensagem de sucesso para o front-end
+      return {
+        success: true,
+        message: 'Sua conta foi deletada com sucesso.',
+      };
+    } catch (error) {
+      // Se por algum motivo o ID não existir mais no banco (erro P2025 do Prisma)
+      if (error.code === 'P2025') {
+        throw new NotFoundException('Utilizador não encontrado.');
+      }
+      throw new HttpException(
+        'Erro ao tentar deletar a conta.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getMetrics(customerId: string) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { id: customerId },
+      select: {
+        totalRedemptions: true,
+        totalSavedAmount: true,
+      },
+    });
+
+    if (!customer) {
+      throw new NotFoundException('Cliente não encontrado.');
+    }
+
+    return {
+      totalRedemptions: customer.totalRedemptions ?? 0,
+      totalSavedAmount: customer.totalSavedAmount ?? 0,
+    };
+  }
+
+  findAll() {
+    return `This action returns all costomers`;
+  }
+
+  findOne(id: string) {
+    return `This action returns a #${id} costomer`;
+  }
+}
+````
+
+## File: front/src/components/shared/CreateAdForm.tsx
+````typescript
+"use client";
+
+import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useForm, Controller } from "react-hook-form";
+import { Upload, Clock, MapPin, Plus, Minus, Loader2, X } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { formatBusinessHours } from "@/utils/formatHours";
+import { createPromotionAction } from "@/app/actions/promotions";
+
+interface AdFormValues {
+  productName: string;
+  description?: string;
+  requirements?: string;
+  stock: string;
+  userLimit: string;
+  startDate: string;
+  endDate: string;
+  originalPrice: string;
+  discountPrice: string;
+}
+
+export function CreateAdForm() {
+  // Alterado para suporte a até 3 imagens
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  const [isUnlimitedUser, setIsUnlimitedUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const { user } = useAuth();
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+    setValue,
+  } = useForm<AdFormValues>({
+    defaultValues: {
+      productName: "",
+      description: "",
+      requirements: "",
+      stock: "1",
+      userLimit: "1",
+      startDate: "",
+      endDate: "",
+      originalPrice: "",
+      discountPrice: "",
+    },
+  });
+
+  // Função para adicionar novas imagens
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (!selectedFiles.length) return;
+
+    const availableSlots = 3 - imageFiles.length;
+    const newFiles = selectedFiles.slice(0, availableSlots);
+
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+    setImageFiles((prev) => [...prev, ...newFiles]);
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+
+    // Reseta o input para permitir selecionar o mesmo arquivo novamente se desejar
+    e.target.value = "";
+  };
+
+  // Função para remover uma imagem específica
+  const handleRemoveImage = (index: number) => {
+    // Revoga a URL criada para evitar leak de memória
+    URL.revokeObjectURL(imagePreviews[index]);
+
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  async function onSubmit(data: AdFormValues) {
+    setLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      const parseCurrency = (value: string) => {
+        if (!value) return 0;
+        return Number(value.replace(/\./g, "").replace(",", "."));
+      };
+
+      const formData = new FormData();
+
+      // Envia todas as imagens anexadas no FormData
+      imageFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      formData.append("name", data.productName);
+      if (data.description) formData.append("description", data.description);
+      if (data.requirements) formData.append("requirements", data.requirements);
+      formData.append("stock", String(data.stock));
+      formData.append(
+        "limitPerUser",
+        String(isUnlimitedUser ? 0 : data.userLimit),
+      );
+      formData.append("startTime", new Date(data.startDate).toISOString());
+      formData.append("endTime", new Date(data.endDate).toISOString());
+      formData.append(
+        "originalPrice",
+        String(parseCurrency(data.originalPrice)),
+      );
+      formData.append("promoPrice", String(parseCurrency(data.discountPrice)));
+
+      const result = await createPromotionAction(formData);
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      setSuccessMessage("Promoção cadastrada com sucesso! 🎉");
+
+      // Reseta os campos e libera a memória das URLs
+      reset();
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+      setImageFiles([]);
+      setImagePreviews([]);
+      setIsUnlimitedUser(false);
+    } catch (err: any) {
+      console.error("Erro ao cadastrar promoção:", err);
+      setErrorMessage(err.message || "Ocorreu um erro ao criar a promoção.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const getInitials = (name?: string) => {
+    if (!name) return "LJ";
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  };
+
+  return (
+    <div className="bg-neutral-100 min-h-screen p-4 md:p-8 flex justify-center items-center">
+      <Card className="w-full max-w-5xl bg-white border border-neutral-200 rounded-[32px] shadow-sm overflow-hidden">
+        <CardContent className="p-6 md:p-10">
+          {errorMessage && (
+            <div className="mb-6 p-4 text-sm font-medium text-red-700 bg-red-100 rounded-2xl border border-red-200">
+              {errorMessage}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="mb-6 p-4 text-sm font-medium text-green-700 bg-green-100 rounded-2xl border border-green-200">
+              {successMessage}
+            </div>
+          )}
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-12 gap-8"
+          >
+            {/* COLUNA DA ESQUERDA: Uploads de Imagens e Dados da Loja */}
+            <div className="md:col-span-5 flex flex-col space-y-6">
+              {/* Seção de Gerenciamento de Imagens */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-black">
+                    Imagens do produto
+                  </span>
+                  <span className="text-xs font-medium text-neutral-500">
+                    {imageFiles.length}/3 selecionadas
+                  </span>
+                </div>
+
+                {/* Grid para Exibição das Imagens Fixadas e do Botão de Upload */}
+                <div className="grid grid-cols-3 gap-3">
+                  {/* Pré-visualização das Imagens Adicionadas */}
+                  {imagePreviews.map((preview, index) => (
+                    <div
+                      key={index}
+                      className="relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 group"
+                    >
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-1.5 right-1.5 p-1 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-colors"
+                        title="Remover imagem"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Botão de Upload Visível se Houver Vagas (Menos de 3 Imagens) */}
+                  {imageFiles.length < 3 && (
+                    <label
+                      className={`relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-neutral-800 text-neutral-400 group hover:border-neutral-500 transition-colors cursor-pointer p-2 ${
+                        imageFiles.length === 0 ? "col-span-3 aspect-4/3" : ""
+                      }`}
+                    >
+                      <Upload className="w-6 h-6 text-neutral-400 group-hover:text-white transition-colors" />
+                      <span className="text-xs font-medium text-center mt-2 group-hover:text-white transition-colors">
+                        {imageFiles.length === 0
+                          ? "Enviar imagens do produto"
+                          : "Adicionar"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              {/* Informações Dinâmicas da Loja */}
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center space-x-3">
+                  {user?.avatarUrl ? (
+                    <img
+                      src={user?.avatarUrl}
+                      alt={user.name || "Loja"}
+                      className="w-10 h-10 rounded-full object-cover border border-neutral-200"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-white font-bold text-sm">
+                      {getInitials(user?.name)}
+                    </div>
+                  )}
+                  <span className="text-xl font-bold text-black truncate">
+                    {user?.name || "Nome da Loja"}
+                  </span>
+                </div>
+
+                <div className="space-y-2 text-neutral-600 text-sm font-medium">
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
+                    <span>
+                      {formatBusinessHours(user?.businessHours) ||
+                        "Horário não informado"}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <MapPin className="w-4 h-4 text-neutral-400 shrink-0" />
+                    <span className="truncate">
+                      {user?.address || "Endereço não informado"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* COLUNA DA DIREITA: Campos do Formulário */}
+            <div className="md:col-span-7 flex flex-col space-y-5">
+              {/* Campo: Produto */}
+              <div className="flex flex-col space-y-2">
+                <label className="text-black font-bold text-base">
+                  Produto:
+                </label>
+                <Input
+                  placeholder="Nome do produto"
+                  {...register("productName", { required: "Nome obrigatório" })}
+                  className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black pl-4"
+                />
+                {errors.productName && (
+                  <p className="text-sm font-medium text-destructive">
+                    {errors.productName.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Campo: Descrição */}
+              <div className="flex flex-col space-y-2">
+                <label className="text-black font-bold text-base">
+                  Descrição (Opcional)
+                </label>
+                <Textarea
+                  placeholder="Detalhes do item..."
+                  {...register("description")}
+                  className="rounded-2xl bg-neutral-100 border-none min-h-[80px] text-black focus-visible:ring-2 focus-visible:ring-black p-4 resize-none"
+                />
+              </div>
+
+              {/* Campo: Requisitos */}
+              <div className="flex flex-col space-y-2">
+                <label className="text-black font-bold text-base">
+                  Requisitos (Opcional)
+                </label>
+                <Textarea
+                  placeholder="Ex: Válido apenas para novos clientes..."
+                  {...register("requirements")}
+                  className="rounded-2xl bg-neutral-100 border-none min-h-[80px] text-black focus-visible:ring-2 focus-visible:ring-black p-4 resize-none"
+                />
+              </div>
+
+              {/* Linha Dupla: Estoque e Limite por Usuário */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col space-y-2">
+                  <label className="text-black font-bold text-base">
+                    Estoque total disponível:
+                  </label>
+                  <Controller
+                    control={control}
+                    name="stock"
+                    render={({ field }) => (
+                      <div className="flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = Number(field.value) || 1;
+                            field.onChange(String(Math.max(1, current - 1)));
+                          }}
+                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+
+                        <input
+                          type="number"
+                          className="flex-1 text-center bg-transparent border-none text-black font-bold focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          value={field.value}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            field.onChange(isNaN(val) ? "" : String(val));
+                          }}
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = Number(field.value) || 0;
+                            field.onChange(String(current + 1));
+                          }}
+                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                  <label className="text-black font-bold text-base">
+                    Limite por usuário:
+                  </label>
+                  <Controller
+                    control={control}
+                    name="userLimit"
+                    render={({ field }) => (
+                      <div className="flex flex-col space-y-2">
+                        <div
+                          className={`flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none transition-opacity ${
+                            isUnlimitedUser
+                              ? "opacity-40 pointer-events-none"
+                              : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            disabled={isUnlimitedUser}
+                            onClick={() => {
+                              const current = Number(field.value) || 1;
+                              field.onChange(String(Math.max(1, current - 1)));
+                            }}
+                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+
+                          <input
+                            type="number"
+                            disabled={isUnlimitedUser}
+                            className="flex-1 text-center bg-transparent border-none text-black font-bold focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            value={isUnlimitedUser ? "" : field.value}
+                            placeholder={isUnlimitedUser ? "∞" : "1"}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value, 10);
+                              field.onChange(isNaN(val) ? "" : String(val));
+                            }}
+                          />
+
+                          <button
+                            type="button"
+                            disabled={isUnlimitedUser}
+                            onClick={() => {
+                              const current = Number(field.value) || 0;
+                              field.onChange(String(current + 1));
+                            }}
+                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        <label className="flex items-center space-x-2 cursor-pointer select-none pl-2">
+                          <input
+                            type="checkbox"
+                            checked={isUnlimitedUser}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setIsUnlimitedUser(checked);
+                              if (checked) {
+                                setValue("userLimit", "0");
+                              } else {
+                                setValue("userLimit", "1");
+                              }
+                            }}
+                            className="w-4 h-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900 accent-black"
+                          />
+                          <span className="text-sm font-medium text-neutral-600">
+                            Permitir compras sem limite por cliente
+                          </span>
+                        </label>
+                      </div>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Linha Dupla: Datas de Início e Fim */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col space-y-2">
+                  <label className="text-black font-bold text-base">
+                    Início da oferta
+                  </label>
+                  <Input
+                    type="datetime-local"
+                    {...register("startDate", { required: true })}
+                    className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                  <label className="text-black font-bold text-base">
+                    Fim da oferta
+                  </label>
+                  <Input
+                    type="datetime-local"
+                    {...register("endDate", { required: true })}
+                    className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
+                  />
+                </div>
+              </div>
+
+              {/* Seção de Preços (Oferta) */}
+              <div className="space-y-2">
+                <span className="text-black font-bold text-lg block">
+                  Oferta
+                </span>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col space-y-1">
+                    <label className="text-neutral-600 font-semibold text-sm">
+                      De:
+                    </label>
+                    <Input
+                      placeholder="35,00"
+                      {...register("originalPrice", { required: true })}
+                      className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
+                    />
+                  </div>
+
+                  <div className="flex flex-col space-y-1">
+                    <label className="text-neutral-600 font-semibold text-sm">
+                      Por:
+                    </label>
+                    <Input
+                      placeholder="25,00"
+                      {...register("discountPrice", { required: true })}
+                      className="rounded-full bg-neutral-100 border-none h-11 text-black focus-visible:ring-2 focus-visible:ring-black px-4"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Botões de Ação Inferiores */}
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    reset();
+                    imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+                    setImageFiles([]);
+                    setImagePreviews([]);
+                    setIsUnlimitedUser(false);
+                    setErrorMessage(null);
+                    setSuccessMessage(null);
+                  }}
+                  className="rounded-full cursor-pointer h-12 border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-100 font-bold text-base transition-colors"
+                >
+                  Limpar
+                </Button>
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="rounded-full cursor-pointer h-12 bg-neutral-900 hover:bg-black text-white font-bold text-base transition-colors border-none flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Anunciando...
+                    </>
+                  ) : (
+                    "Anunciar"
+                  )}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+````
+
+## File: back/src/modules/sellers/sellers.controller.ts
+````typescript
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
+import { SellersService } from './sellers.service';
+import { CreateSellerDto } from './dto/create-seller.dto';
+import { UpdateSellerDto } from './dto/update-seller.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { RolesGuard } from '../guards/roles.guard';
+
+@Controller('sellers') // 👈 Todas as rotas aqui começam com /sellers
+export class SellersController {
+  constructor(private readonly sellersService: SellersService) {}
+
+  @Post() // 👈 Rota: POST /sellers (Cadastro público do vendedor)
+  @UseInterceptors(FileInterceptor('avatar'))
+  create(
+    @Body() createSellerDto: CreateSellerDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.sellersService.create(createSellerDto, file);
+  }
+
+  @Get()
+  findAll() {
+    return this.sellersService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard) // Guard de autenticação do seu projeto
+  @Get('metrics')
+  async getMetrics(@Request() req: any) {
+    const sellerId = req.user.sub;
+    console.log('Seller', sellerId);
+    return this.sellersService.getMetrics(sellerId);
+  }
+  @UseGuards(JwtAuthGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor)
+  @Get('profile')
+  async getProfile(@Request() req: any) {
+    const sellerId = req.user.sub;
+    return this.sellersService.getProfile(sellerId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.sellersService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT do vendedor
+  @Patch('profile') // 👈 Rota: PATCH /sellers/profile
+  @UseInterceptors(FileInterceptor('file'))
+  update(
+    @Request() req: any,
+    @Body() updateSellerDto: UpdateSellerDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    // Pegamos o ID direto do token descriptografado pelo Guard
+    const sellerId = req.user.sub;
+    return this.sellersService.updateProfile(sellerId, updateSellerDto, file);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard) // 🔒 Protege a rota exigindo o token JWT
+  @Delete('profile') // 👈 Rota: DELETE /sellers/profile
+  remove(@Request() req: any) {
+    const sellerId = req.user.sub;
+    return this.sellersService.remove(sellerId);
+  }
+}
+````
+
+## File: front/src/components/shared/PromoCard.tsx
+````typescript
+"use client";
+
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Clock, Eye } from "lucide-react";
+
+export interface PromoCardProps {
+  id?: string;
+  name: string;
+  storeName: string;
+  originalPrice: number;
+  promoPrice: number;
+  discountPercentage: number;
+  timeLeft: string;
+  imageUrl: string;
+  avatarUrl?: string;
+}
+
+interface PromoCardComponentProps {
+  product: PromoCardProps;
+  /**
+   * Slot para customizar o rodapé do card.
+   * Se não for informado, renderiza os botões padrão de Cliente (Detalhes e Resgatar).
+   */
+  actions?: React.ReactNode;
+  onDetails?: () => void;
+  onRedeem?: () => void;
+}
+
+export function PromoCard({
+  product,
+  actions,
+  onDetails,
+  onRedeem,
+}: PromoCardComponentProps) {
+  const [timeRemaining, setTimeRemaining] = useState({ hours: 0, minutes: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const targetDate = new Date(product.timeLeft).getTime();
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const totalMinutes = Math.floor(difference / (1000 * 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        setTimeRemaining({ hours, minutes });
+      } else {
+        setTimeRemaining({ hours: 0, minutes: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 60000);
+
+    return () => clearInterval(interval);
+  }, [product.timeLeft]);
+
+  const formatPrice = (price?: number) => {
+    if (price === undefined || price === null) return "R$ --";
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(price);
+  };
+
+  return (
+    <div className="p-0 flex justify-center items-center font-sans h-full">
+      <Card className="w-full max-w-sm bg-card text-card-foreground rounded-2xl p-4 border border-border/50 shadow-sm flex flex-col h-full gap-4 transition-all duration-300 hover:shadow-md hover:border-primary/40">
+        {/* Imagem */}
+        <CardHeader className="w-full p-0 relative aspect-[4/3] bg-muted/30 rounded-xl overflow-hidden flex items-center justify-center border border-border/20">
+          {product.imageUrl ? (
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center text-xs text-muted-foreground font-medium">
+              Sem imagem
+            </div>
+          )}
+
+          {/* Selo de desconto */}
+          <div
+            className="absolute top-3 right-3 w-14 h-14 bg-primary text-primary-foreground flex flex-col items-center justify-center leading-none shadow-sm"
+            style={{
+              clipPath:
+                "polygon(100% 50%, 93.3% 62.94%, 97.55% 76.6%, 84.55% 82.14%, 82.14% 94.55%, 68.6% 92.45%, 59.48% 100%, 46.22% 94.55%, 33.68% 97.55%, 25% 86.6%, 12.5% 82.14%, 10.45% 68.6%, 0% 59.48%, 5.45% 46.22%, 2.45% 33.68%, 13.4% 25%, 17.86% 12.5%, 31.4% 10.45%, 40.52% 0%, 53.78% 5.45%, 66.32% 2.45%, 75% 13.4%, 87.5% 17.86%, 89.55% 31.4%)",
+            }}
+          >
+            <span className="text-sm font-black">
+              {product.discountPercentage}%
+            </span>
+            <span className="text-[9px] font-bold uppercase mt-0.5">off</span>
+          </div>
+        </CardHeader>
+
+        {/* Conteúdo */}
+        <CardContent className="w-full p-0 flex-1 flex flex-col justify-between gap-4">
+          <div className="space-y-2">
+            <h3 className="text-foreground text-base font-semibold leading-snug tracking-tight text-left line-clamp-2">
+              {product.name}
+            </h3>
+
+            <div className="flex items-center gap-2">
+              {product.avatarUrl ? (
+                <img
+                  src={product.avatarUrl}
+                  alt={product.storeName}
+                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-[9px] font-extrabold text-primary flex-shrink-0">
+                  {product.storeName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="text-muted-foreground text-sm font-medium truncate">
+                {product.storeName}
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-2.5">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-foreground text-2xl font-bold tracking-tight">
+                {formatPrice(product.promoPrice)}
+              </span>
+              <span className="text-muted-foreground text-sm font-medium line-through decoration-muted-foreground/50">
+                {formatPrice(product.originalPrice)}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 w-fit px-2.5 py-1 rounded-md border border-border/30">
+              <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+              <span>
+                Expira em{" "}
+                <strong className="text-foreground font-semibold">
+                  {timeRemaining.hours}h {timeRemaining.minutes}m
+                </strong>
+              </span>
+            </div>
+          </div>
+        </CardContent>
+
+        {/* Ações */}
+        <CardFooter className="w-full p-0">
+          {actions ? (
+            actions
+          ) : (
+            <div className="w-full grid grid-cols-2 gap-2.5">
+              <Button
+                variant="outline"
+                onClick={onDetails}
+                className="w-full font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                <Eye className="w-4 h-4" />
+                Detalhes
+              </Button>
+
+              <Button
+                onClick={onRedeem}
+                className="w-full relative bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary-foreground/40 group"
+              >
+                <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-r border-dashed border-primary-foreground/40" />
+                <span className="flex items-center gap-2">
+                  <span className="font-semibold tracking-wide">Resgatar</span>
+                </span>
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-l border-dashed border-primary-foreground/40" />
+              </Button>
+            </div>
+          )}
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+````
+
+## File: back/prisma/schema.prisma
+````prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
+enum ClaimStatus {
+  PENDING
+  USED
+  EXPIRED
+  CANCELLED
+}
+
+// 1. Tabela dos Clientes (Usuários finais)
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  password  String
+  avatarUrl String?
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  claims    Claim[]
+
+  totalRedemptions Int                @default(0) // Qtd total de resgates realizados
+  totalSavedAmount Decimal            @default(0.0) @db.Decimal(10, 2) // Total economizado acumulado em R$
+  @@map("customers")
+}
+
+// 2. Tabela dos Vendedores / Lojas (Sellers)
+model Seller {
+  id            String      @id @default(uuid())
+  name          String
+  phone         String
+  email         String      @unique
+  password      String
+  avatarUrl     String?
+  address       String
+  businessHours Json
+  category      String
+  role          Role        @default(SELLER)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+
+  totalPromotions  Int                @default(0) // Qtd total de anúncios criados
+  totalSales       Int                @default(0) // Qtd total de vendas/cupons validados pelo seller
+  promotions    Promotion[]
+  @@map("sellers")
+}
+
+// 3. Tabela das Promoções
+model Promotion {
+  id            String   @id @default(uuid())
+  name          String
+  description   String?
+  requirements  String?
+  stock         Int
+  limitPerUser  Int
+  startTime     DateTime
+  endTime       DateTime
+  originalPrice Decimal @db.Decimal(10, 2)
+  promoPrice    Decimal @db.Decimal(10, 2)
+  images        String[]
+  isActive      Boolean  @default(true)
+
+  sellerId  String
+  seller    Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  claims    Claim[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("promotions")
+}
+
+// 4. Tabela dos Resgates (Permite múltiplos registros por cliente/promoção)
+model Claim {
+  id       String      @id @default(uuid())
+  code     String      @unique // Cada resgate tem um código único (ex: PD-X8Y2Z)
+  status   ClaimStatus @default(PENDING)
+  quantity Int         @default(1)
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  promotionId String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+  claimedAt DateTime  @default(now())
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("claims")
+}
+````
+
+## File: front/src/components/shared/PromoGrid.tsx
+````typescript
+import { PromoCard } from "@/components/shared/PromoCard";
+import Link from "next/link";
+import { SellerPromoActions } from "@/components/shared/SellerPromoActions";
+
+export interface PromotionFromBackend {
+  id: string;
+  name: string;
+  images: string[];
+  originalPrice: number;
+  promoPrice: number;
+  stock?: number;
+  limitPerUser?: number;
+  endTime: string;
+  isActive: boolean;
+  seller?: {
+    id: string;
+    name: string;
+    avatarUrl?: string;
+  };
+}
+
+interface PromoGridProps {
+  products: PromotionFromBackend[];
+  role?: "CUSTOMER" | "SELLER";
+}
+
+function calcDiscount(original: number, promo: number): number {
+  if (!original || original <= 0) return 0;
+  return Math.round(((original - promo) / original) * 100);
+}
+
+export default function PromoGrid({
+  products,
+  role = "CUSTOMER",
+}: PromoGridProps) {
+  if (!products || products.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-neutral-500 font-bold">
+          Nenhuma promoção ativa no momento.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
+        {products.map((promo) => {
+          const cardContent = (
+            <PromoCard
+              product={{
+                id: promo.id,
+                name: promo.name,
+                storeName: promo.seller?.name || "Loja Parceira",
+                avatarUrl: promo.seller?.avatarUrl || "",
+                originalPrice: promo.originalPrice,
+                promoPrice: promo.promoPrice,
+                discountPercentage: calcDiscount(
+                  promo.originalPrice,
+                  promo.promoPrice,
+                ),
+                timeLeft: promo.endTime,
+                imageUrl: promo.images?.[0] || "",
+              }}
+              actions={
+                role === "SELLER" ? (
+                  <SellerPromoActions
+                    productId={promo.id}
+                    isActive={promo.isActive}
+                    promotion={promo}
+                  />
+                ) : undefined
+              }
+            />
+          );
+
+          // Se for vendedor (SELLER), renderiza sem o Link em volta.
+          if (role === "SELLER") {
+            return (
+              <div key={promo.id} className="h-full">
+                {cardContent}
+              </div>
+            );
+          }
+
+          // Se for cliente (CUSTOMER), envolve o card com o Link para navegação.
+          return (
+            <Link
+              key={promo.id}
+              href={`/promotions/${promo.id}`}
+              className="h-full block"
+            >
+              {cardContent}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+````
+
+## File: back/src/modules/sellers/sellers.service.ts
+````typescript
+import {
+  Injectable,
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateSellerDto } from './dto/create-seller.dto';
+import { UpdateSellerDto } from './dto/update-seller.dto';
+import { PrismaService } from 'prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+import { StorageService } from 'src/shared/storage.service';
+
+@Injectable()
+export class SellersService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private StorageService: StorageService,
+  ) {}
+
+  async create(createSellerDto: CreateSellerDto, file: Express.Multer.File) {
+    const { email, password } = createSellerDto;
+
+    try {
+      // 1. Verifica se já existe um vendedor com esse e-mail
+      const sellerExists = await this.prisma.seller.findUnique({
+        where: { email },
+      });
+      if (sellerExists) {
+        throw new ConflictException(
+          'Este e-mail já está cadastrado para um vendedor.',
+        );
+      }
+
+      let avatarUrl: string | null = null;
+      if (file) {
+        avatarUrl = await this.StorageService.uploadFile(file);
+      }
+
+      // 2. Criptografa a senha do parceiro
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // 3. Salva no banco de dados
+      const sellerData = await this.prisma.seller.create({
+        data: {
+          ...createSellerDto,
+          avatarUrl,
+          password: hashedPassword,
+        },
+      });
+
+      // 4. Remove a senha do retorno por segurança
+      const { password: _, ...sellerWithPassword } = sellerData;
+      return sellerWithPassword;
+    } catch (error) {
+      if (error instanceof ConflictException) throw error;
+      throw new HttpException(
+        'Erro ao criar o cadastro do vendedor.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async findByEmail(email: string) {
+    return this.prisma.seller.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+        address: true,
+        avatarUrl: true,
+        businessHours: true,
+        promotions: true,
+        phone: true,
+        category: true,
+        totalPromotions: true,
+        totalSales: true,
+      },
+    });
+  }
+
+  async findAll() {
+    return this.prisma.seller.findMany({
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        avatarUrl: true,
+        phone: true,
+        category: true,
+        // Traz a contagem de promoções ativas para cada loja
+        _count: {
+          select: {
+            promotions: {
+              where: {
+                isActive: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getProfile(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        address: true,
+        businessHours: true,
+        category: true,
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado.');
+    }
+
+    return seller;
+  }
+
+  async findOne(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        avatarUrl: true,
+        businessHours: true,
+        phone: true,
+        category: true,
+        totalPromotions: true,
+        totalSales: true,
+        promotions: {
+          where: {
+            isActive: true,
+          },
+          include: {
+            seller: {
+              select: {
+                id: true,
+                name: true,
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado.');
+    }
+
+    return seller;
+  }
+
+  async updateProfile(
+    sellerId: string,
+    dto: UpdateSellerDto,
+    file?: Express.Multer.File,
+  ) {
+    // 1. Verifica se o vendedor existe
+    const sellerExists = await this.prisma.seller.findUnique({
+      where: { id: sellerId },
+    });
+
+    if (!sellerExists) {
+      throw new NotFoundException('Vendedor não encontrado.');
+    }
+
+    // 2. Mantém a imagem antiga por padrão
+    let avatarUrl = sellerExists.avatarUrl;
+
+    // 3. Se um novo arquivo foi enviado, realiza o upload para o Supabase
+    if (file) {
+      avatarUrl = await this.StorageService.uploadFile(file);
+    }
+
+    // 4. Atualiza os dados no banco
+    const updatedSeller = await this.prisma.seller.update({
+      where: { id: sellerId },
+      data: {
+        ...dto,
+        avatarUrl, // Atualiza a URL apenas se um novo arquivo foi enviado
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        address: true,
+        businessHours: true,
+        category: true,
+      },
+    });
+
+    return updatedSeller;
+  }
+  async getMetrics(id: string) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id: id },
+      select: {
+        totalPromotions: true,
+        totalSales: true,
+      },
+    });
+
+    if (!seller) {
+      throw new NotFoundException('Vendedor não encontrado');
+    }
+
+    return {
+      totalPromotions: seller.totalPromotions ?? 0,
+      totalSales: seller.totalSales ?? 0,
+    };
+  }
+
+  async remove(id: string) {
+    try {
+      // 1. Verifica se o vendedor realmente existe antes de tentar deletar
+      const seller = await this.prisma.seller.findUnique({ where: { id } });
+      if (!seller) {
+        throw new NotFoundException('Vendedor não encontrado.');
+      }
+
+      // 2. Deleta o registro do banco
+      await this.prisma.seller.delete({
+        where: { id },
+      });
+
+      // 3. Retorna uma mensagem de sucesso clara
+      return {
+        message:
+          'A conta do vendedor e todos os seus anúncios foram removidos com sucesso.',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new HttpException(
+        'Erro ao tentar remover a conta do vendedor.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+}
+````
+
+## File: back/src/modules/promotions/promotions.controller.ts
+````typescript
+// src/promotions/promotions.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+  Req,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  Delete,
+  Patch,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { PromotionsService } from './promotions.service';
+import { CreatePromotionDto } from './dto/create-promotion.dto'; // Ajuste o caminho do seu DTO
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+
+@Controller('promotions')
+export class PromotionsController {
+  constructor(private readonly promotionsService: PromotionsService) {}
+
+  // POST /promotions (Criação de promoção com upload de até 3 imagens)
+  // @UseGuards(JwtAuthGuard) // Descomente para proteger a rota com JWT
+
+  @Post()
+  @UseInterceptors(FilesInterceptor('files', 3)) // Permite até 3 arquivos vindo da chave "files"
+  async create(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createPromotionDto: CreatePromotionDto,
+    @Req() req: any,
+  ) {
+    const sellerId = req.user.sub;
+
+    return this.promotionsService.create(createPromotionDto, sellerId, files);
+  }
+
+  // GET /promotions (Feed público)
+  @Get()
+  async getFeed() {
+    return this.promotionsService.findAllActive();
+  }
+
+  // GET /promotions/:id (Detalhes públicos de uma promoção)
+  @Get(':id')
+  findOne(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user?.sub;
+    return this.promotionsService.findOne(id, userId);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: string, @Req() req: any) {
+    const sellerId = req.user?.sub;
+    return this.promotionsService.remove(id, sellerId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/pause')
+  @HttpCode(HttpStatus.OK)
+  async toggleActive(@Param('id') id: string, @Req() req: any) {
+    const sellerId = req.user.sub;
+
+    return this.promotionsService.toggleActive(id, sellerId);
+  }
+}
+````
+
+## File: back/src/modules/promotions/promotions.service.ts
+````typescript
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+  NotFoundException,
+  ForbiddenException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
+import { PrismaService } from 'prisma/prisma.service';
+import { StorageService } from 'src/shared/storage.service';
+
+@Injectable()
+export class PromotionsService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storageService: StorageService,
+  ) {}
+
+  async create(
+    createPromotionDto: CreatePromotionDto,
+    sellerId: string,
+    files?: Express.Multer.File[],
+  ) {
+    const seller = await this.prisma.seller.findUnique({
+      where: { id: sellerId },
+    });
+
+    if (!seller) {
+      throw new BadRequestException(
+        'Perfil de vendedor não encontrado para este usuário.',
+      );
+    }
+
+    let imageUrls: string[] = [];
+    if (files && files.length > 0) {
+      imageUrls = await this.storageService.uploadManyFiles(files);
+    }
+
+    const {
+      startTime,
+      endTime,
+      originalPrice,
+      promoPrice,
+      stock,
+      limitPerUser,
+      images,
+      ...rest
+    } = createPromotionDto;
+
+    const numOriginalPrice = Number(originalPrice);
+    const numPromoPrice = Number(promoPrice);
+    const numStock = Number(stock);
+    const numLimitPerUser = Number(limitPerUser);
+
+    const dataInicio = new Date(startTime);
+    const dataFim = new Date(endTime);
+    const agora = new Date();
+
+    if (
+      isNaN(numOriginalPrice) ||
+      isNaN(numPromoPrice) ||
+      numOriginalPrice <= 0 ||
+      numPromoPrice <= 0
+    ) {
+      throw new BadRequestException(
+        'Os preços original e promocional devem ser números válidos maiores que zero.',
+      );
+    }
+
+    if (numPromoPrice >= numOriginalPrice) {
+      throw new BadRequestException(
+        'O preço promocional deve ser menor do que o preço original.',
+      );
+    }
+
+    if (isNaN(dataInicio.getTime()) || isNaN(dataFim.getTime())) {
+      throw new BadRequestException('Formato de data inválido.');
+    }
+
+    if (dataInicio >= dataFim) {
+      throw new BadRequestException(
+        'A data de início não pode ser maior ou igual à data de término.',
+      );
+    }
+
+    if (dataFim <= agora) {
+      throw new BadRequestException(
+        'A data de término da promoção deve ser em uma data futura.',
+      );
+    }
+
+    if (isNaN(numStock) || isNaN(numLimitPerUser)) {
+      throw new BadRequestException(
+        'Estoque e limite por usuário devem ser números válidos.',
+      );
+    }
+
+    if (numLimitPerUser > 0 && numLimitPerUser > numStock) {
+      throw new BadRequestException(
+        'O limite de resgate por usuário não pode ser maior do que o estoque total disponível.',
+      );
+    }
+
+    const finalImages = imageUrls.length > 0 ? imageUrls : images || [];
+
+    try {
+      const promotion = await this.prisma.$transaction(async (tx) => {
+        // 1. Cria a promoção usando o contexto da transação (tx)
+        const newPromotion = await tx.promotion.create({
+          data: {
+            ...rest,
+            stock: numStock,
+            limitPerUser: numLimitPerUser,
+            originalPrice: numOriginalPrice,
+            promoPrice: numPromoPrice,
+            startTime: dataInicio,
+            endTime: dataFim,
+            images: finalImages,
+            sellerId: sellerId,
+          },
+        });
+
+        // 2. Incremente o totalPromotions do Seller em +1
+        await tx.seller.update({
+          where: { id: sellerId },
+          data: {
+            totalPromotions: {
+              increment: 1,
+            },
+          },
+        });
+
+        return newPromotion;
+      });
+
+      return promotion;
+    } catch (error) {
+      console.error('🚨 ERRO AO CRIAR PROMOÇÃO:', error);
+      throw new HttpException(
+        'Erro interno ao tentar criar a promoção.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async findAllActive() {
+    const agora = new Date();
+
+    return this.prisma.promotion.findMany({
+      where: {
+        isActive: true,
+        stock: { gte: 1 },
+        startTime: { lte: agora },
+        endTime: { gte: agora },
+      },
+      select: {
+        id: true,
+        name: true,
+        images: true,
+        originalPrice: true,
+        promoPrice: true,
+        stock: true,
+        limitPerUser: true,
+        endTime: true,
+        seller: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async findAllBySeller(sellerId: string) {
+    return this.prisma.promotion.findMany({
+      where: {
+        sellerId: sellerId,
+      },
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  // promotions.service.ts
+
+  async findOne(id: string, userId?: string) {
+    const promotion = await this.prisma.promotion.findUnique({
+      where: { id },
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            businessHours: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+
+    if (!promotion) {
+      throw new BadRequestException('Promoção não encontrada.');
+    }
+
+    let userRedeemedCount = 0;
+
+    if (userId) {
+      try {
+        // 1. Busca a soma das quantidades (se a model usa campo quantity)
+        const aggregate = await this.prisma.claim.aggregate({
+          where: {
+            customerId: userId,
+            promotionId: id,
+            status: { notIn: ['CANCELLED', 'EXPIRED'] }, // Ignora apenas cancelados/expirados
+          },
+          _sum: {
+            quantity: true,
+          },
+        });
+
+        // 2. Se a soma for null (campos quantity não preenchidos), faz o count dos registros
+        if (
+          aggregate._sum?.quantity !== null &&
+          aggregate._sum?.quantity !== undefined
+        ) {
+          userRedeemedCount = aggregate._sum.quantity;
+        } else {
+          userRedeemedCount = await this.prisma.claim.count({
+            where: {
+              customerId: userId,
+              promotionId: id,
+              status: { notIn: ['CANCELLED', 'EXPIRED'] },
+            },
+          });
+        }
+      } catch (err) {
+        console.error('🚨 Erro ao calcular resgates do usuário:', err);
+        userRedeemedCount = 0;
+      }
+    }
+
+    return {
+      ...promotion,
+      userRedeemedCount,
+    };
+  }
+
+  async update(
+    promotionId: string,
+    sellerId: string,
+    dto: UpdatePromotionDto,
+    files?: Express.Multer.File[],
+  ) {
+    try {
+      // 1. Busca a promoção incluindo a contagem OTIMIZADA de resgates (claims)
+      const promotion = await this.prisma.promotion.findUnique({
+        where: { id: promotionId },
+        include: {
+          _count: {
+            select: { claims: true },
+          },
+        },
+      });
+
+      if (!promotion) {
+        throw new NotFoundException('Promoção não encontrada.');
+      }
+
+      // Validação de Permissão (Ownership)
+      if (promotion.sellerId !== sellerId) {
+        throw new ForbiddenException(
+          'Você não tem permissão para alterar esta promoção.',
+        );
+      }
+
+      // 2. Validação: Fim da Oferta (Apenas Prorrogar)
+      if (dto.endTime) {
+        const newEndDate = new Date(dto.endTime);
+        const currentEndDate = new Date(promotion.endTime);
+
+        if (newEndDate < currentEndDate) {
+          throw new BadRequestException(
+            'A data final só pode ser prorrogada, não reduzida.',
+          );
+        }
+      }
+
+      // 3. Validação: Estoque Total Disponível (Não pode ser menor do que já foi resgatado)
+      const totalClaims = promotion._count.claims;
+
+      if (dto.stock !== undefined) {
+        if (dto.stock < totalClaims) {
+          throw new BadRequestException(
+            `O estoque não pode ser menor do que os cupons já resgatados (${totalClaims}).`,
+          );
+        }
+      }
+
+      // 4. Processamento da Galeria de Fotos
+      // Trata 'existingImages' (pode vir como string única ou array se forem várias)
+      let keptImages: string[] = [];
+      if (dto.existingImages) {
+        keptImages = Array.isArray(dto.existingImages)
+          ? dto.existingImages
+          : [dto.existingImages];
+      }
+
+      // Upload de novos arquivos para o Supabase
+      let newUploadedUrls: string[] = [];
+      if (files && files.length > 0) {
+        newUploadedUrls = await Promise.all(
+          files.map((file) => this.storageService.uploadFile(file)),
+        );
+      }
+
+      // União das imagens mantidas com as novas enviadas
+      const finalImages = [...keptImages, ...newUploadedUrls];
+
+      if (finalImages.length === 0) {
+        throw new BadRequestException(
+          'A promoção deve conter pelo menos uma imagem.',
+        );
+      }
+
+      // 5. Atualiza no Banco de Dados via Prisma
+      return await this.prisma.promotion.update({
+        where: { id: promotionId },
+        data: {
+          description: dto.description,
+          requirements: dto.requirements,
+          stock: dto.stock !== undefined ? Number(dto.stock) : undefined,
+          limitPerUser:
+            dto.limitPerUser !== undefined
+              ? Number(dto.limitPerUser)
+              : undefined,
+          endTime: dto.endTime ? new Date(dto.endTime) : undefined,
+          images: finalImages,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ForbiddenException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+
+      console.error('Erro no update da promoção:', error);
+      throw new InternalServerErrorException('Erro ao atualizar a promoção.');
+    }
+  }
+
+  async toggleActive(id: string, sellerId: string) {
+    if (!id || !sellerId) {
+      throw new BadRequestException(
+        'IDs do vendedor e da promoção são obrigatórios.',
+      );
+    }
+
+    // 1. Busca a promoção existente
+    const promotion = await this.prisma.promotion.findUnique({
+      where: { id },
+    });
+
+    if (!promotion) {
+      throw new NotFoundException('Promoção não encontrada.');
+    }
+
+    // 2. Garante que apenas o próprio vendedor dono da promoção pode alterá-la
+    if (promotion.sellerId !== sellerId) {
+      throw new ForbiddenException(
+        'Você não tem permissão para alterar o status desta promoção.',
+      );
+    }
+
+    // 3. Atualiza invertendo o estado atual do isActive (true <-> false)
+    const updatedPromotion = await this.prisma.promotion.update({
+      where: { id },
+      data: {
+        isActive: !promotion.isActive,
+      },
+    });
+
+    return {
+      message: `Promoção ${updatedPromotion.isActive ? 'ativada' : 'pausada'} com sucesso.`,
+      isActive: updatedPromotion.isActive,
+      promotion: updatedPromotion,
+    };
+  }
+
+  async remove(id: string, sellerId: string) {
+    // 1. Busca a promoção para validar existência e permissão
+    const promotion = await this.prisma.promotion.findUnique({
+      where: { id },
+    });
+
+    if (!promotion) {
+      throw new NotFoundException('Promoção não encontrada.');
+    }
+
+    if (promotion.sellerId !== sellerId) {
+      throw new BadRequestException(
+        'Você não tem permissão para remover esta promoção.',
+      );
+    }
+
+    // 2. Transação atômica para deletar a promoção e decrementar o contador do Seller
+    await this.prisma.$transaction(async (tx) => {
+      await tx.promotion.delete({
+        where: { id },
+      });
+
+      await tx.seller.update({
+        where: { id: sellerId },
+        data: {
+          totalPromotions: {
+            decrement: 1,
+          },
+        },
+      });
+    });
+
+    return { message: 'Promoção excluída com sucesso' };
+  }
+}
+````

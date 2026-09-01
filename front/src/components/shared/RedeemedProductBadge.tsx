@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { PackageCheck } from "lucide-react";
 
 interface RedeemedProductBadgeProps {
   imageUrl?: string;
@@ -13,42 +14,56 @@ export function RedeemedProductBadge({
   quantity,
 }: RedeemedProductBadgeProps) {
   return (
-    <Card className="w-full max-w-2xl bg-neutral-100 border py-3 border-neutral-200 rounded-2xl shadow-sm overflow-hidden">
-      <CardContent className=" flex items-center justify-between">
-        {/* BLOCO DA ESQUERDA: Imagem + Nome do Produto */}
-        <div className="flex items-center flex-1 min-w-0">
-          {/* Container da Imagem (Squircle Minimalista) */}
-          <div className="w-20 h-20 bg-neutral-900 rounded-[18px] flex items-center justify-center overflow-hidden shrink-0 border border-neutral-800 ml-1">
+    <Card className="relative w-full max-w-xl bg-gradient-to-r from-[#2D62EA] to-[#1E4DC2] text-white border-none rounded-[24px] shadow-md hover:shadow-lg transition-all overflow-hidden p-0">
+      {/* Recorte Semicircular de Ticket na lateral direita */}
+      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full pointer-events-none" />
+
+      <CardContent className="flex items-stretch p-0 relative min-h-[108px]">
+        {/* SEÇÃO DA ESQUERDA: Imagem do Produto */}
+        <div className="flex items-center justify-center p-3.5 w-1/3 min-w-[100px] max-w-[120px] relative">
+          <div className="w-full h-20 flex items-center justify-center overflow-hidden relative rounded-2xl bg-white/10 p-1.5 backdrop-blur-xs">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={productName}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain drop-shadow-sm transition-transform hover:scale-105"
               />
             ) : (
-              // Placeholder caso o produto esteja sem foto
-              <div className="w-3 h-3 bg-white rounded-full opacity-40 animate-pulse" />
+              <PackageCheck className="w-8 h-8 text-white/50" />
             )}
           </div>
-
-          {/* Divisória Vertical 1 */}
-          <div className="h-10 w-[1px] bg-neutral-200 mx-4 shrink-0" />
-
-          {/* Nome do Produto (Truncado se for muito longo para não quebrar o layout) */}
-          <span className="text-base font-bold text-black truncate pr-4">
-            {productName}
-          </span>
         </div>
 
-        {/* BLOCO DA DIREITA: Quantidade Resgatada */}
-        <div className="flex items-center shrink-0 pr-6">
-          {/* Divisória Vertical 2 */}
-          <div className="h-10 w-[1px] bg-neutral-200 mr-6" />
+        {/* PERFURAÇÃO / LINHA VERTICAL PONTILHADA */}
+        <div className="w-0 shrink-0 border-l border-dashed border-white/30 my-3 z-10" />
 
-          {/* Texto da Quantidade */}
-          <span className="text-base font-bold text-black whitespace-nowrap">
-            {quantity} {quantity === 1 ? "Unid" : "Unid"}
-          </span>
+        {/* SEÇÃO DA DIREITA: Informações e Quantidade no Pill Branco */}
+        <div className="flex flex-col justify-between flex-1 min-w-0 p-4 pl-4 pr-7 relative">
+          {/* Top: Nome e Subtítulo */}
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <h3
+              className="text-base sm:text-lg font-bold text-white leading-snug truncate"
+              title={productName}
+            >
+              {productName}
+            </h3>
+            <span className="text-xs text-white/75 font-medium tracking-wide">
+              Item Resgatado
+            </span>
+          </div>
+
+          {/* Bottom: Quantidade no Pill Branco no estilo do design de referência */}
+          <div className="flex items-center justify-between gap-2 mt-2">
+            <span className="text-xs font-semibold text-white/90">
+              Entrega confirmada
+            </span>
+
+            <div className="bg-white text-slate-950 font-bold text-xs px-3.5 py-1 rounded-full shadow-xs flex items-center gap-1 shrink-0">
+              <span>
+                {quantity} {quantity === 1 ? "un." : "unid."}
+              </span>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -1,28 +1,33 @@
 import { RedemptionCodeCard } from "./RedemptionCodeCard";
 import { getUserClaims } from "@/app/actions/get-user-claims";
 
+const CARD_VARIANTS = ["green", "blue", "amber"] as const;
+
 export default async function RedeemsList() {
   const claims = await getUserClaims();
 
-  console.log("Claims fetched in RedeemsList:", claims);
   if (claims.length === 0) {
     return (
-      <div className="h-auto text-zinc-400 p-6 flex flex-col items-center justify-center w-full mx-auto text-center">
-        <p className="text-base font-medium">
-          Você ainda não possui cupons resgatados.
+      <div className="h-auto text-muted-foreground p-8 flex flex-col items-center justify-center w-full max-w-xl mx-auto text-center bg-card border border-border/60 rounded-3xl mt-4">
+        <p className="text-base font-semibold text-foreground">
+          Nenhum cupom resgatado
+        </p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Explore as ofertas disponíveis e resgate cupons para visualizá-los aqui.
         </p>
       </div>
     );
   }
 
-  console.log("Rendering RedeemsList with claims:", claims);
   return (
-    <div className="h-auto text-white p-3 flex flex-col gap-4 items-center w-full mx-auto">
-      {claims.map((claim) => {
+    <div className="h-auto p-2 sm:p-4 flex flex-col gap-4 items-center w-full max-w-xl mx-auto">
+      {claims.map((claim, index) => {
         const mainImage =
           claim.promotion?.images && claim.promotion.images.length > 0
             ? claim.promotion.images[0]
             : "/placeholder.png";
+
+        const variant = CARD_VARIANTS[index % CARD_VARIANTS.length];
 
         return (
           <RedemptionCodeCard
@@ -33,6 +38,7 @@ export default async function RedeemsList() {
             code={claim.code}
             status={claim.status}
             seller={claim.promotion?.seller}
+            variant={variant}
           />
         );
       })}

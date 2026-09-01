@@ -33,7 +33,6 @@ export default async function SellerPromotionsPage() {
 
   return (
     <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">Minhas Ofertas</h1>
       <PromoGrid products={promotions} role="SELLER" />
     </div>
   );

@@ -68,7 +68,6 @@ export default async function PromotionDetails({ params }: PageProps) {
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4">
-      <h1 className="text-xl font-black mb-4">Detalhes da promoção</h1>
 
       <PromotionDetailCard
         id={promotion.id}

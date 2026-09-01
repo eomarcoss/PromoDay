@@ -13,7 +13,6 @@ export default async function Profile() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
-      <h1 className="text-2xl text-center font-bold text-black">Minha conta</h1>
 
       {/* 3. Delega a interatividade, edições e logout para um Client Component wrapper */}
       <ProfileClientContainer initialUser={initialUser} />

@@ -13,9 +13,6 @@ export default async function SellerProfilePage() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center p-4 space-y-6">
-      <h1 className="text-2xl text-center font-bold text-black">
-        Minha conta (Vendedor)
-      </h1>
 
       {/* 3. Renderiza o container de cliente passando os dados pré-carregados */}
       <SellerClientContainer initialUser={initialUser} />

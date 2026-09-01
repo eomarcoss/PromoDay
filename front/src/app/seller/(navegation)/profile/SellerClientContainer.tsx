@@ -21,26 +21,10 @@ export function SellerClientContainer({
   const { updateUser: updateContextUser } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Função para salvar atualizações vindas do SellerProfileCard
-  const handleUpdateProfile = async (
-    updatedFields: Partial<SellerProfileData>,
-  ) => {
-    try {
-      setIsUpdating(true);
-
-      // Dispara a atualização via Server Action para o endpoint de vendedores
-      const updatedUser = await updateProfileSellerAction(updatedFields);
-
-      // Atualiza o estado da página e o contexto global
-      setUser(updatedUser);
-      updateContextUser(updatedUser);
-
-      alert("Perfil de vendedor atualizado com sucesso!");
-    } catch (error: any) {
-      alert(error.message || "Erro ao atualizar perfil do vendedor.");
-    } finally {
-      setIsUpdating(false);
-    }
+  // Função para sincronizar atualizações vindas do SellerProfileCard
+  const handleUpdateProfile = (updatedFields: Partial<SellerProfileData>) => {
+    setUser((prev) => ({ ...prev, ...updatedFields }));
+    updateContextUser(updatedFields);
   };
 
   return (

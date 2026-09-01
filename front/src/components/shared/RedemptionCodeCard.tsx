@@ -9,7 +9,7 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
-  User,
+  Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -24,7 +24,9 @@ interface RedemptionCodeCardProps {
   seller?: {
     name?: string;
     avatarUrl?: string;
+    id?: string;
   };
+  variant?: "green" | "blue" | "amber" | string;
 }
 
 export function RedemptionCodeCard({
@@ -35,38 +37,42 @@ export function RedemptionCodeCard({
   status = "ACTIVE",
   className,
   seller,
+  variant = "blue",
 }: RedemptionCodeCardProps) {
   const [isCodeVisible, setIsCodeVisible] = useState(false);
 
-  const baseColor = "bg-[#4264E2]";
-  const textOnColor = "text-white";
-
-  // Gerador de iniciais a partir do nome do vendedor
-  const getInitials = (sellerName?: string) => {
-    if (!sellerName) return "";
-    const parts = sellerName.trim().split(" ");
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  // Mapeamento das 3 cores vibrantes e gradientes idênticos ao design de referência
+  const getVariantStyles = () => {
+    switch (variant) {
+      case "green":
+        return "bg-gradient-to-r from-[#0DA059] to-[#0A8749]";
+      case "amber":
+        return "bg-gradient-to-r from-[#F7C647] to-[#E5AC24]";
+      case "blue":
+      default:
+        return "bg-gradient-to-r from-[#2D62EA] to-[#1E4DC2]";
+    }
   };
-  console.log("Seller", seller?.avatarUrl, seller?.name);
+
+  const isAmber = variant === "amber";
 
   const renderStatusBadge = () => {
     switch (status?.toUpperCase()) {
       case "USED":
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-xs">
             <CheckCircle2 className="w-3 h-3" /> Resgatado
           </span>
         );
       case "EXPIRED":
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/30">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-rose-950/30 text-rose-100 border border-rose-300/30 backdrop-blur-xs">
             <XCircle className="w-3 h-3" /> Expirado
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-sm">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-xs">
             <Clock className="w-3 h-3" /> Disponível
           </span>
         );
@@ -76,144 +82,99 @@ export function RedemptionCodeCard({
   return (
     <Card
       className={cn(
-        "relative w-full max-w-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.01]",
-        baseColor,
-        "border-none rounded-[20px] p-0",
+        "relative w-full max-w-xl text-white overflow-hidden shadow-md hover:shadow-lg transition-all duration-300",
+        getVariantStyles(),
+        "border-none rounded-[26px] p-0",
         className,
       )}
     >
-      {/* Recortes Semicirculares de Cupom nas Laterais */}
-      <span className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full" />
-      <span className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full" />
+      {/* Recorte Semicircular de Cupom/Ticket na Lateral Direita */}
+      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full pointer-events-none" />
 
-      <CardContent className="flex items-stretch p-0 relative">
-        {/* SEÇÃO DA ESQUERDA: Imagem do Produto */}
-        <div className="flex items-center justify-center p-4 w-1/3 min-w-[110px] relative">
-          <div className="w-full h-24 flex items-center justify-center overflow-hidden relative rounded-lg bg-white/10 p-2">
+      <CardContent className="flex items-stretch p-0 relative min-h-[118px]">
+        {/* SEÇÃO DA ESQUERDA: Imagem do Produto (Estilo Flutuante / Squircle) */}
+        <div className="flex items-center justify-center p-3.5 w-1/3 min-w-[105px] max-w-[125px] relative">
+          <div className="w-full h-22 flex items-center justify-center overflow-hidden relative rounded-2xl bg-white/15 p-1.5 backdrop-blur-xs shadow-inner">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={productName}
-                className="w-full h-full object-contain p-1"
+                className="w-full h-full object-contain p-0.5 drop-shadow-sm transition-transform hover:scale-105"
                 sizes="(max-width: 768px) 100px, 150px"
               />
             ) : (
-              <Ticket className={cn("w-10 h-10 opacity-40", textOnColor)} />
+              <Ticket className="w-9 h-9 text-white/50" />
             )}
           </div>
         </div>
 
         {/* PERFURAÇÃO — Linha Pontilhada Vertical */}
-        <div className="w-0 shrink-0 border-l-2 border-dashed border-white/30 my-3 z-10" />
+        <div className="w-0 shrink-0 border-l border-dashed border-white/30 my-3 z-10" />
 
-        {/* SEÇÃO DA DIREITA: Informações e Código */}
-        <div className="flex flex-col flex-1 min-w-0 p-5 pl-4 relative">
-          {/* Header e Status */}
-          <div className="flex flex-col gap-1 mb-auto">
-            <div className="flex items-center justify-between gap-2 ">
-              <span
-                className={cn("text-xs font-medium opacity-80", textOnColor)}
-              >
-                {/* Cupom de Desconto */}
-              </span>
+        {/* SEÇÃO DA DIREITA: Informações, Código e Ações */}
+        <div className="flex flex-col justify-between flex-1 min-w-0 p-4 pl-4 pr-7 relative">
+          {/* Top: Header, Nome e Vendedor */}
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              {seller?.name ? (
+                <Link
+                  href={seller.id ? `/stores/${seller.id}` : "#"}
+                  className="flex items-center gap-1.5 text-xs text-white/80 hover:text-white font-medium truncate transition-colors"
+                >
+                  <Store className="w-3 h-3 shrink-0 opacity-80" />
+                  <span className="truncate">{seller.name}</span>
+                </Link>
+              ) : (
+                <span className="text-[11px] text-white/70 font-medium tracking-wide">
+                  Cupom Promocional
+                </span>
+              )}
+
               {renderStatusBadge()}
             </div>
 
             <h2
-              className={cn(
-                "text-lg font-bold leading-tight truncate pr-2",
-                textOnColor,
-              )}
+              className="text-base sm:text-lg font-bold text-white leading-tight truncate mt-0.5"
               title={productName}
             >
               {productName}
             </h2>
-
-            {/* SELLER PROFILE: Renderiza usando o objeto seller */}
-            {seller && (seller.name || seller.avatarUrl) && (
-              <div className="flex items-center gap-1.5 mt-1 opacity-90">
-                <Link href={`/stores/${seller.id}`}>
-                  <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 bg-white/20 border border-white/30 flex items-center justify-center">
-                    {seller.avatarUrl ? (
-                      <img
-                        src={seller.avatarUrl}
-                        alt={seller.name || "Vendedor"}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : seller.name ? (
-                      <span className="text-[9px] font-bold text-white leading-none">
-                        {getInitials(seller.name)}
-                      </span>
-                    ) : (
-                      <User className="w-3 h-3 text-white/80" />
-                    )}
-                  </div>
-                  {seller?.name && (
-                    <span
-                      className={cn(
-                        "text-xs font-medium truncate opacity-90",
-                        textOnColor,
-                      )}
-                      title={seller.name}
-                    >
-                      {seller.name}
-                    </span>
-                  )}
-                </Link>
-              </div>
-            )}
           </div>
 
-          {/* Área do Código e Ação */}
-          <div className="flex items-end justify-between gap-3 mt-4">
-            {/* O Código */}
-            <div className="flex flex-col gap-0.5">
-              <span
-                className={cn(
-                  "text-[10px] uppercase tracking-wider font-extrabold opacity-70",
-                  textOnColor,
-                )}
-              >
-                Código
+          {/* Bottom: Código e Botão Pill Branco */}
+          <div className="flex items-end justify-between gap-3 mt-3">
+            {/* Código / Preço com Tipografia de Destaque */}
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-white/75">
+                {quantity} {quantity === 1 ? "unidade" : "unidades"}
               </span>
-              <span
-                className={cn(
-                  "text-xl font-mono font-black tracking-wider",
-                  textOnColor,
-                )}
-              >
+              <span className="text-lg sm:text-xl font-mono font-black tracking-wider text-white">
                 {isCodeVisible ? code : "••••••••"}
               </span>
             </div>
 
-            {/* Quantidade e Botão Toggle */}
-            <div className="flex items-center gap-3 shrink-0">
-              <span className={cn("text-xs font-bold opacity-90", textOnColor)}>
-                {quantity} {quantity === 1 ? "un." : "unid."}
-              </span>
-
-              <button
-                type="button"
-                onClick={() => setIsCodeVisible(!isCodeVisible)}
-                className={cn(
-                  "flex items-center justify-center gap-1.5 px-3.5 py-1.5",
-                  "bg-white text-slate-900 shadow-sm",
-                  "rounded-full hover:bg-slate-100 hover:scale-105 active:scale-95 transition-all group cursor-pointer",
-                )}
-              >
-                {isCodeVisible ? (
-                  <>
-                    <EyeOff className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
-                    <span className="text-xs font-bold">Ocultar</span>
-                  </>
-                ) : (
-                  <>
-                    <Eye className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
-                    <span className="text-xs font-bold">Ver</span>
-                  </>
-                )}
-              </button>
-            </div>
+            {/* Botão Pill Branco idêntico ao Design System de referência */}
+            <button
+              type="button"
+              onClick={() => setIsCodeVisible(!isCodeVisible)}
+              className={cn(
+                "flex items-center justify-center gap-1.5 px-3.5 py-1.5",
+                "bg-white text-slate-950 shadow-xs",
+                "rounded-full hover:bg-white/95 hover:scale-105 active:scale-95 transition-all group cursor-pointer shrink-0 font-bold text-xs",
+              )}
+            >
+              {isCodeVisible ? (
+                <>
+                  <EyeOff className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
+                  <span>Ocultar</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="w-3.5 h-3.5 text-slate-700 group-hover:text-primary transition-colors" />
+                  <span>Ver Código</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </CardContent>
