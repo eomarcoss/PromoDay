@@ -1,5 +1,6 @@
 "use server";
 
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
@@ -15,11 +16,12 @@ export async function redeemPromotionAction({
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = getRoleFromToken(token);
 
-    if (!token) {
+    if (!token || role !== "CUSTOMER") {
       return {
         success: false,
-        error: "Sessão expirada. Faça login novamente.",
+        error: "Sessão expirada ou usuário não autorizado.",
       };
     }
 

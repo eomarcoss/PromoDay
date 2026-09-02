@@ -1,50 +1,41 @@
 import { NextResponse, NextRequest } from "next/server";
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 
-// 1. Rotas comuns que exigem apenas autenticação (acessíveis por CUSTOMER e SELLER)
-// Adicionamos /promotions aqui para que Sellers também vejam os detalhes das promoções
-const rotasProtegidasComuns = [
-  "/profile",
-  "/redeems",
+// 1. Rotas estritamente exclusivas do Customer
+const rotasExclusivasCustomer = [
   "/promotions",
   "/promotions/:path*",
+  "/redeems",
   "/stores",
+  "/profile", // Caso o perfil seja do cliente
 ];
 
-// 2. Rotas exclusivas por perfil
-const rotasExclusivasSeller = ["/seller"];
-
-// 3. Deixe aqui apenas páginas estritamente exclusivas do Cliente (se houver)
-const rotasExclusivasCustomer: string[] = [
-  // Exemplo: "/checkout", "/my-orders" (se existirem no seu app)
+// 2. Rotas estritamente exclusivas do Seller
+const rotasExclusivasSeller = [
+  "/seller",
+  "/seller/:path*",
 ];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("@PromoDay:token")?.value;
-  const userRole = request.cookies.get("@PromoDay:role")?.value;
+  const userRole = getRoleFromToken(token);
 
   const { pathname } = request.nextUrl;
 
-  const isComunRoute = rotasProtegidasComuns.some((r) =>
-    pathname.startsWith(r),
-  );
-  const isSellerRoute = rotasExclusivasSeller.some((r) =>
-    pathname.startsWith(r),
-  );
-  const isCustomerRoute = rotasExclusivasCustomer.some((r) =>
-    pathname.startsWith(r),
-  );
+  const isCustomerRoute = rotasExclusivasCustomer.some((r) => pathname.startsWith(r));
+  const isSellerRoute = rotasExclusivasSeller.some((r) => pathname.startsWith(r));
 
-  const isProtectedRoute = isComunRoute || isSellerRoute || isCustomerRoute;
+  const isProtectedRoute = isCustomerRoute || isSellerRoute;
   const isAuthRoute = pathname === "/login" || pathname.startsWith("/register");
 
-  // REGRA 1: Não autenticado tentando acessar qualquer rota protegida
+  // REGRA 1: Não autenticado tentando acessar rota protegida
   if (isProtectedRoute && !token) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // REGRA 2: Logado tentando acessar Login/Registro
+  // REGRA 2: Logado tentando acessar páginas de login/registro
   if (isAuthRoute && token) {
     if (userRole === "SELLER") {
       return NextResponse.redirect(new URL("/seller/promotions", request.url));
@@ -52,16 +43,16 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/promotions", request.url));
   }
 
-  // REGRA 3: Bloqueio de acesso cruzado
+  // REGRA 3: Bloqueio rigoroso de acesso cruzado por perfil
   if (token && userRole) {
-    // CUSTOMER tentando acessar área do Vendedor
-    if (isSellerRoute && userRole !== "SELLER") {
-      return NextResponse.redirect(new URL("/promotions", request.url));
-    }
-
-    // SELLER tentando acessar rotas EXCLUSIVAS de Cliente
+    // Se o usuário for SELLER e tentar acessar qualquer rota de Customer
     if (isCustomerRoute && userRole === "SELLER") {
       return NextResponse.redirect(new URL("/seller/promotions", request.url));
+    }
+
+    // Se o usuário for CUSTOMER e tentar acessar qualquer rota de Seller
+    if (isSellerRoute && userRole !== "SELLER") {
+      return NextResponse.redirect(new URL("/promotions", request.url));
     }
   }
 

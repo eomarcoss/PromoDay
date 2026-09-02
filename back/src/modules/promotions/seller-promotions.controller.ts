@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PromotionsService } from './promotions.service';
@@ -26,18 +27,23 @@ export class SellerPromotionsController {
   constructor(
     private readonly promotionsService: PromotionsService,
     private readonly storageService: StorageService,
-  ) {}
+  ) { }
 
   // GET /seller/promotions
   @Get()
-  async findSellerPromotions(@Request() req: any) {
+  async findSellerPromotions(
+    @Request() req: any,
+    @Query('search') search?: string,
+    @Query('category') category?: string,
+  ) {
     const sellerId = req.user.sub;
 
     if (!sellerId) {
       throw new BadRequestException('ID do vendedor ausente no token.');
     }
 
-    return this.promotionsService.findAllBySeller(sellerId);
+    // Repassa os parâmetros de busca e categoria para o service atualizado
+    return this.promotionsService.findAllBySeller(sellerId, search, category);
   }
 
   // POST /seller/promotions

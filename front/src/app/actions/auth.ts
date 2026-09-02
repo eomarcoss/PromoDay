@@ -26,19 +26,11 @@ export async function signInAction(credentials: LoginPayload) {
       path: "/",
     };
 
-    // 1. Grava o token blindado contra XSS
+    // 1. Grava exclusivamente o token JWT blindado contra XSS (contendo a role embutida)
     cookieStore.set("@PromoDay:token", data.access_token, {
       ...cookieOptions,
       httpOnly: true,
     });
-
-    // 2. 👈 NOVO: Grava a Role para o middleware ler instantaneamente
-    if (data.user?.role) {
-      cookieStore.set("@PromoDay:role", data.user.role, {
-        ...cookieOptions,
-        httpOnly: true,
-      });
-    }
 
     return { success: true, user: data.user };
   } catch (error) {
@@ -90,9 +82,8 @@ export async function registerSellerAction(formdata: FormData) {
 export async function signOutAction() {
   const cookieStore = await cookies();
 
-  // Limpa ambos os cookies na saída
+  // Remove apenas o token unificado na saída
   cookieStore.delete("@PromoDay:token");
-  cookieStore.delete("@PromoDay:role"); // 👈 NOVO: Deleta o cookie da role
 
   redirect("/auth/login");
 }

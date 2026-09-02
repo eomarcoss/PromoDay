@@ -1,16 +1,18 @@
 "use server";
 
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
 
 export async function createPromotionAction(formData: FormData) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = getRoleFromToken(token);
 
-    if (!token) {
+    if (!token || role !== "SELLER") {
       return {
         success: false,
-        error: "Sessão expirada. Por favor, faça login novamente.",
+        error: "Sessão expirada ou usuário não autorizado para criar promoções.",
       };
     }
 

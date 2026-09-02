@@ -189,10 +189,19 @@ export class PromotionsService {
     });
   }
 
-  async findAllBySeller(sellerId: string) {
+  async findAllBySeller(sellerId: string, search?: string, category?: string) {
     return this.prisma.promotion.findMany({
       where: {
         sellerId: sellerId,
+        // 🔍 Filtros dinâmicos de busca por nome e categoria do lojista
+        AND: [
+          search
+            ? { name: { contains: search, mode: 'insensitive' } }
+            : {},
+          category && category !== 'todas'
+            ? { seller: { category: { equals: category, mode: 'insensitive' } } }
+            : {},
+        ],
       },
       include: {
         seller: {
@@ -200,6 +209,7 @@ export class PromotionsService {
             id: true,
             name: true,
             avatarUrl: true,
+            category: true,
           },
         },
       },

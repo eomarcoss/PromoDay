@@ -2,6 +2,7 @@
 
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
+import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário que criamos para decodificar a role do token
 
 export interface SellerProfileData {
   id: string;
@@ -24,8 +25,9 @@ export async function getProfileSellerAction(): Promise<SellerProfileData | null
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("@PromoDay:token")?.value;
+    const role = getRoleFromToken(token);
 
-    if (!token) {
+    if (!token || role !== "SELLER") {
       return null;
     }
 

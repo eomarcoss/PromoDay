@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation"; // 👈 Importe o usePathname
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -23,6 +23,7 @@ interface SearchBarProps {
   placeholder?: string;
   categories?: Category[];
   onSearchSubmit?: (termo: string, categoria: string) => void;
+  userRole?: "CUSTOMER" | "SELLER" | string; // 👈 Opcional: podemos receber a role ou mapear dinamicamente pela rota atual
 }
 
 const defaultCategories: Category[] = [
@@ -43,18 +44,22 @@ export function SearchBar({
   placeholder = "Buscar produtos, lojas ou cupons...",
   categories = defaultCategories,
   onSearchSubmit,
+  userRole,
 }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname(); // 👈 Descobre em qual rota o usuário está agora
+  const pathname = usePathname();
 
   const [termo, setTermo] = useState(searchParams.get("search") || "");
   const [categoria, setCategoria] = useState(searchParams.get("category") || "todas");
 
+  // Define dinamicamente o alvo da pesquisa com base na rota atual ou na role
+  const isSellerArea = pathname.startsWith("/seller") || userRole === "SELLER";
+  const targetRoute = isSellerArea ? "/seller/promotions" : "/promotions";
+
   useEffect(() => {
-    // 🛡️ TRAVA DE SEGURANÇA: Se o usuário NÃO estiver na página de listagem (/promotions), 
-    // a barra de pesquisa NÃO deve forçar redirecionamentos automáticos!
-    if (pathname !== "/promotions") {
+    // 🛡️ Trava de segurança adaptada: só atualiza via debounce se o usuário estiver na rota correspondente à sua listagem
+    if (pathname !== targetRoute) {
       return;
     }
 
@@ -69,12 +74,11 @@ export function SearchBar({
         params.set("category", categoria);
       }
 
-      // Só executa o push se realmente houver parâmetros ou se a URL precisar ser limpa
       const currentQuery = searchParams.toString();
       const newQuery = params.toString();
 
       if (currentQuery !== newQuery) {
-        router.push(`/promotions?${newQuery}`);
+        router.push(`${targetRoute}?${newQuery}`);
       }
 
       if (onSearchSubmit) {
@@ -83,22 +87,22 @@ export function SearchBar({
     }, 350);
 
     return () => clearTimeout(timer);
-  }, [termo, categoria, router, searchParams, pathname, onSearchSubmit]);
+  }, [termo, categoria, router, searchParams, pathname, targetRoute, onSearchSubmit]);
 
   const handleCategoryChange = (novaCategoria: string) => {
     setCategoria(novaCategoria);
-    // Se o usuário mudar a categoria estando em outra tela, redireciona para o promotions
-    if (pathname !== "/promotions") {
+    // Se mudar a categoria fora da página alvo, redireciona para a rota correta (Seller ou Customer)
+    if (pathname !== targetRoute) {
       const params = new URLSearchParams();
       if (termo.trim()) params.set("search", termo.trim());
       if (novaCategoria && novaCategoria !== "todas") params.set("category", novaCategoria);
-      router.push(`/promotions?${params.toString()}`);
+      router.push(`${targetRoute}?${params.toString()}`);
     }
   };
 
   return (
     <div className="bg-primary p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
-      <Link href="/promotions">
+      <Link href={targetRoute}>
         <h1 className="text-2xl font-bold text-card">Promoday</h1>
       </Link>
       <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
@@ -109,9 +113,9 @@ export function SearchBar({
             placeholder={placeholder}
             onChange={(e) => {
               setTermo(e.target.value);
-              // Se o usuário começar a digitar estando na página de detalhes, joga ele para o promotions com o termo
-              if (pathname !== "/promotions") {
-                router.push(`/promotions?search=${encodeURIComponent(e.target.value)}`);
+              // Se digitar estando em outra tela, redireciona instantaneamente para a rota correta com o termo
+              if (pathname !== targetRoute) {
+                router.push(`${targetRoute}?search=${encodeURIComponent(e.target.value)}`);
               }
             }}
             className="w-full h-full bg-transparent border-none text-black placeholder:text-neutral-400 pl-6 pr-12 text-base rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"

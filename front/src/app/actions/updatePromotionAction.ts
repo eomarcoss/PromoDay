@@ -1,8 +1,9 @@
 "use server";
 
+import { api } from "@/services/api";
+import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário que criamos para decodificar a role do token
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { api } from "@/services/api";
 
 export async function updatePromotionAction(
   promotionId: string,
@@ -10,9 +11,10 @@ export async function updatePromotionAction(
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get("@PromoDay:token")?.value;
+  const role = getRoleFromToken(token);
 
-  if (!token) {
-    return { success: false, error: "Usuário não autenticado." };
+  if (!token || role !== "SELLER") {
+    return { success: false, error: "Sessão expirada ou usuário não autorizado." };
   }
 
   try {

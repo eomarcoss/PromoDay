@@ -3,6 +3,7 @@
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 
 export interface PausePromotionResponse {
   success: boolean;
@@ -17,7 +18,7 @@ export async function pausePromotionAction(
     const cookieStore = await cookies();
 
     const token = cookieStore.get("@PromoDay:token")?.value;
-    const role = cookieStore.get("@PromoDay:role")?.value;
+    const role = getRoleFromToken(token);
 
     if (!token || role !== "SELLER") {
       return {

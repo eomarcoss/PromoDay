@@ -1,6 +1,7 @@
 "use server";
 
 import { api } from "@/services/api";
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
 
 export interface ValidateClaimResponse {
@@ -26,7 +27,7 @@ export async function validateClaimAction(
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("@PromoDay:token")?.value;
-    const role = cookieStore.get("@PromoDay:role")?.value;
+    const role = getRoleFromToken(token);
 
     // Se não for SELLER ou não possuir token, bloqueia a execução
     if (!token || role !== "SELLER") {
