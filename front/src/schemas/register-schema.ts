@@ -49,10 +49,11 @@ export const stepTwoSchema = z.object({
     .string()
     .min(5, "Por favor, insira o endereço completo da sua empresa"),
   category: z
-    .string({ required_error: "Selecione uma categoria" })
+    .string({ message: "Selecione uma categoria" })
     .min(1, "Selecione uma categoria para o seu negócio"),
   businessHours: z
     .record(
+      z.string(),
       z.object({
         aberto: z.boolean(),
         // 🚀 Ajuste: Permite que venha vazio ou undefined caso o dia esteja fechado

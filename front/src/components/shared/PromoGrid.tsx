@@ -28,6 +28,7 @@ interface PromoGridProps {
   products: PromotionFromBackend[];
   role?: "CUSTOMER" | "SELLER";
   searchTerm?: string; // 👈 Novo parâmetro opcional para filtrar pelo Fuse.js
+  sellerId?: string;
 }
 
 function calcDiscount(original: number, promo: number): number {

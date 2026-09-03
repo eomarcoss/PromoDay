@@ -1,6 +1,5 @@
 import { LoginCard } from "@/components/shared/login";
 import { UserTypeSelector } from "@/components/shared/UserTypeSelector";
-import { RegisterStepperForm } from "@/components/shared/RegisterStepperStore";
 import { PromoCard } from "@/components/shared/PromoCard";
 import { SearchBar } from "@/components/shared/SearchBar";
 import { BottomNav } from "@/components/shared/BottomNav";
