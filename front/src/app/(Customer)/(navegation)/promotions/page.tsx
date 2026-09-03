@@ -10,7 +10,6 @@ async function getAllPromotions(category?: string) {
     const { data } = await api.get("/promotions", {
       params: { category }, // Filtra por categoria no banco de dados
       timeout: 5000,
-      next: { revalidate: 30 },
     });
     return data || [];
   } catch (error) {
