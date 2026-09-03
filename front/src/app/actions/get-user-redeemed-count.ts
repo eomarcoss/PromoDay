@@ -4,6 +4,7 @@ import { api } from "@/services/api";
 import { cookies } from "next/headers";
 
 interface RedeemCountResponse {
+  total: number | PromiseLike<number>;
   count: number;
 }
 
