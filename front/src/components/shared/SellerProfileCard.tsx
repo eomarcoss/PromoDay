@@ -130,6 +130,7 @@ interface SellerProfileCardProps {
   businessHours: string;
   category: string;
   isSubmitting?: boolean;
+  message?: string;
   onSaveProfile?: (data: Partial<SellerProfileData>) => void;
 }
 
@@ -141,6 +142,7 @@ export function SellerProfileCard({
   address: initialAddress,
   businessHours: initialBusinessHours,
   category: initialCategory,
+  message,
   onSaveProfile,
 }: SellerProfileCardProps) {
   const { updateUser } = useAuth();
@@ -292,9 +294,9 @@ export function SellerProfileCard({
         }
       } else {
         setErrorMessage(
-          response.error?.message ||
-          response.error ||
-          "Não foi possível atualizar o perfil.",
+          typeof response.error === "string"
+            ? response.error
+            : (response.error as any)?.message || "Não foi possível atualizar o perfil."
         );
       }
     } catch (error: any) {
