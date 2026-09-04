@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }
 
 // Tipagem baseada no retorno do GET /sellers/:id do NestJS
@@ -28,13 +28,13 @@ function formatBusinessHours(hours: any): string {
 
 export default async function StoreProfilePage({ params }: PageProps) {
   // 1. Pega o ID da URL dinamicamente
-  const { slug } = await params;
+  const { id } = await params;
 
   let store: SellerDetailResponse | null = null;
 
   try {
     // 2. Busca a loja no backend NestJS
-    const { data } = await api.get<SellerDetailResponse>(`/sellers/${slug}`);
+    const { data } = await api.get<SellerDetailResponse>(`/sellers/${id}`);
     store = data;
   } catch (error) {
     console.error("Erro ao buscar detalhes da loja:", error);

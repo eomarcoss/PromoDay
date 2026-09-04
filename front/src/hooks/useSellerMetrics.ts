@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { getTokenAction } from "@/app/actions/auth";
+import { api } from "@/services/api";
 
 interface SellerMetrics {
   totalPromotions: number;
@@ -9,25 +9,13 @@ interface SellerMetrics {
 }
 
 const fetcher = async (url: string) => {
-  const token = await getTokenAction();
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error("Erro ao buscar métricas");
-  }
-
-  return res.json();
+  const res = await api.get<SellerMetrics>(url);
+  return res.data;
 };
 
 export function useSellerMetrics() {
   const { data, error, isLoading } = useSWR<SellerMetrics>(
-    "http://localhost:3001/sellers/metrics", // Ajuste para a URL/porta da sua API NestJS
+    "/sellers/metrics",
     fetcher,
     {
       refreshInterval: 10000, // Revalida a cada 10 segundos

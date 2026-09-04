@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { getTokenAction } from "@/app/actions/auth";
+import { api } from "@/services/api";
 
 interface CustomerMetrics {
   totalRedemptions: number;
@@ -9,25 +9,13 @@ interface CustomerMetrics {
 }
 
 const fetcher = async (url: string) => {
-  const token = await getTokenAction();
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error("Erro ao buscar métricas do cliente");
-  }
-
-  return res.json();
+  const res = await api.get<CustomerMetrics>(url);
+  return res.data;
 };
 
 export function useCustomerMetrics() {
   const { data, error, isLoading } = useSWR<CustomerMetrics>(
-    "http://localhost:3001/costomers/metrics",
+    "/costomers/metrics",
     fetcher,
     {
       refreshInterval: 10000,

@@ -23,7 +23,6 @@ export class UpdateSellerDto extends PartialType(CreateSellerDto) {
 
   // No seu create-seller.dto.ts
 
-  @IsNotEmpty({ message: 'O horário de funcionamento é obrigatório' })
   @IsString({
     message: 'O horário de funcionamento deve ser uma string JSON válida',
   })
