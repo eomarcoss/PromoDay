@@ -1,9 +1,10 @@
 "use server";
 
 import { api } from "@/services/api";
-import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário que criamos para decodificar a role do token
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { AxiosError } from "axios";
 
 export async function updatePromotionAction(
   promotionId: string,
@@ -18,14 +19,13 @@ export async function updatePromotionAction(
   }
 
   try {
-    // No Axios: api.patch(URL, DATA, CONFIG)
     const response = await api.patch(
       `/seller/promotions/${promotionId}`,
       formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+          "Content-Type": "multipart/form-data",
         },
       },
     );
@@ -37,10 +37,15 @@ export async function updatePromotionAction(
     };
   } catch (error: any) {
     const status = error?.response?.status;
-    const errorMessage =
-      error?.response?.data?.message ||
-      error?.message ||
-      "Erro ao atualizar a promoção.";
+    let errorMessage = "Erro ao atualizar a promoção.";
+
+    if (error instanceof AxiosError) {
+      errorMessage =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao atualizar a promoção.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     console.error(
       `[updatePromotionAction Error ${status || ""}]:`,

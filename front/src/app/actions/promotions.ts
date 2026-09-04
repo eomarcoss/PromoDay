@@ -2,6 +2,8 @@
 
 import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
+import { api } from "@/services/api";
+import { AxiosError } from "axios";
 
 export async function createPromotionAction(formData: FormData) {
   try {
@@ -35,31 +37,35 @@ export async function createPromotionAction(formData: FormData) {
       }
     });
 
-    // 4. Envia o payload para o NestJS
-    const response = await fetch("http://localhost:3001/seller/promotions", {
-      method: "POST",
+    // 4. Utiliza a instância global do Axios (com baseURL correta e timeout configurado)
+    const response = await api.post("/seller/promotions", payload, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
-      body: payload,
     });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      const errorMsg = Array.isArray(result.message)
-        ? result.message.join(", ")
-        : result.message || "Erro ao cadastrar a promoção.";
-
-      return { success: false, error: errorMsg };
-    }
-
-    return { success: true, data: result };
+    return { success: true, data: response.data };
   } catch (error: any) {
     console.error("Erro na Server Action:", error);
+
+    let errorMsg = "Ocorreu um erro ao conectar com o servidor.";
+    if (error instanceof AxiosError) {
+      const responseMessage = error.response?.data?.message;
+      if (Array.isArray(responseMessage)) {
+        errorMsg = responseMessage.join(", ");
+      } else if (typeof responseMessage === "string") {
+        errorMsg = responseMessage;
+      } else {
+        errorMsg = "O servidor demorou a responder ou falhou ao criar a promoção.";
+      }
+    } else if (error?.message) {
+      errorMsg = error.message;
+    }
+
     return {
       success: false,
-      error: "Ocorreu um erro ao conectar com o servidor.",
+      error: errorMsg,
     };
   }
 }

@@ -4,6 +4,7 @@ import { api } from "@/services/api";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { getRoleFromToken } from "@/utils/getRoleFromToken";
+import { AxiosError } from "axios";
 
 export interface PausePromotionResponse {
   success: boolean;
@@ -50,8 +51,14 @@ export async function pausePromotionAction(
       error?.response?.data || error.message,
     );
 
-    const errorMessage =
-      error?.response?.data?.message || "Falha ao pausar promoção.";
+    let errorMessage = "Falha ao pausar promoção.";
+    if (error instanceof AxiosError) {
+      errorMessage =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao pausar a promoção.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     return {
       success: false,

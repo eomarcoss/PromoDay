@@ -3,7 +3,8 @@
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário que criamos para decodificar a role do token
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
+import { AxiosError } from "axios";
 
 export interface DeletePromotionResponse {
   success: boolean;
@@ -18,7 +19,7 @@ export async function deletePromotionAction(
     const cookieStore = await cookies();
 
     const token = cookieStore.get("@PromoDay:token")?.value;
-    const role = getRoleFromToken(token); // 👈 Extrai a role de dentro do token unificado de forma segura
+    const role = getRoleFromToken(token);
 
     if (!token || role !== "SELLER") {
       return {
@@ -46,8 +47,14 @@ export async function deletePromotionAction(
       error?.response?.data || error.message,
     );
 
-    const errorMessage =
-      error?.response?.data?.message || "Falha ao excluir promoção.";
+    let errorMessage = "Falha ao excluir promoção.";
+    if (error instanceof AxiosError) {
+      errorMessage =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao excluir.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     return {
       success: false,

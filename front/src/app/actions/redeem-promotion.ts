@@ -3,6 +3,8 @@
 import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { api } from "@/services/api";
+import { AxiosError } from "axios";
 
 interface RedeemParams {
   promotionId: string;
@@ -25,32 +27,34 @@ export async function redeemPromotionAction({
       };
     }
 
-    const response = await fetch(
-      `http://localhost:3001/promotions/${promotionId}/redeem`,
+    // Utiliza a instância global do Axios substituindo a URL hardcoded do localhost
+    const response = await api.post(
+      `/promotions/${promotionId}/redeem`,
+      { quantity },
       {
-        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ quantity }),
       },
     );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return {
-        success: false,
-        error: result.message || "Não foi possível realizar o resgate.",
-      };
-    }
 
     revalidatePath("/promotions");
     revalidatePath("/redeems");
 
-    return { success: true, data: result };
-  } catch (error) {
-    return { success: false, error: "Falha na comunicação com o servidor." };
+    return { success: true, data: response.data };
+  } catch (error: any) {
+    console.error("Erro na Server Action redeemPromotionAction:", error);
+
+    let errorMsg = "Falha na comunicação com o servidor.";
+    if (error instanceof AxiosError) {
+      errorMsg =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao realizar o resgate.";
+    } else if (error?.message) {
+      errorMsg = error.message;
+    }
+
+    return { success: false, error: errorMsg };
   }
 }

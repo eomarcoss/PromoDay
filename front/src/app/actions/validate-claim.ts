@@ -3,6 +3,7 @@
 import { api } from "@/services/api";
 import { getRoleFromToken } from "@/utils/getRoleFromToken";
 import { cookies } from "next/headers";
+import { AxiosError } from "axios";
 
 export interface ValidateClaimResponse {
   success: boolean;
@@ -29,7 +30,6 @@ export async function validateClaimAction(
     const token = cookieStore.get("@PromoDay:token")?.value;
     const role = getRoleFromToken(token);
 
-    // Se não for SELLER ou não possuir token, bloqueia a execução
     if (!token || role !== "SELLER") {
       return {
         success: false,
@@ -38,7 +38,6 @@ export async function validateClaimAction(
       };
     }
 
-    // Requisição PATCH para a rota do NestJS
     const response = await api.patch(
       "/seller/claims/validate",
       { code },
@@ -60,14 +59,26 @@ export async function validateClaimAction(
       error?.response?.data || error.message,
     );
 
-    // Trata mensagens de erro retornadas pelo NestJS (ex: 400 Bad Request, 404 Not Found)
-    const errorMessage =
-      error?.response?.data?.message ||
+    let errorMessage =
       "Erro ao validar código. Verifique se o código está correto ou se já foi utilizado.";
+
+    if (error instanceof AxiosError) {
+      const responseMessage = error.response?.data?.message;
+      if (responseMessage) {
+        errorMessage = Array.isArray(responseMessage)
+          ? responseMessage[0]
+          : responseMessage;
+      } else {
+        errorMessage =
+          "O servidor demorou a responder ou falhou ao validar o cupom.";
+      }
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     return {
       success: false,
-      message: Array.isArray(errorMessage) ? errorMessage[0] : errorMessage,
+      message: errorMessage,
     };
   }
 }

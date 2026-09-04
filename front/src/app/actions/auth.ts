@@ -1,9 +1,10 @@
+"use type"; // Mantém a estrutura original
+
 "use server"; // 👈 Roda estritamente no servidor do Next.js
 
 import { cookies } from "next/headers";
 import { authService } from "@/services/auth";
 import { LoginPayload } from "@/types/auth";
-// import { RegisterCustomerPayload } from "@/types/customer";
 import { RegisterSellerPayload } from "@/types/seller";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
@@ -13,20 +14,16 @@ import { redirect } from "next/navigation";
  */
 export async function signInAction(credentials: LoginPayload) {
   try {
-    // Chama o serviço HTTP que retorna access_token e os dados do usuário (incluindo a role)
     const { data } = await authService.login(credentials);
-
     const cookieStore = await cookies();
 
-    // Configurações padrão dos cookies para reuso
     const cookieOptions = {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict" as const,
-      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
     };
 
-    // 1. Grava exclusivamente o token JWT blindado contra XSS (contendo a role embutida)
     cookieStore.set("@PromoDay:token", data.access_token, {
       ...cookieOptions,
       httpOnly: true,
@@ -35,10 +32,18 @@ export async function signInAction(credentials: LoginPayload) {
     return { success: true, user: data.user };
   } catch (error) {
     console.error("ERRO COMPLETO NA ACTION DE LOGIN:", error);
-    const axiosError = error as AxiosError<{ message: string }>;
+
+    // Tratamento seguro para erros do Axios e conexões derrubadas/timeouts
+    if (error instanceof AxiosError) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "O servidor demorou a responder ou falhou. Tente novamente.",
+      };
+    }
+
     return {
       success: false,
-      error: axiosError.response?.data?.message || "Falha na autenticação.",
+      error: "Falha na autenticação.",
     };
   }
 }
@@ -51,10 +56,15 @@ export async function registerCustomerAction(formdata: FormData) {
     await authService.registerCustomer(formdata);
     return { success: true };
   } catch (error) {
-    const axiosError = error as AxiosError<{ message: string }>;
+    if (error instanceof AxiosError) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Erro ao cadastrar cliente no servidor.",
+      };
+    }
     return {
       success: false,
-      error: axiosError.response?.data?.message || "Erro ao cadastrar cliente.",
+      error: "Erro inesperado ao cadastrar cliente.",
     };
   }
 }
@@ -67,11 +77,15 @@ export async function registerSellerAction(formdata: FormData) {
     await authService.registerSeller(formdata);
     return { success: true };
   } catch (error) {
-    const axiosError = error as AxiosError<{ message: string }>;
+    if (error instanceof AxiosError) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Erro ao cadastrar vendedor no servidor.",
+      };
+    }
     return {
       success: false,
-      error:
-        axiosError.response?.data?.message || "Erro ao cadastrar vendedor.",
+      error: "Erro inesperado ao cadastrar vendedor.",
     };
   }
 }
@@ -81,10 +95,7 @@ export async function registerSellerAction(formdata: FormData) {
  */
 export async function signOutAction() {
   const cookieStore = await cookies();
-
-  // Remove apenas o token unificado na saída
   cookieStore.delete("@PromoDay:token");
-
   redirect("/auth/login");
 }
 

@@ -2,7 +2,8 @@
 
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
-import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário para extrair a role do token unificado
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
+import { AxiosError } from "axios";
 
 export interface UserClaim {
   id: string;
@@ -34,9 +35,8 @@ export async function getUserClaims(): Promise<UserClaim[]> {
     const cookieStore = await cookies();
 
     const token = cookieStore.get("@PromoDay:token")?.value;
-    const role = getRoleFromToken(token); // 👈 Extrai a role direto do payload do token
+    const role = getRoleFromToken(token);
 
-    // Se não houver token ou se o usuário logado NÃO for um 'CUSTOMER', aborta
     if (!token || role !== "CUSTOMER") {
       return [];
     }
@@ -49,10 +49,17 @@ export async function getUserClaims(): Promise<UserClaim[]> {
 
     return response.data || [];
   } catch (error: any) {
+    let errorDetail = error?.message;
+    if (error instanceof AxiosError) {
+      errorDetail = error.response?.data || error.message;
+    }
+
     console.error(
       "Erro na Server Action getUserClaims:",
-      error?.response?.data || error.message,
+      errorDetail,
     );
+
+    // Retorna array vazio em caso de falha de conexão/timeout do Render para não quebrar a página
     return [];
   }
 }

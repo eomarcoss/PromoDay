@@ -2,6 +2,7 @@
 
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
+import { AxiosError } from "axios";
 
 export interface CustomerProfileData {
   id: string;
@@ -27,7 +28,6 @@ export async function getProfileCustomerAction(): Promise<CustomerProfileData | 
     const response = await api.get<CustomerProfileData>("/costomers/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
-        // Cookie: `@PromoDay:token=${token}`,
       },
     });
 
@@ -63,7 +63,7 @@ export async function updateProfileCustomerAction(formData: FormData) {
     const response = await api.patch("/costomers/profile", formData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+        "Content-Type": "multipart/form-data",
       },
     });
 
@@ -76,10 +76,14 @@ export async function updateProfileCustomerAction(formData: FormData) {
     };
   } catch (error: any) {
     const status = error?.response?.status;
-    const errorMessage =
-      error?.response?.data?.message ||
-      error?.message ||
-      "Erro ao atualizar perfil.";
+
+    // Tratamento robusto verificando se é AxiosError para evitar falhas em timeouts de Cold Start
+    let errorMessage = "Erro ao atualizar perfil.";
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message || "O servidor demorou a responder ou falhou ao atualizar.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     console.error(
       `[updateProfileCustomerAction Error ${status || ""}]:`,

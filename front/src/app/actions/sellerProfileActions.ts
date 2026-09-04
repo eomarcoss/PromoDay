@@ -2,7 +2,8 @@
 
 import { api } from "@/services/api";
 import { cookies } from "next/headers";
-import { getRoleFromToken } from "@/utils/getRoleFromToken"; // 👈 Importa o utilitário que criamos para decodificar a role do token
+import { getRoleFromToken } from "@/utils/getRoleFromToken";
+import { AxiosError } from "axios";
 
 export interface SellerProfileData {
   id: string;
@@ -34,7 +35,6 @@ export async function getProfileSellerAction(): Promise<SellerProfileData | null
     const response = await api.get<SellerProfileData>("/sellers/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
-        // Cookie: `@PromoDay:token=${token}`,
       },
     });
 
@@ -44,8 +44,15 @@ export async function getProfileSellerAction(): Promise<SellerProfileData | null
     };
   } catch (error: any) {
     const status = error?.response?.status;
-    const errorMessage =
-      error?.response?.data?.message || error?.message || "Erro desconhecido";
+    let errorMessage = "Erro desconhecido";
+
+    if (error instanceof AxiosError) {
+      errorMessage =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao buscar o perfil.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     console.error(
       `[getProfileSellerAction Error ${status || ""}]:`,
@@ -59,23 +66,23 @@ export async function getProfileSellerAction(): Promise<SellerProfileData | null
  * Atualiza os dados do perfil do Vendedor
  */
 export async function updateProfileSellerAction(
-  formData: FormData, // 👈 Ajustado para receber o FormData
+  formData: FormData,
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get("@PromoDay:token")?.value;
 
   if (!token) {
-    throw new Error("Usuário não autenticado.");
+    return { success: false, error: "Usuário não autenticado." };
   }
 
   try {
     const response = await api.patch(
-      "/sellers/profile", // 👈 Verifique se a rota no NestJS é /sellers/profile ou /seller/profile
+      "/sellers/profile",
       formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // 👈 Crucial para envio de arquivos
+          "Content-Type": "multipart/form-data",
         },
       },
     );
@@ -89,10 +96,15 @@ export async function updateProfileSellerAction(
     };
   } catch (error: any) {
     const status = error?.response?.status;
-    const errorMessage =
-      error?.response?.data?.message ||
-      error?.message ||
-      "Erro ao atualizar perfil.";
+    let errorMessage = "Erro ao atualizar perfil.";
+
+    if (error instanceof AxiosError) {
+      errorMessage =
+        error.response?.data?.message ||
+        "O servidor demorou a responder ou falhou ao atualizar o perfil.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
 
     console.error(
       `[updateProfileSellerAction Error ${status || ""}]:`,
