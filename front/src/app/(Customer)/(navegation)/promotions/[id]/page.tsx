@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getUserRedeemedCount } from "../../../../actions/get-user-redeemed-count";
 import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
 import { api } from "@/services/api";

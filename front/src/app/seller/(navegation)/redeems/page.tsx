@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ValidateCodeModal } from "@/components/shared/ValidateCodeModal";
 import RedeemsList from "../../../../components/shared/RedeemsList";
 

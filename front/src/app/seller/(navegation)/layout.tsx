@@ -1,3 +1,4 @@
+
 import { SearchBar } from "@/components/shared/SearchBar";
 import { BottomNav } from "@/components/shared/BottomNav";
 

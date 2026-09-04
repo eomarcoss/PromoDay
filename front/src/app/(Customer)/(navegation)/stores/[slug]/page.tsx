@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { StoreDetailsCard } from "@/components/shared/StoreDetailsCard";
 import PromoGrid from "@/components/shared/PromoGrid";
 import { api } from "@/services/api";

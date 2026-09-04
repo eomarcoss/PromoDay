@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { PromotionDetailCard } from "@/components/shared/PromotionDetailsCard";
 import { api } from "@/services/api";
 import { notFound } from "next/navigation";
