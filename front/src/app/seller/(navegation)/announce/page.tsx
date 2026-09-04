@@ -1,4 +1,4 @@
-
+export const dynamic = "force-dynamic";
 import { CreateAdForm } from "@/components/shared/CreateAdForm";
 import { Suspense } from "react";
 
