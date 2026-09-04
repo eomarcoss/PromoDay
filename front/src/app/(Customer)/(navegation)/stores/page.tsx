@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import React from "react";
 import { StoreList, Store } from "@/components/shared/StoreList"; // Ajuste o caminho do seu import
 import { api } from "@/services/api";

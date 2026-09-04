@@ -1,4 +1,3 @@
-"use client";
 
 import { CreateAdForm } from "@/components/shared/CreateAdForm";
 import { Suspense } from "react";

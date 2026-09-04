@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import RedeemsList from "../../../../components/shared/RedeemsList";
 
 export default function Redeems() {

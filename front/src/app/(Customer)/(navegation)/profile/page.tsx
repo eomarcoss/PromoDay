@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getProfileCustomerAction } from "@/app/actions/customerProfileAction"; // Ou o caminho das suas actions
 import { ProfileClientContainer } from "@/app/(Customer)/(navegation)/profile/ProfileClientContainer";
 import { redirect } from "next/navigation";
