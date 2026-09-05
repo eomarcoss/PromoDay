@@ -1,16 +1,15 @@
+// front/src/middleware.ts
 import { NextResponse, NextRequest } from "next/server";
 import { getRoleFromToken } from "@/utils/getRoleFromToken";
 
-// 1. Rotas estritamente exclusivas do Customer
 const rotasExclusivasCustomer = [
   "/promotions",
   "/promotions/:path*",
   "/redeems",
   "/stores",
-  "/profile", // Caso o perfil seja do cliente
+  "/profile",
 ];
 
-// 2. Rotas estritamente exclusivas do Seller
 const rotasExclusivasSeller = [
   "/seller",
   "/seller/:path*",
@@ -19,18 +18,18 @@ const rotasExclusivasSeller = [
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("@PromoDay:token")?.value;
   const userRole = getRoleFromToken(token);
-
   const { pathname } = request.nextUrl;
 
   const isCustomerRoute = rotasExclusivasCustomer.some((r) => pathname.startsWith(r));
   const isSellerRoute = rotasExclusivasSeller.some((r) => pathname.startsWith(r));
-
   const isProtectedRoute = isCustomerRoute || isSellerRoute;
-  const isAuthRoute = pathname === "/login" || pathname.startsWith("/register");
+
+  // Corrigido: /auth/login
+  const isAuthRoute = pathname === "/auth/login" || pathname.startsWith("/register");
 
   // REGRA 1: Não autenticado tentando acessar rota protegida
   if (isProtectedRoute && !token) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL("/auth/login", request.url); // Corrigido
     loginUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -43,14 +42,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/promotions", request.url));
   }
 
-  // REGRA 3: Bloqueio rigoroso de acesso cruzado por perfil
+  // REGRA 3: Bloqueio de acesso cruzado
   if (token && userRole) {
-    // Se o usuário for SELLER e tentar acessar qualquer rota de Customer
     if (isCustomerRoute && userRole === "SELLER") {
       return NextResponse.redirect(new URL("/seller/promotions", request.url));
     }
-
-    // Se o usuário for CUSTOMER e tentar acessar qualquer rota de Seller
     if (isSellerRoute && userRole !== "SELLER") {
       return NextResponse.redirect(new URL("/promotions", request.url));
     }
@@ -66,7 +62,7 @@ export const config = {
     "/stores/:path*",
     "/redeems/:path*",
     "/profile/:path*",
-    "/login",
+    "/auth/login", // Corrigido
     "/register/:path*",
   ],
 };
