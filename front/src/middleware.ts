@@ -4,7 +4,6 @@ import { getRoleFromToken } from "@/utils/getRoleFromToken";
 
 const rotasExclusivasCustomer = [
   "/promotions",
-  "/promotions/:path*",
   "/redeems",
   "/stores",
   "/profile",
@@ -12,7 +11,6 @@ const rotasExclusivasCustomer = [
 
 const rotasExclusivasSeller = [
   "/seller",
-  "/seller/:path*",
 ];
 
 export function middleware(request: NextRequest) {
