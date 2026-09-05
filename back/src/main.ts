@@ -18,7 +18,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: process.env.NODE_ENV === 'production'
-      ? ['https://seu-front-producao.vercel.app'] // Substitua pela URL da Vercel quando tiver
+      ? ['https://promo-day.vercel.app'] // Substitua pela URL da Vercel quando tiver
       : ['http://localhost:3000', 'http://127.0.0.1:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
