@@ -1,6 +1,8 @@
-import { redirect } from "next/navigation";
 
 export default function Home() {
-  // Redireciona automaticamente a raiz para a tela de login/registro
-  redirect("/register");
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1>Home - PromoDay</h1>
+    </main>
+  );
 }
