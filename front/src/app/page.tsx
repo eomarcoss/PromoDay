@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 
-export default function RootPage() {
+export default function Home() {
   // Redireciona a raiz para a página de login
-  redirect("/auth/login");
+  return (
+    <h1>Home</h1>
+  )
+  // redirect("/auth/login");
 }
