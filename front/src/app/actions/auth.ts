@@ -17,15 +17,12 @@ export async function signInAction(credentials: LoginPayload) {
     const { data } = await authService.login(credentials);
     const cookieStore = await cookies();
 
-    const cookieOptions = {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict" as const,
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    };
-
+    // ⚠️ Importante: sameSite precisa ser "lax" em deploys cross-domain
     cookieStore.set("@PromoDay:token", data.access_token, {
-      ...cookieOptions,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: "/",
       httpOnly: true,
     });
 
@@ -33,11 +30,10 @@ export async function signInAction(credentials: LoginPayload) {
   } catch (error) {
     console.error("ERRO COMPLETO NA ACTION DE LOGIN:", error);
 
-    // Tratamento seguro para erros do Axios e conexões derrubadas/timeouts
     if (error instanceof AxiosError) {
       return {
         success: false,
-        error: error.response?.data?.message || "O servidor demorou a responder ou falhou. Tente novamente.",
+        error: error.response?.data?.message || "Servidor indisponível ou erro na resposta.",
       };
     }
 
@@ -47,7 +43,6 @@ export async function signInAction(credentials: LoginPayload) {
     };
   }
 }
-
 /**
  * Action para registrar um Cliente (Customer)
  */
