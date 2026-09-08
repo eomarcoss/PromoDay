@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInAction } from "@/app/actions/auth"; // 👈 Importa a Action que acabamos de ajustar
+import { signInAction } from "@/app/actions/auth";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export function LoginCard() {
   const router = useRouter();
-  const { setUser } = useAuth(); // Função do contexto para atualizar o usuário globalmente
+  const { setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,43 +24,46 @@ export function LoginCard() {
     setError("");
     setLoading(true);
 
-    // 🚀 Chama a Server Action passando as credenciais puras (aqui usamos JSON normal)
     const result = await signInAction({ email, password });
 
     setLoading(false);
-    console.log("Resultado da Action:", result.user);
+
     if (result.success && result.user) {
-      // 1. Salva o usuário no Contexto para o Front-end renderizar o nome/foto dele na tela
       setUser(result.user);
 
-      // 2. Redirecionamento inteligente baseado no Role que veio do seu NestJS
+      // Redireciona conforme o papel do usuário
       if (result.user.role === "SELLER") {
         router.push("/seller/announce");
       } else {
         router.push("/promotions");
       }
+
+      // Forces Next.js to re-evaluate auth middleware & server state with the new cookie
+      router.refresh();
     } else {
-      // Exibe na tela o erro exato retornado pelo NestJS
       setError(result.error || "Falha ao tentar entrar.");
     }
   };
+
   return (
     <div className="w-full max-w-md mx-auto space-y-6 text-center">
-      {/* Título */}
       <h1 className="text-3xl font-black text-black tracking-tight">
         Entrar no Promoday
       </h1>
 
-      {/* Card Principal */}
       <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
         <CardContent className="p-0 space-y-5">
-          {/* Campo Email */}
-          <form onSubmit={handleLogin} method="POST">
+          <form onSubmit={handleLogin}>
+
+            {/* Mensagem de Erro visual */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 text-xs font-bold rounded-xl text-center">
+                {error}
+              </div>
+            )}
+
             <div className="space-y-1.5">
-              <Label
-                htmlFor="email"
-                className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider"
-              >
+              <Label htmlFor="email" className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider">
                 Email
               </Label>
               <Input
@@ -74,12 +77,8 @@ export function LoginCard() {
               />
             </div>
 
-            {/* Campo Senha */}
-            <div className="space-y-1.5">
-              <Label
-                htmlFor="senha"
-                className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider mt-4"
-              >
+            <div className="space-y-1.5 mt-4">
+              <Label htmlFor="senha" className="text-neutral-500 font-medium ml-1 text-xs uppercase tracking-wider">
                 Senha
               </Label>
               <Input
@@ -93,8 +92,7 @@ export function LoginCard() {
               />
             </div>
 
-            {/* Ações de Entrada */}
-            <div className="flex flex-col gap-2 pt-2 items-center">
+            <div className="flex flex-col gap-2 pt-6 items-center">
               <Button
                 type="submit"
                 disabled={loading}
@@ -102,18 +100,11 @@ export function LoginCard() {
               >
                 {loading ? "Entrando..." : "Entrar"}
               </Button>
-              <Button
-                variant="link"
-                className="text-black font-bold text-xs hover:underline p-0 h-auto cursor-pointer"
-              >
-                Entrar como convidado
-              </Button>
             </div>
           </form>
         </CardContent>
       </Card>
 
-      {/* Rodapé: Criar Conta */}
       <div className="space-y-2 pt-2">
         <p className="text-sm font-medium text-neutral-600">Não tem conta?</p>
         <Link href="/register">
