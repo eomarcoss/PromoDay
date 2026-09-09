@@ -1,22 +1,15 @@
 "use client";
 
 import useSWR from "swr";
-import { api } from "@/services/api";
-
-interface SellerMetrics {
-  totalPromotions: number;
-  totalSales: number;
-}
-
-const fetcher = async (url: string) => {
-  const res = await api.get<SellerMetrics>(url);
-  return res.data;
-};
+import {
+  getSellerMetricsAction,
+  SellerMetricsData,
+} from "@/app/actions/getSellerMetricsAction";
 
 export function useSellerMetrics() {
-  const { data, error, isLoading } = useSWR<SellerMetrics>(
-    "/sellers/metrics",
-    fetcher,
+  const { data, error, isLoading } = useSWR<SellerMetricsData>(
+    "seller-metrics",
+    () => getSellerMetricsAction(),
     {
       refreshInterval: 10000, // Revalida a cada 10 segundos
       revalidateOnFocus: true,
