@@ -1,26 +1,16 @@
 "use client";
 
 import useSWR from "swr";
-import { api } from "@/services/api";
-
-interface CustomerMetrics {
-  totalRedemptions: number;
-  totalSavedAmount: number;
-}
-
-const fetcher = async (url: string) => {
-  const res = await api.get<CustomerMetrics>(url);
-  return res.data;
-};
+import { getCustomerMetricsAction, CustomerMetricsData } from "@/app/actions/getCustomerMetricsAction";
 
 export function useCustomerMetrics() {
-  const { data, error, isLoading } = useSWR<CustomerMetrics>(
-    "/costomers/metrics",
-    fetcher,
+  const { data, error, isLoading } = useSWR<CustomerMetricsData>(
+    "customer-metrics",
+    () => getCustomerMetricsAction(),
     {
       refreshInterval: 10000,
       revalidateOnFocus: true,
-    },
+    }
   );
 
   return {
