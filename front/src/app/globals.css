@@ -50,14 +50,18 @@
 
 :root {
   /* Modo Claro */
-  --background: oklch(0.98 0 0); /* #FAFAFA */
-  --foreground: oklch(0.126 0.046 257.4); /* #070F22 */
-  --card: oklch(1 0 0); /* #FFFFFF */
+  --background: oklch(0.98 0 0);
+  /* #FAFAFA */
+  --foreground: oklch(0.126 0.046 257.4);
+  /* #070F22 */
+  --card: oklch(1 0 0);
+  /* #FFFFFF */
   --card-foreground: oklch(0.126 0.046 257.4);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.126 0.046 257.4);
-  --primary: oklch(0.518 0.253 264.5); /* #144AE0 */
-  --primary-foreground: oklch(1 0 0); /* #FFFFFF */
+  --primary: #084013;
+  --primary-foreground: oklch(1 0 0);
+  /* #FFFFFF */
   --secondary: oklch(0.94 0.01 257.4);
   --secondary-foreground: oklch(0.126 0.046 257.4);
   --muted: oklch(0.95 0.01 257.4);
@@ -86,15 +90,17 @@
 
 .dark {
   /* Modo Escuro (Baseado em #070F22 e #144AE0) */
-  --background: oklch(0.126 0.046 257.4); /* #070F22 - Fundo Dark */
-  --foreground: oklch(1 0 0); /* #FFFFFF - Texto principal */
-  --card: oklch(
-    0.18 0.04 257.4
-  ); /* Superfície ligeiramente mais clara que o fundo */
+  --background: oklch(0.126 0.046 257.4);
+  /* #070F22 - Fundo Dark */
+  --foreground: oklch(1 0 0);
+  /* #FFFFFF - Texto principal */
+  --card: oklch(0.18 0.04 257.4);
+  /* Superfície ligeiramente mais clara que o fundo */
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.18 0.04 257.4);
   --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.518 0.253 264.5); /* #144AE0 - Azul de Ação */
+  --primary: oklch(0.518 0.253 264.5);
+  /* #144AE0 - Azul de Ação */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.22 0.04 257.4);
   --secondary-foreground: oklch(1 0 0);
@@ -125,9 +131,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
