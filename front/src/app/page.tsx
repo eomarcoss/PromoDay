@@ -18,7 +18,7 @@ export default function Home() {
     },
     {
       id: 2,
-      title: "Alertas Inteligentes",
+      title: "Resgate cupons unicos com um clique",
       description: "Receba notificações em tempo real assim que um desconto imperdível for publicado.",
       icon: (
         <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -29,7 +29,7 @@ export default function Home() {
     },
     {
       id: 3,
-      title: "Painel Unificado",
+      title: "Valide seu cupom facilmente com Qr code",
       description: "Veja todos os seus cupons e descontos salvos em uma única interface intuitiva.",
       icon: (
         <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,7 +40,7 @@ export default function Home() {
     },
     {
       id: 4,
-      title: "Sugestões Personalizadas",
+      title: "Acompanhe quanto você já economizou",
       description: "Receba recomendações focadas baseadas no seu histórico de compras e interesses.",
       icon: (
         <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,7 +91,7 @@ export default function Home() {
       <header className="container mx-auto px-4 md:px-6 lg:px-8 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {/* Logo */}
-          <div className="text-2xl font-black tracking-tighter text-[#88E713] uppercase flex items-center gap-1">
+          <div className="text-2xl font-black tracking-tighter text-[#64B60A] uppercase flex items-center gap-1">
             PromoDay
           </div>
         </div>
@@ -108,10 +108,10 @@ export default function Home() {
         {/* Auth Buttons */}
         <div className="hidden lg:flex items-center gap-4">
           <Link href="/auth/login" className="font-semibold text-sm hover:text-[#88E713] transition-colors">
-            Log In
+            Entrar
           </Link>
           <Link href="/auth/register" className="px-5 py-2.5 rounded-full border border-[#111827] font-semibold text-sm hover:bg-[#111827] hover:text-white transition-all">
-            Get Started
+            Criar conta
           </Link>
         </div>
 
@@ -129,16 +129,16 @@ export default function Home() {
           {/* Hero Texto (Esquerda) */}
           <div className="w-full lg:w-1/2 flex flex-col items-start text-left space-y-8 z-10">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-              Seu Parceiro em <br />
-              <span className="text-[#88E713]">Economias</span> Inteligentes
+              Garanta suas <br />
+              <span className="text-[#64B60A]">Promoções</span> todos os dias aqui!
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-lg font-medium">
-              Assuma o controle do seu dinheiro com ferramentas projetadas para ajudar você a economizar mais, comprar com inteligência e planejar o futuro — sem esforço.
+              Conctamos estabelecimentos locais com clientes que buscam promoções e descontos em tempo real.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <button className="w-full sm:w-auto px-8 py-4 bg-[#88E713] text-[#111827] rounded-full font-bold text-lg hover:bg-[#76c910] transition-colors shadow-lg shadow-[#88E713]/20">
-                Falar com Especialista
+                Ver promoções
               </button>
               <button className="w-full sm:w-auto px-8 py-4 flex items-center justify-center gap-3 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors">
                 <span className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#111827]">
@@ -146,13 +146,13 @@ export default function Home() {
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </span>
-                Assistir Vídeo
+                Seja um anunciante
               </button>
             </div>
 
             {/* Pílulas de Tags */}
             <div className="flex flex-wrap gap-3 pt-6 border-t border-gray-200 mt-4">
-              {["Eletrônicos", "Supermercado", "Cupons", "Descontos", "Viagens", "Dicas Expert"].map((tag) => (
+              {["Eletrônicos", "Supermercado", "Farmácias", "Restaurantes", "E Muito mais",].map((tag) => (
                 <span key={tag} className="px-5 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-600 hover:border-[#88E713] hover:text-[#111827] transition-colors cursor-pointer bg-white">
                   {tag}
                 </span>
@@ -226,7 +226,7 @@ export default function Home() {
         </section>
 
         {/* PARCEIROS (Lojas) */}
-        <section className="container mx-auto px-4 md:px-6 lg:px-8 pb-24">
+        {/* <section className="container mx-auto px-4 md:px-6 lg:px-8 pb-24">
           <div className="text-center mb-8 relative">
             <span className="text-sm font-bold text-[#88E713] tracking-widest uppercase bg-[#F7F9F6] px-4 relative z-10">Lojas Parceiras</span>
             <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200 -z-0"></div>
@@ -238,7 +238,7 @@ export default function Home() {
             <div className="text-2xl font-black">AMERICANAS</div>
             <div className="text-2xl font-black tracking-tight">SHOPEE</div>
           </div>
-        </section>
+        </section> */}
 
         {/* SEÇÃO 2: GRID DE RECURSOS */}
         <section id="features" className="container mx-auto px-4 md:px-6 lg:px-8 py-16">
@@ -248,8 +248,7 @@ export default function Home() {
                 Recursos
               </span>
               <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-                Alcance a <span className="text-[#88E713]">clareza nas compras</span> e assuma o controle do seu orçamento com ferramentas criadas para simplificar e personalizar sua <span className="text-[#20B2AA]">gestão de economia</span>.
-              </h2>
+                Veja o seu <span className="text-[#64B60A]">dinheiro render </span> no final do mês aproveitando as ofertas diárias do <span className="text-[#64B60A]">PromoDay.</span> <br></br></h2>
             </div>
             <p className="text-[#111827] font-medium whitespace-nowrap">
               Tudo que você precisa, nada além disso.
