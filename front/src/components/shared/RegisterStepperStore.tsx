@@ -174,13 +174,13 @@ export function RegisterStepperFormStore() {
             style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 1 ? "bg-neutral-800 border-neutral-800" : "bg-neutral-200 border-neutral-200"}`}
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${currentStep >= 1 ? "bg-neutral-800 border-neutral-800" : "bg-neutral-200 border-neutral-200"}`}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep >= 2 ? "bg-neutral-500 border-neutral-500" : "bg-neutral-200 border-neutral-200"}`}
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${currentStep >= 2 ? "bg-neutral-500 border-neutral-500" : "bg-neutral-200 border-neutral-200"}`}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${currentStep === 3 ? "bg-neutral-400 border-neutral-400" : "bg-neutral-200 border-neutral-200"}`}
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${currentStep === 3 ? "bg-neutral-400 border-neutral-400" : "bg-neutral-200 border-neutral-200"}`}
           />
         </div>
       </div>
@@ -273,7 +273,7 @@ export function RegisterStepperFormStore() {
                     <button
                       type="button" // OBRIGATÓRIO para não dar submit no formulário sem querer
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-colors rounded-full focus:outline-none focus:ring-1 focus:ring-black"
+                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-all duration-300 rounded-full focus:outline-none focus:ring-1 focus:ring-black"
                       aria-label={
                         showPassword ? "Esconder senha" : "Mostrar senha"
                       }
@@ -300,7 +300,7 @@ export function RegisterStepperFormStore() {
                 <div className="flex flex-col items-center space-y-2 pb-2">
                   <label
                     htmlFor="avatar"
-                    className="w-24 h-24 rounded-full bg-neutral-300 hover:bg-neutral-400 transition-colors cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-400 group relative"
+                    className="w-24 h-24 rounded-full bg-neutral-300 hover:bg-neutral-400 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-400 group relative"
                   >
                     {avatarPreview ? (
                       <img
@@ -309,7 +309,7 @@ export function RegisterStepperFormStore() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-[10px] font-bold text-neutral-600 group-hover:text-neutral-800 transition-colors">
+                      <span className="text-[10px] font-bold text-neutral-600 group-hover:text-neutral-800 transition-all duration-300">
                         Adicionar
                       </span>
                     )}
@@ -518,7 +518,7 @@ export function RegisterStepperFormStore() {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="text-sm font-bold text-neutral-600 hover:text-black hover:underline transition-colors ml-2"
+                  className="text-sm font-bold text-neutral-600 hover:text-black hover:underline transition-all duration-300 ml-2"
                 >
                   Voltar
                 </button>

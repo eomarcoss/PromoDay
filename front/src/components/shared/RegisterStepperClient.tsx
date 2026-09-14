@@ -129,14 +129,14 @@ export function RegisterStepperFormClient() {
             style={{ width: `${((currentStep - 1) / 1) * 100}%` }}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${
               currentStep >= 1
                 ? "bg-black border-black"
                 : "bg-neutral-200 border-neutral-200"
             }`}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-colors duration-300 border-4 ${
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${
               currentStep === 2
                 ? "bg-black border-black"
                 : "bg-neutral-200 border-neutral-200"
@@ -161,7 +161,7 @@ export function RegisterStepperFormClient() {
                 <div className="flex flex-col items-center space-y-2 pb-2">
                   <label
                     htmlFor="avatar"
-                    className="w-24 h-24 rounded-full bg-neutral-200 hover:bg-neutral-300 transition-colors cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-300 group relative"
+                    className="w-24 h-24 rounded-full bg-neutral-200 hover:bg-neutral-300 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center text-center overflow-hidden border border-neutral-300 group relative"
                   >
                     {avatarPreview ? (
                       <img
@@ -170,7 +170,7 @@ export function RegisterStepperFormClient() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-[10px] font-black text-neutral-500 uppercase tracking-wider group-hover:text-black transition-colors">
+                      <span className="text-[10px] font-black text-neutral-500 uppercase tracking-wider group-hover:text-black transition-all duration-300">
                         Adicionar
                       </span>
                     )}
@@ -272,7 +272,7 @@ export function RegisterStepperFormClient() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-colors rounded-full focus:outline-none"
+                      className="absolute right-4 p-1 text-neutral-500 hover:text-black transition-all duration-300 rounded-full focus:outline-none"
                     >
                       {showPassword ? (
                         <Eye className="h-5 w-5" />
@@ -306,7 +306,7 @@ export function RegisterStepperFormClient() {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="text-sm font-bold text-neutral-500 hover:text-black hover:underline transition-colors ml-2"
+                  className="text-sm font-bold text-neutral-500 hover:text-black hover:underline transition-all duration-300 ml-2"
                 >
                   Voltar
                 </button>

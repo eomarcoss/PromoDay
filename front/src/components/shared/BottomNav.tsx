@@ -54,8 +54,8 @@ export function BottomNav() {
   }
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 z-50 bg-primary border-t px-4 pb-safe">
-      <nav className="flex justify-around items-center h-16 max-w-md mx-auto bg-primary">
+    <div className="sticky bottom-0 left-0 right-0 z-50 bg-foreground border-t px-4 pb-safe">
+      <nav className="flex justify-around items-center h-16 max-w-md mx-auto ">
         {navItems.map((item) => {
           const Icon = item.icon;
 
@@ -70,7 +70,7 @@ export function BottomNav() {
               key={item.path}
               href={href}
               className={`flex flex-col items-center justify-center w-16 h-full transition-all gap-1 cursor-pointer
-                ${isActive ? "text-white scale-105" : "text-white/50 hover:text-neutral-300"}`}
+                ${isActive ? "text-background scale-105" : "text-background/50 hover:text-background/80"}`}
             >
               <Icon
                 className="w-6 h-6 transition-transform"
@@ -79,7 +79,7 @@ export function BottomNav() {
 
               <span
                 className={`text-xs font-semibold tracking-wide transition-all whitespace-nowrap text-center
-                ${isActive ? "font-bold text-white" : "text-white/50"}`}
+                ${isActive ? "font-bold text-background" : "text-background/50 hover:text-background/80"}`}
               >
                 {item.label}
               </span>

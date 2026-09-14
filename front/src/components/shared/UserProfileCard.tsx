@@ -117,11 +117,12 @@ export function UserProfileCard({
 
   return (
     <>
-      <Card className="w-full max-w-4xl bg-white border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-950/5 overflow-hidden">
-        <CardContent className="p-6 md:p-8">
+      <Card className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden">
+        <CardContent className="p-5 sm:p-6 md:p-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+
             {/* PARTE ESQUERDA: Avatar + Infos Pessoais */}
-            <div className="flex flex-col sm:flex-row items-center gap-5 w-full lg:w-auto text-center sm:text-left">
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-5 w-full lg:w-auto text-center sm:text-left pt-1 lg:pt-0">
               <div className="relative group shrink-0">
                 <div className="w-20 h-20 sm:w-22 sm:h-22 bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border-2 border-slate-100 shadow-md">
                   {userData.avatarUrl ? (
@@ -139,15 +140,15 @@ export function UserProfileCard({
               </div>
 
               {/* Detalhes do Usuário */}
-              <div className="space-y-1.5 min-w-0">
+              <div className="space-y-1.5 min-w-0 max-w-[240px] sm:max-w-none">
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <h2 className="text-xl font-bold text-slate-950 truncate tracking-tight">
                     {userData.name}
                   </h2>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs font-medium text-slate-600">
-                  <div className="flex items-center justify-center sm:justify-start gap-1.5">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs font-medium text-slate-600">
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5 min-w-0">
                     <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                     <span className="truncate">{email}</span>
                   </div>
@@ -164,48 +165,62 @@ export function UserProfileCard({
             <div className="w-full h-[1px] lg:w-[1px] lg:h-16 bg-slate-100" />
 
             {/* PARTE DIREITA: Métricas + Botão Editar */}
-            <div className="flex items-center justify-between lg:justify-end gap-4 w-full lg:w-auto">
-              <div className="grid grid-cols-2 gap-3 w-full sm:w-auto">
-                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3 px-4 flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100/60 shrink-0">
-                    <Ticket className="w-4 h-4" />
+            <div className="flex items-center justify-center lg:justify-end gap-4 w-full lg:w-auto">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3 w-full sm:max-w-sm lg:w-auto">
+                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 min-w-0">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-white text-[#111827] border border-[#88E713]/30 shrink-0">
+                    <Ticket className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
-                  <div>
-                    <span className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                  <div className="min-w-0 w-full">
+                    <span className="block text-[10px] sm:text-[11px] font-bold text-slate-600 uppercase tracking-wide sm:tracking-wider">
                       Resgates
                     </span>
-                    <span className="text-base font-extrabold text-slate-950">
+                    <span className="block text-sm sm:text-base font-extrabold text-slate-950 leading-tight break-words">
                       {metrics?.totalRedemptions ?? totalRedemptions}
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-emerald-50/50 border border-emerald-100/80 rounded-2xl p-3 px-4 flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-emerald-100/70 text-emerald-600 shrink-0">
-                    <PiggyBank className="w-4 h-4" />
+                <div className="bg-emerald-50/50 border border-emerald-100/80 rounded-2xl p-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 min-w-0">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-100/70 text-emerald-600 shrink-0">
+                    <PiggyBank className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
-                  <div>
-                    <span className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
+                  <div className="min-w-0 w-full">
+                    <span className="block text-[10px] sm:text-[11px] font-bold text-emerald-800 uppercase tracking-wide sm:tracking-wider">
                       Economizado
                     </span>
-                    <span className="text-base font-extrabold text-emerald-950">
+                    <span className="block text-sm sm:text-base font-extrabold text-emerald-950 leading-tight break-words">
                       {formattedSaved}
                     </span>
                   </div>
                 </div>
               </div>
 
+              {/* Botão Editar — permanece no fluxo apenas no desktop */}
               <button
                 type="button"
                 onClick={handleOpenEdit}
-                className="p-3 bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-950 rounded-2xl transition-all border border-slate-200/60 shrink-0 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer"
+                className="hidden lg:flex p-3 text-slate-700 hover:text-slate-950 hover:bg-slate-100 rounded-2xl transition-all shrink-0 items-center justify-center gap-2 text-sm font-semibold cursor-pointer"
                 title="Editar Perfil"
+                aria-label="Editar Perfil"
               >
                 <Pencil className="w-4 h-4" />
                 <span className="hidden xl:inline">Editar</span>
               </button>
             </div>
+
           </div>
+
+          {/* Botão Editar — flutuante no canto superior direito apenas no mobile/tablet */}
+          <button
+            type="button"
+            onClick={handleOpenEdit}
+            className="absolute top-4 right-4 lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-700 active:scale-95 active:bg-slate-200 transition-all cursor-pointer"
+            title="Editar Perfil"
+            aria-label="Editar Perfil"
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
         </CardContent>
       </Card>
 
@@ -282,7 +297,7 @@ export function UserProfileCard({
                     onChange={(e) =>
                       setEditForm({ ...editForm, name: e.target.value })
                     }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
+                    className="w-full bg-slate-50 border border-slate-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
                     required
                   />
                 </div>
@@ -302,7 +317,7 @@ export function UserProfileCard({
                     onChange={(e) =>
                       setEditForm({ ...editForm, phone: e.target.value })
                     }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
+                    className="w-full bg-slate-50 border border-slate-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 outline-none transition-all disabled:opacity-50"
                     required
                   />
                 </div>
@@ -321,7 +336,7 @@ export function UserProfileCard({
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-blue-500/20 disabled:opacity-50 cursor-pointer"
+                  className="flex-1 py-2.5 px-4 bg-primary hover:bg-primary/90 text-foreground font-semibold text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 shadow-lg shadow-primary/20 disabled:opacity-50 cursor-pointer"
                 >
                   {isPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

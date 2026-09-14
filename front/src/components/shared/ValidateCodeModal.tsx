@@ -87,7 +87,7 @@ export function ValidateCodeModal() {
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
             {/* Ícone: Fundo suave e cor Primária (#144AE0) */}
-            <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <div className="p-2.5 rounded-xl bg-[#88E713]/20 text-[#111827] border border-[#88E713]/30">
               <Zap className="w-5 h-5" />
             </div>
             <div>
@@ -110,11 +110,10 @@ export function ValidateCodeModal() {
               setMode("manual");
               setResult(null);
             }}
-            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-              mode === "manual"
-                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50" // Ativo: Branco, texto Primária
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/50" // Inativo: Texto cinza
-            }`}
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${mode === "manual"
+              ? "bg-white text-primary shadow-md shadow-slate-950/5 border border-slate-200/50" // Ativo: Branco, texto Primária
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/50" // Inativo: Texto cinza
+              }`}
           >
             <Keyboard className="w-4 h-4" />
             Digitar Código
@@ -124,11 +123,10 @@ export function ValidateCodeModal() {
               setMode("scanner");
               setResult(null);
             }}
-            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-              mode === "scanner"
-                ? "bg-white text-blue-700 shadow-md shadow-slate-950/5 border border-slate-200/50"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
-            }`}
+            className={`flex items-center justify-center gap-2.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${mode === "scanner"
+              ? "bg-white text-primary shadow-md shadow-slate-950/5 border border-slate-200/50"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
           >
             <QrCode className="w-4 h-4" />
             Ler QR Code
@@ -155,10 +153,10 @@ export function ValidateCodeModal() {
                       value={code}
                       onChange={handleInputChange}
                       placeholder="PD-000000"
-                      className="w-full bg-white border-2 border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-center text-3xl font-mono tracking-[0.2em] text-slate-950 placeholder:text-slate-300 rounded-2xl py-5 px-4 outline-none transition-all uppercase shadow-inner shadow-slate-950/5"
+                      className="w-full bg-white border-2 border-slate-200 focus:border-primary focus:ring-4 focus:ring-blue-100 text-center text-3xl font-mono tracking-[0.2em] text-slate-950 placeholder:text-slate-300 rounded-2xl py-5 px-4 outline-none transition-all uppercase shadow-inner shadow-slate-950/5"
                     />
                     {code.length === 9 && !loading && (
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 text-xs font-bold bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#111827] text-xs font-bold bg-[#88E713]/20 px-2.5 py-1 rounded-full border border-[#88E713]/30">
                         Pronto
                       </span>
                     )}
@@ -169,7 +167,7 @@ export function ValidateCodeModal() {
                 <button
                   onClick={() => handleValidate()}
                   disabled={code.length < 9 || loading}
-                  className="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-500 text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 disabled:shadow-none"
+                  className="w-full py-4 px-6 bg-primary hover:bg-primary/80 cursor-pointer disabled:bg-slate-200 disabled:text-slate-500 text-[#111827] font-bold text-base rounded-full transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-[#88E713]/20 disabled:shadow-none"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -187,9 +185,9 @@ export function ValidateCodeModal() {
                 <div className="relative w-full aspect-square max-w-[260px] bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center overflow-hidden group">
                   {/* Overlay Efeito Scanner: Agora usando azul primário suave */}
                   <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent animate-pulse" />
-                  <div className="w-full h-0.5 bg-blue-500 shadow-[0_0_15px_#144AE0] absolute top-1/2 -translate-y-1/2 animate-bounce" />
+                  <div className="w-full h-0.5 bg-[#88E713] shadow-[0_0_15px_#88E713] absolute top-1/2 -translate-y-1/2 animate-bounce" />
 
-                  <Scan className="w-14 h-14 text-slate-400 mb-3 group-hover:text-blue-600 transition-colors duration-300" />
+                  <Scan className="w-14 h-14 text-slate-400 mb-3 group-hover:text-blue-600 transition-all duration-300 duration-300" />
                   <p className="text-sm text-slate-500 text-center px-6 leading-relaxed">
                     Posicione o QR Code do cliente em frente à câmera
                   </p>

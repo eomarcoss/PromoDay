@@ -68,7 +68,7 @@ export function SellerPromoActions({
           size="sm"
           onClick={handleDelete}
           disabled={isDeleting}
-          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-destructive/30 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors cursor-pointer"
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-destructive/30 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 cursor-pointer"
         >
           <Trash2 className="w-3.5 h-3.5" />
           {isDeleting ? "..." : "Excluir"}
@@ -79,7 +79,7 @@ export function SellerPromoActions({
           size="sm"
           onClick={handlePause}
           disabled={isPausing}
-          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-border/80 hover:bg-accent transition-colors cursor-pointer"
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg border-border/80 hover:bg-accent transition-all duration-300 cursor-pointer"
         >
           {activeState ? (
             <>
@@ -97,7 +97,7 @@ export function SellerPromoActions({
         <Button
           size="sm"
           onClick={() => setIsEditOpen(true)}
-          className="w-full font-medium text-xs gap-1 h-9 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+          className="w-full font-medium text-xs gap-1 h-9 rounded-lg bg-primary text-foreground hover:bg-primary/90 transition-all duration-300 cursor-pointer"
         >
           <Edit className="w-3.5 h-3.5" />
           Editar

@@ -69,7 +69,7 @@ export function StoreDetailsCard({
   }, [parsedHours, todayKey]);
 
   return (
-    <div className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-5 flex flex-col gap-4">
+    <div className="w-full max-w-7xl bg-white border border-border/50 rounded-2xl p-5 flex flex-col gap-4">
       {/* Linha principal do card */}
       <div className="flex items-center gap-4">
         {/* Imagem de perfil / iniciais */}
@@ -81,7 +81,7 @@ export function StoreDetailsCard({
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-muted-foreground font-bold text-lg uppercase">
+            <span className="text-gray-500 font-bold text-lg uppercase">
               {name ? name.substring(0, 2) : "SL"}
             </span>
           )}
@@ -89,7 +89,7 @@ export function StoreDetailsCard({
 
         {/* Informações principais */}
         <div className="flex flex-col gap-2 flex-1 min-w-0">
-          <h2 className="text-lg font-bold text-foreground tracking-tight truncate">
+          <h2 className="text-lg font-bold text-[#111827] tracking-tight truncate">
             {name}
           </h2>
 
@@ -98,19 +98,18 @@ export function StoreDetailsCard({
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-1.5 text-primary font-semibold bg-primary/10 hover:bg-primary/15 px-2.5 py-1 rounded-md border border-primary/20 transition-colors"
+              className="flex items-center gap-1.5 text-foreground font-semibold bg-foreground/5 hover:bg-[#88E713]/15 px-2.5 py-1 rounded-md border border-[#88E713]/20 transition-all duration-300"
             >
               <Clock className="w-3.5 h-3.5" />
               <span>{summaryText}</span>
               <ChevronDown
-                className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                  isOpen ? "rotate-180" : ""
-                }`}
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
             {/* Localização */}
-            <span className="flex items-center gap-1 text-muted-foreground font-medium min-w-0">
+            <span className="flex items-center gap-1 text-gray-500 font-medium min-w-0">
               <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
               <span className="truncate">{location}</span>
             </span>
@@ -126,7 +125,7 @@ export function StoreDetailsCard({
       {/* Lista sanfona (dropdown) da semana toda */}
       {isOpen && parsedHours && (
         <div className="pt-3 border-t border-border/60 flex flex-col gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
             Horário de funcionamento
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5 text-xs">
@@ -138,23 +137,21 @@ export function StoreDetailsCard({
               return (
                 <div
                   key={key}
-                  className={`flex items-center justify-between px-2 -mx-2 py-1.5 rounded-md border-b border-border/40 last:border-none ${
-                    isToday ? "bg-primary/5" : ""
-                  }`}
+                  className={`flex items-center justify-between px-2 -mx-2 py-1.5 rounded-md border-b border-border/40 last:border-none ${isToday ? "bg-[#88E713]/5" : ""
+                    }`}
                 >
                   <span
-                    className={`font-medium ${
-                      isToday ? "text-primary" : "text-muted-foreground"
-                    }`}
+                    className={`font-medium ${isToday ? "text-[#88E713]" : "text-gray-500"
+                      }`}
                   >
                     {label}
                   </span>
                   {isAberto ? (
-                    <span className="text-foreground font-semibold">
+                    <span className="text-[#111827] font-semibold">
                       {dayData.inicio} às {dayData.fim}
                     </span>
                   ) : (
-                    <span className="text-muted-foreground/70 italic">
+                    <span className="text-gray-500/70 italic">
                       Fechado
                     </span>
                   )}

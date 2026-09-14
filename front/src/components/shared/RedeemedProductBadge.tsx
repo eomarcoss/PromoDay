@@ -16,7 +16,7 @@ export function RedeemedProductBadge({
   return (
     <Card className="relative w-full max-w-xl bg-gradient-to-r from-[#2D62EA] to-[#1E4DC2] text-white border-none rounded-[24px] shadow-md hover:shadow-lg transition-all overflow-hidden p-0">
       {/* Recorte Semicircular de Ticket na lateral direita */}
-      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-background rounded-full pointer-events-none" />
+      <span className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-[#F7F9F6] rounded-full pointer-events-none" />
 
       <CardContent className="flex items-stretch p-0 relative min-h-[108px]">
         {/* SEÇÃO DA ESQUERDA: Imagem do Produto */}

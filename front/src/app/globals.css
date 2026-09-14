@@ -50,19 +50,19 @@
 
 :root {
   /* Modo Claro */
-  --background: oklch(0.98 0 0);
+  --background: #f7f1ed;
   /* #FAFAFA */
-  --foreground: oklch(0.126 0.046 257.4);
+  --foreground: #1e1e1e;
   /* #070F22 */
   --card: oklch(1 0 0);
   /* #FFFFFF */
   --card-foreground: oklch(0.126 0.046 257.4);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.126 0.046 257.4);
-  --primary: #084013;
+  --primary: #53b154;
   --primary-foreground: oklch(1 0 0);
   /* #FFFFFF */
-  --secondary: oklch(0.94 0.01 257.4);
+  --secondary: #012f22;
   --secondary-foreground: oklch(0.126 0.046 257.4);
   --muted: oklch(0.95 0.01 257.4);
   --muted-foreground: oklch(0.45 0.02 257.4);

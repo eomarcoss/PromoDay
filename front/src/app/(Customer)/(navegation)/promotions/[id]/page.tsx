@@ -69,7 +69,7 @@ export default async function PromotionDetails({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full flex flex-col items-center justify-center p-4">
+    <div className="w-full flex flex-col items-center justify-center p-4 ">
 
       <PromotionDetailCard
         id={promotion.id}

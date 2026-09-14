@@ -276,7 +276,7 @@ export function EditPromotionModal({
                     alt="Nova foto"
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute bottom-1 left-1 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                  <span className="absolute bottom-1 left-1 bg-[#88E713] text-[#111827] text-[9px] font-bold px-1.5 py-0.5 rounded-md">
                     Nova
                   </span>
                   <button
@@ -292,7 +292,7 @@ export function EditPromotionModal({
               ))}
 
               {existingImages.length === 0 && newFiles.length === 0 && (
-                <label className="col-span-3 flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-100/60 transition-colors">
+                <label className="col-span-3 flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-100/60 transition-all duration-300">
                   <Plus className="w-6 h-6 text-slate-400 mb-1" />
                   <span className="text-xs text-slate-500 font-medium">
                     Clique para adicionar imagens
@@ -418,7 +418,7 @@ export function EditPromotionModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 disabled:opacity-50 cursor-pointer"
+              className="flex-1 py-2.5 bg-[#88E713] hover:bg-[#76c910] text-[#111827] font-semibold text-xs rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 shadow-md shadow-[#88E713]/20 disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

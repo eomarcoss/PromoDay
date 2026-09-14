@@ -148,8 +148,8 @@ export function CreateAdForm() {
   };
 
   return (
-    <div className="bg-neutral-100 min-h-screen p-4 md:p-8 flex justify-center items-center">
-      <Card className="w-full max-w-5xl bg-white border border-neutral-200 rounded-[32px] shadow-sm overflow-hidden">
+    <div className="bg-white min-h-screen p-5 flex justify-center items-center">
+      <Card className="w-full max-w-8xl h-fit bg-white  rounded-[32px]  overflow-hidden">
         <CardContent className="p-6 md:p-10">
           {errorMessage && (
             <div className="mb-6 p-4 text-sm font-medium text-red-700 bg-red-100 rounded-2xl border border-red-200">
@@ -196,7 +196,7 @@ export function CreateAdForm() {
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(index)}
-                        className="absolute top-1.5 right-1.5 p-1 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-colors"
+                        className="absolute top-1.5 right-1.5 p-1 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-all duration-300"
                         title="Remover imagem"
                       >
                         <X className="w-3.5 h-3.5" />
@@ -207,12 +207,11 @@ export function CreateAdForm() {
                   {/* Botão de Upload Visível se Houver Vagas (Menos de 3 Imagens) */}
                   {imageFiles.length < 3 && (
                     <label
-                      className={`relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-neutral-800 text-neutral-400 group hover:border-neutral-500 transition-colors cursor-pointer p-2 ${
-                        imageFiles.length === 0 ? "col-span-3 aspect-4/3" : ""
-                      }`}
+                      className={`relative aspect-square w-full bg-neutral-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-neutral-800 text-neutral-400 group hover:border-neutral-500 transition-all duration-300 cursor-pointer p-2 ${imageFiles.length === 0 ? "col-span-3 aspect-4/3" : ""
+                        }`}
                     >
-                      <Upload className="w-6 h-6 text-neutral-400 group-hover:text-white transition-colors" />
-                      <span className="text-xs font-medium text-center mt-2 group-hover:text-white transition-colors">
+                      <Upload className="w-6 h-6 text-neutral-400 group-hover:text-white transition-all duration-300" />
+                      <span className="text-xs font-medium text-center mt-2 group-hover:text-white transition-all duration-300">
                         {imageFiles.length === 0
                           ? "Enviar imagens do produto"
                           : "Adicionar"}
@@ -326,7 +325,7 @@ export function CreateAdForm() {
                             const current = Number(field.value) || 1;
                             field.onChange(String(Math.max(1, current - 1)));
                           }}
-                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
+                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-all duration-300"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
@@ -347,7 +346,7 @@ export function CreateAdForm() {
                             const current = Number(field.value) || 0;
                             field.onChange(String(current + 1));
                           }}
-                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors"
+                          className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-all duration-300"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
@@ -366,11 +365,10 @@ export function CreateAdForm() {
                     render={({ field }) => (
                       <div className="flex flex-col space-y-2">
                         <div
-                          className={`flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none transition-opacity ${
-                            isUnlimitedUser
-                              ? "opacity-40 pointer-events-none"
-                              : ""
-                          }`}
+                          className={`flex items-center h-11 w-full bg-neutral-100 rounded-full overflow-hidden px-2 border-none transition-opacity ${isUnlimitedUser
+                            ? "opacity-40 pointer-events-none"
+                            : ""
+                            }`}
                         >
                           <button
                             type="button"
@@ -379,7 +377,7 @@ export function CreateAdForm() {
                               const current = Number(field.value) || 1;
                               field.onChange(String(Math.max(1, current - 1)));
                             }}
-                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
+                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-all duration-300 disabled:pointer-events-none"
                           >
                             <Minus className="w-4 h-4" />
                           </button>
@@ -403,7 +401,7 @@ export function CreateAdForm() {
                               const current = Number(field.value) || 0;
                               field.onChange(String(current + 1));
                             }}
-                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-colors disabled:pointer-events-none"
+                            className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-black hover:bg-neutral-200 rounded-full transition-all duration-300 disabled:pointer-events-none"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -503,7 +501,7 @@ export function CreateAdForm() {
                     setErrorMessage(null);
                     setSuccessMessage(null);
                   }}
-                  className="rounded-full cursor-pointer h-12 border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-100 font-bold text-base transition-colors"
+                  className="rounded-full cursor-pointer h-12 border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-100 font-bold text-base transition-all duration-300"
                 >
                   Limpar
                 </Button>
@@ -511,7 +509,7 @@ export function CreateAdForm() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="rounded-full cursor-pointer h-12 bg-neutral-900 hover:bg-black text-white font-bold text-base transition-colors border-none flex items-center justify-center gap-2"
+                  className="rounded-full cursor-pointer h-12 bg-primary hover:bg-primary/90 text-white font-bold text-base transition-all duration-300 border-none flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>

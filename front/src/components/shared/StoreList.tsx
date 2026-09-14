@@ -43,6 +43,7 @@ export function StoreList({ stores }: StoreListProps) {
             offersCount={count}
             isOpen={store.isOpen ?? true}
             category={store.category || "Categoria não informada"}
+
           />
         );
       })}

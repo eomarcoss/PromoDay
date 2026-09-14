@@ -101,9 +101,9 @@ export function SearchBar({
   };
 
   return (
-    <div className="bg-primary p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
+    <div className="bg-foreground p-4 flex justify-center items-center sticky top-0 left-0 w-full z-50 flex-row gap-5">
       <Link href={targetRoute}>
-        <h1 className="text-2xl font-bold text-card">Promoday</h1>
+        <h1 className="text-2xl font-bold text-card text-background">Promoday</h1>
       </Link>
       <div className="flex w-full max-w-4xl h-full items-center bg-white rounded-full border border-neutral-300 shadow-sm focus-within:ring-2 focus-within:ring-black transition-all overflow-hidden">
         <div className="relative flex-1 h-full flex items-center">
@@ -131,7 +131,7 @@ export function SearchBar({
         <div className="h-6 w-[1px] bg-neutral-300" />
 
         <Select value={categoria} onValueChange={handleCategoryChange}>
-          <SelectTrigger className="h-full w-[140px] bg-white hover:bg-primary text-primary hover:text-white font-semibold text-base rounded-none border-none transition-colors focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-primary/70">
+          <SelectTrigger className="h-full w-[140px] bg-primary text-white hover:text-white font-semibold text-base rounded-none border-none transition-all duration-300 focus:ring-0 focus:ring-offset-0 gap-2 cursor-pointer [&>svg]:text-[#88E713]/70">
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
 
@@ -140,7 +140,7 @@ export function SearchBar({
               <SelectItem
                 key={cat.value}
                 value={cat.value}
-                className="cursor-pointer font-medium focus:bg-neutral-100 focus:text-black transition-colors"
+                className="cursor-pointer font-medium focus:bg-neutral-100 focus:text-black transition-all duration-300"
               >
                 {cat.label}
               </SelectItem>

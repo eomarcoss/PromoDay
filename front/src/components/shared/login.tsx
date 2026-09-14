@@ -47,11 +47,11 @@ export function LoginCard() {
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6 text-center">
-      <h1 className="text-3xl font-black text-black tracking-tight">
+      <h1 className="text-3xl font-black text-foreground tracking-tight">
         Entrar no Promoday
       </h1>
 
-      <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left">
+      <Card className="bg-neutral-100 border border-neutral-200 rounded-[2rem] p-8 shadow-sm text-left bg-">
         <CardContent className="p-0 space-y-5">
           <form onSubmit={handleLogin}>
 
