@@ -106,7 +106,7 @@ export default function Home() {
             <Link href="/auth/login" className="font-semibold text-sm hover:text-primary transition-colors">
               Entrar
             </Link>
-            <Link href="/auth/register" className="px-5 py-2.5 rounded-full border border-primary font-semibold text-sm hover:bg-primary hover:text-foreground transition-all">
+            <Link href="/register" className="px-5 py-2.5 rounded-full border border-primary font-semibold text-sm hover:bg-primary hover:text-foreground transition-all">
               Criar conta
             </Link>
           </div>
