@@ -38,7 +38,6 @@ export default async function RedeemsList() {
             code={claim.code}
             status={claim.status}
             seller={claim.promotion?.seller}
-            variant={variant}
           />
         );
       })}
