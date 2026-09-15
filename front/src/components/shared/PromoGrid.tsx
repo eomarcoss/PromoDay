@@ -70,7 +70,7 @@ export default function PromoGrid({
 
   return (
     <div className="w-full max-w-9xl px-4 sm:px-6 lg:px-8 space-y-6 min-h-screen py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 w-full max-w-8xl mx-auto">
         {filteredProducts.map((promo) => {
           const mainImage =
             promo.images && promo.images.length > 0

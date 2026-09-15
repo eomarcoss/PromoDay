@@ -27,7 +27,9 @@ export default async function AllPromotionsPage({ searchParams }: PageProps) {
   return (
     <main className="w-full min-h-screen py-6">
       {/* O PromoGrid agora recebe os produtos e faz a busca inteligente via Fuse.js */}
-      <PromoGrid products={promotions} role="CUSTOMER" searchTerm={search} />
+      <div>
+        <PromoGrid products={promotions} role="CUSTOMER" searchTerm={search} />
+      </div>
     </main>
   );
 }
