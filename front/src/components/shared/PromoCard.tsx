@@ -159,7 +159,7 @@ export function PromoCard({
               <Button
                 variant="outline"
                 onClick={onDetails}
-                className="w-full font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-foreground/30 hover:text-foreground transition-all duration-300"
+                className="w-full cursor-pointer font-medium text-sm gap-1.5 h-10 rounded-lg border-border/80 hover:bg-foreground/30 hover:text-foreground transition-all duration-300"
               >
                 <Eye className="w-4 h-4" />
                 Detalhes
@@ -167,7 +167,7 @@ export function PromoCard({
 
               <Button
                 onClick={onRedeem}
-                className="w-full relative bg-foreground hover:bg-primary text-primary font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary  -foreground/40 group"
+                className="w-full cursor-pointer relative bg-foreground hover:bg-primary text-primary font-medium text-sm h-11 transition-all rounded-md shadow-sm border border-primary  -foreground/40 group"
               >
                 <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-r border-dashed border-[#88E713]-foreground/40" />
                 <span className="flex items-center gap-2">

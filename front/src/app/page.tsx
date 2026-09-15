@@ -1,5 +1,8 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const features = [
@@ -80,18 +83,32 @@ export default function Home() {
       )
     }
   ];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // UX Extra: Previne o scroll da página quando o menu mobile estiver aberto
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+  const closeMenu = () => setIsMobileMenuOpen(false);
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-background selection:text-black">
 
       {/* HEADER / NAVIGATION */}
-      <header className="w-full absolute top-0 z-50">
+      <header className="w-full absolute top-0 z-50 bg-background/80 backdrop-blur-md">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 py-4 sm:py-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {/* Logo */}
-            <div className="text-xl sm:text-2xl font-black tracking-tighter text-primary uppercase flex items-center gap-1">
+
+          {/* Logo */}
+          <div className="flex items-center gap-2 relative z-50">
+            <Link href="/" className="text-xl sm:text-2xl font-black tracking-tighter text-primary uppercase flex items-center gap-1" onClick={closeMenu}>
               PromoDay
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Nav */}
@@ -101,22 +118,64 @@ export default function Home() {
             <Link href="#sobre" className="hover:text-primary transition-colors">Sobre</Link>
           </nav>
 
-          {/* Auth Buttons */}
+          {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center gap-4">
             <Link href="/auth/login" className="font-semibold text-sm hover:text-primary transition-colors">
               Entrar
             </Link>
-            <Link href="/register" className="px-5 py-2.5 rounded-full border border-primary font-semibold text-sm hover:bg-primary hover:text-foreground transition-all">
+            <Link href="/register" className="px-5 py-2.5 rounded-full border border-primary font-semibold text-sm hover:bg-primary hover:text-white transition-all">
               Criar conta
             </Link>
           </div>
 
-          {/* Mobile Menu Icon */}
-          <button className="lg:hidden p-2 text-foreground">
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 text-foreground relative z-50 transition-transform duration-200"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-expanded={isMobileMenuOpen}
+            aria-label="Alternar menu de navegação"
+          >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              {isMobileMenuOpen ? (
+                // Ícone de "X" (Fechar)
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                // Ícone de Hambúrguer
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
+        </div>
+
+        {/* Mobile Nav Overlay */}
+        <div
+          className={`fixed inset-0 bg-background/95 backdrop-blur-lg lg:hidden flex flex-col items-center justify-center gap-8 transition-all duration-300 ease-in-out ${isMobileMenuOpen
+            ? 'opacity-100 pointer-events-auto translate-y-0'
+            : 'opacity-0 pointer-events-none -translate-y-4'
+            }`}
+        >
+          <nav className="flex flex-col items-center gap-6 font-medium text-lg text-foreground">
+            <Link href="#features" onClick={closeMenu} className="hover:text-primary transition-colors">Recursos</Link>
+            <Link href="#how-it-works" onClick={closeMenu} className="hover:text-primary transition-colors">Como Funciona</Link>
+            <Link href="#sobre" onClick={closeMenu} className="hover:text-primary transition-colors">Sobre</Link>
+          </nav>
+
+          <div className="flex flex-col items-center gap-4 w-full max-w-[200px] mt-4">
+            <Link
+              href="/auth/login"
+              onClick={closeMenu}
+              className="font-semibold text-base hover:text-primary transition-colors w-full text-center py-2"
+            >
+              Entrar
+            </Link>
+            <Link
+              href="/register"
+              onClick={closeMenu}
+              className="w-full text-center px-5 py-3 rounded-full bg-primary text-white font-semibold text-base hover:opacity-90 transition-all shadow-md"
+            >
+              Criar conta
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -143,18 +202,22 @@ export default function Home() {
 
             {/* Botões */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0">
-              <button className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-primary text-foreground hover:text-primary rounded-full font-bold text-base sm:text-lg hover:bg-foreground transition-colors shadow-lg shadow-[#88E713]/20">
-                Ver promoções
-              </button>
+              <Link href="/promotions">
+                <button className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-primary text-foreground hover:text-primary rounded-full font-bold text-base sm:text-lg hover:bg-foreground transition-colors shadow-lg shadow-[#88E713]/20 cursor-pointer">
+                  Ver promoções
+                </button>
+              </Link>
 
-              <button className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 flex items-center justify-center gap-3 rounded-full font-bold text-base sm:text-lg hover:bg-foreground hover:text-background transition-colors text-foreground">
-                <span className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#111827] dark:border-white/20">
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 6V4c0-2.21-1.79-4-4-4S8 1.79 8 4v2H3v13c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V6h-5zm-6-2c0-1.1.9-2 2-2s2 .9 2 2v2h-4V4zm7 16H7c-.55 0-1-.45-1-1V8h12v11c0 .55-.45 1-1 1z" />
-                  </svg>
-                </span>
-                Seja um anunciante
-              </button>
+              <Link href="/register/store">
+                <button className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 flex items-center justify-center gap-3 rounded-full font-bold text-base sm:text-lg hover:bg-foreground hover:text-background transition-colors text-foreground cursor-pointer">
+                  <span className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#111827] dark:border-white/20">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 6V4c0-2.21-1.79-4-4-4S8 1.79 8 4v2H3v13c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V6h-5zm-6-2c0-1.1.9-2 2-2s2 .9 2 2v2h-4V4zm7 16H7c-.55 0-1-.45-1-1V8h12v11c0 .55-.45 1-1 1z" />
+                    </svg>
+                  </span>
+                  Seja um anunciante
+                </button>
+              </Link>
             </div>
 
             {/* Pílulas de Tags */}

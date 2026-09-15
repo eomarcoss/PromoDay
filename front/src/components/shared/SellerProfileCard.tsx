@@ -29,6 +29,7 @@ import {
 } from "@/app/actions/sellerProfileActions";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSellerMetrics } from "@/hooks/useSellerMetrics";
+import { toast } from "sonner";
 
 export type DayKey =
   | "segunda"
@@ -292,17 +293,33 @@ export function SellerProfileCard({
         if (onSaveProfile) {
           onSaveProfile(updatedData);
         }
+
+        // TOAST DE SUCESSO AQUI
+        toast.success("Perfil atualizado!", {
+          description: "As informações do seu perfil foram salvas com sucesso.",
+        });
+
       } else {
-        setErrorMessage(
-          typeof response.error === "string"
-            ? response.error
-            : (response.error as any)?.message || "Não foi possível atualizar o perfil."
-        );
+        const errorMsg = typeof response.error === "string"
+          ? response.error
+          : (response.error as any)?.message || "Não foi possível atualizar o perfil.";
+
+        setErrorMessage(errorMsg);
+
+        // TOAST DE ERRO (Tratado pelo backend) AQUI
+        toast.error("Erro ao atualizar", {
+          description: errorMsg,
+        });
       }
     } catch (error: any) {
-      setErrorMessage(
-        error?.message || "Ocorreu um erro inesperado ao salvar os dados.",
-      );
+      const catchErrorMsg = error?.message || "Ocorreu um erro inesperado ao salvar os dados.";
+
+      setErrorMessage(catchErrorMsg);
+
+      // TOAST DE ERRO INESPERADO AQUI
+      toast.error("Erro no sistema", {
+        description: catchErrorMsg,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -509,8 +526,8 @@ export function SellerProfileCard({
                         <div
                           key={dayKey}
                           className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-all duration-300 ${isToday
-                              ? "bg-primary/10 font-semibold text-primary border border-primary/20"
-                              : "bg-white border border-slate-100 text-slate-500"
+                            ? "bg-primary/10 font-semibold text-primary border border-primary/20"
+                            : "bg-white border border-slate-100 text-slate-500"
                             }`}
                         >
                           <span className="capitalize text-xs">
@@ -626,8 +643,8 @@ export function SellerProfileCard({
                   type="button"
                   onClick={() => setActiveTab("general")}
                   className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeTab === "general"
-                      ? "bg-white text-[#111827] shadow-xs"
-                      : "text-slate-500 hover:text-[#111827]"
+                    ? "bg-white text-[#111827] shadow-xs"
+                    : "text-slate-500 hover:text-[#111827]"
                     }`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
@@ -638,8 +655,8 @@ export function SellerProfileCard({
                   type="button"
                   onClick={() => setActiveTab("hours")}
                   className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeTab === "hours"
-                      ? "bg-white text-[#111827] shadow-xs"
-                      : "text-slate-500 hover:text-[#111827]"
+                    ? "bg-white text-[#111827] shadow-xs"
+                    : "text-slate-500 hover:text-[#111827]"
                     }`}
                 >
                   <Calendar className="w-3.5 h-3.5" />

@@ -6,6 +6,7 @@ import { signOutAction } from "@/app/actions/auth";
 import { updateProfileCustomerAction } from "@/app/actions/customerProfileAction";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 export interface CustomerProfileData {
   id?: string;
@@ -42,12 +43,12 @@ export function ProfileClientContainer({
         setUser(updatedCustomer);
         updateContextUser(updatedCustomer);
 
-        alert("Perfil atualizado com sucesso!");
+        toast.success("Perfil atualizado com sucesso!");
       } else {
-        alert(`Erro ao atualizar: ${response.error || "Tente novamente."}`);
+        toast.error(`Erro ao atualizar: ${response.error || "Tente novamente."}`);
       }
     } catch (error: any) {
-      alert("Erro inesperado ao atualizar perfil.");
+      toast.error("Erro inesperado ao atualizar perfil.");
     } finally {
       setIsUpdating(false);
     }

@@ -19,7 +19,7 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('costomers')
 export class CostomersController {
-  constructor(private readonly costomersService: CostomersService) {}
+  constructor(private readonly costomersService: CostomersService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('avatar'))
@@ -59,6 +59,7 @@ export class CostomersController {
     return this.costomersService.getProfile(customerId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.costomersService.findAll();
@@ -73,6 +74,7 @@ export class CostomersController {
     return this.costomersService.getMetrics(customerId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.costomersService.findOne(id);

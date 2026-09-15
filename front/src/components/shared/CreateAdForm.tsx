@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { formatBusinessHours } from "@/utils/formatHours";
 import { createPromotionAction } from "@/app/actions/promotions";
+import { toast } from "sonner"
 
 interface AdFormValues {
   productName: string;
@@ -121,7 +122,7 @@ export function CreateAdForm() {
       if (!result.success) {
         throw new Error(result.error);
       }
-      setSuccessMessage("Promoção cadastrada com sucesso! 🎉");
+      toast.success("Promoção cadastrada com sucesso! 🎉");
 
       // Reseta os campos e libera a memória das URLs
       reset();
@@ -131,7 +132,7 @@ export function CreateAdForm() {
       setIsUnlimitedUser(false);
     } catch (err: any) {
       console.error("Erro ao cadastrar promoção:", err);
-      setErrorMessage(err.message || "Ocorreu um erro ao criar a promoção.");
+      toast.error(err.message || "Ocorreu um erro ao criar a promoção.");
     } finally {
       setLoading(false);
     }

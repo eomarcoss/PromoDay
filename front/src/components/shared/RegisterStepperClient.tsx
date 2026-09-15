@@ -12,6 +12,7 @@ import {
 } from "../../schemas/register-client-schema";
 import { useRouter } from "next/navigation";
 import { registerCustomerAction } from "@/app/actions/auth";
+import { toast } from "sonner";
 
 export function RegisterStepperFormClient() {
   const router = useRouter();
@@ -63,10 +64,10 @@ export function RegisterStepperFormClient() {
     setLoading(false);
 
     if (result.success) {
-      alert("Cadastro do cliente realizado com sucesso!");
+      toast.success("Cadastro do cliente realizado com sucesso!");
       router.push("/login"); // 🔀 Redireciona o cliente para fazer o primeiro login
     } else {
-      alert(result.error || "Erro ao efetuar o cadastro.");
+      toast.error(result.error || "Erro ao efetuar o cadastro.");
     }
   };
 
@@ -129,18 +130,16 @@ export function RegisterStepperFormClient() {
             style={{ width: `${((currentStep - 1) / 1) * 100}%` }}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${
-              currentStep >= 1
-                ? "bg-black border-black"
-                : "bg-neutral-200 border-neutral-200"
-            }`}
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${currentStep >= 1
+              ? "bg-black border-black"
+              : "bg-neutral-200 border-neutral-200"
+              }`}
           />
           <div
-            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${
-              currentStep === 2
-                ? "bg-black border-black"
-                : "bg-neutral-200 border-neutral-200"
-            }`}
+            className={`w-6 h-6 rounded-full z-10 transition-all duration-300 duration-300 border-4 ${currentStep === 2
+              ? "bg-black border-black"
+              : "bg-neutral-200 border-neutral-200"
+              }`}
           />
         </div>
       </div>

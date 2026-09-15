@@ -13,6 +13,7 @@ import {
 } from "../../schemas/register-schema";
 import { registerSellerAction } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function RegisterStepperFormStore() {
   const router = useRouter();
@@ -72,12 +73,11 @@ export function RegisterStepperFormStore() {
 
     setLoading(false);
     if (result.success) {
-      alert("Cadastro do vendedor realizado com sucesso!");
+      toast.success("Cadastro do vendedor realizado com sucesso!");
       router.push("/auth/login"); // 🔀 Redireciona o vendedor para fazer o primeiro login
     } else {
-      alert(result.error || "Erro ao efetuar o cadastro.");
+      toast.error(result.error || "Erro ao efetuar o cadastro.");
     }
-    alert("Cadastro realizado com sucesso!");
   };
 
   const nextStep = (e: React.FormEvent) => {
@@ -96,7 +96,7 @@ export function RegisterStepperFormStore() {
         const primeiroErro =
           validacao.error?.issues?.[0]?.message ||
           "Erro de validação desconhecido";
-        alert(primeiroErro); // Depois podemos trocar esse alert por um estado de erro bonitinho na tela
+        toast.error(primeiroErro); // Depois podemos trocar esse alert por um estado de erro bonitinho na tela
         return; // Trava o fluxo aqui! O usuário não avança.
       }
     }
@@ -109,7 +109,7 @@ export function RegisterStepperFormStore() {
         const primeiroErro =
           validacao.error?.issues?.[0]?.message ||
           "Erro de validação desconhecido";
-        alert(primeiroErro);
+        toast.error(primeiroErro);
         return; // Trava o fluxo aqui!
       }
     }
@@ -122,7 +122,7 @@ export function RegisterStepperFormStore() {
         const primeiroErro =
           validacao.error?.issues?.[0]?.message ||
           "Erro de validação desconhecido";
-        alert(primeiroErro);
+        toast.error(primeiroErro);
         return; // Trava o fluxo aqui!
       }
 
