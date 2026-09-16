@@ -14,6 +14,7 @@ import {
 import { registerSellerAction } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { PatternFormat } from "react-number-format";
 
 export function RegisterStepperFormStore() {
   const router = useRouter();
@@ -214,6 +215,7 @@ export function RegisterStepperFormStore() {
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
                   />
                 </div>
+
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="phone"
@@ -221,8 +223,12 @@ export function RegisterStepperFormStore() {
                   >
                     Telefone:
                   </Label>
-                  <Input
+                  <PatternFormat
+                    customInput={Input}
                     id="phone"
+                    name="phone"
+                    format="(##) #####-####"
+                    mask="_"
                     type="tel"
                     required
                     placeholder="(00) 99999-9999"
@@ -231,6 +237,7 @@ export function RegisterStepperFormStore() {
                     className="rounded-full bg-neutral-200 border-none h-11 px-5 text-black"
                   />
                 </div>
+
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="email"

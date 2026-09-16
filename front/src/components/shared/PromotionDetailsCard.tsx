@@ -201,7 +201,7 @@ export function PromotionDetailCard({
   }, [timeLeft]);
 
   return (
-    <Card className="w-full min-h-screen border-none rounded-none shadow-none bg-background flex flex-col justify-center py-6 sm:py-10 sm:px-6 md:px-12 overflow-x-hidden">
+    <Card className="w-full min-h-screen border-none rounded-none shadow-none flex flex-col justify-center py-6 sm:py-10 sm:px-6 md:px-12 overflow-x-hidden">
       {/* Container Principal */}
       <CardContent className="p-0 flex flex-col lg:flex-row items-center lg:items-stretch justify-between w-full mx-auto gap-6 sm:gap-8 lg:gap-16 my-auto">
 
@@ -247,8 +247,8 @@ export function PromotionDetailCard({
                       type="button"
                       onClick={() => setCurrentImageIndex(index)}
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${index === currentImageIndex
-                          ? "w-6 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-                          : "w-2 bg-white/50 hover:bg-white/90"
+                        ? "w-6 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                        : "w-2 bg-white/50 hover:bg-white/90"
                         }`}
                       aria-label={`Ir para imagem ${index + 1}`}
                     />
@@ -357,8 +357,8 @@ export function PromotionDetailCard({
 
             <div
               className={`flex flex-col gap-1.5 sm:gap-2 border rounded-xl sm:rounded-2xl p-3 sm:p-5 transition-all duration-300 ${userLimit > 0 && remainingUserLimit === 0
-                  ? "bg-destructive/10 border-destructive/30"
-                  : "bg-muted/40 border-border/50 hover:bg-muted/60"
+                ? "bg-destructive/10 border-destructive/30"
+                : "bg-muted/40 border-border/50 hover:bg-muted/60"
                 }`}
             >
               <div className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground">
@@ -372,8 +372,8 @@ export function PromotionDetailCard({
               </div>
               <span
                 className={`text-sm sm:text-xl font-black leading-none ${userLimit > 0 && remainingUserLimit === 0
-                    ? "text-destructive"
-                    : "text-foreground"
+                  ? "text-destructive"
+                  : "text-foreground"
                   }`}
               >
                 {userLimit > 0 ? `${userRedeemedCount}/${userLimit} un.` : "Sem limite"}

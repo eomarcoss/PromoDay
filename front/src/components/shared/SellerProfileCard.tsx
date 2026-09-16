@@ -30,6 +30,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useSellerMetrics } from "@/hooks/useSellerMetrics";
 import { toast } from "sonner";
+import { PatternFormat } from "react-number-format";
 
 export type DayKey =
   | "segunda"
@@ -767,12 +768,15 @@ export function SellerProfileCard({
                         </label>
                         <div className="relative">
                           <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                          <input
-                            type="text"
+                          <PatternFormat
+                            format="(##) #####-####"
+                            mask="_"
+                            type="tel"
                             disabled={isSubmitting}
                             value={editForm.phone}
-                            onChange={(e) =>
-                              setEditForm({ ...editForm, phone: e.target.value })
+                            placeholder="(11) 99999-9999"
+                            onValueChange={(values) =>
+                              setEditForm({ ...editForm, phone: values.formattedValue })
                             }
                             className="w-full bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 rounded-xl py-2.5 pl-10 pr-3 text-sm font-medium text-[#111827] outline-none transition-all disabled:opacity-60"
                             required

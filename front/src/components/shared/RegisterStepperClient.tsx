@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { registerCustomerAction } from "@/app/actions/auth";
 import { toast } from "sonner";
+import { PatternFormat } from "react-number-format";
 
 export function RegisterStepperFormClient() {
   const router = useRouter();
@@ -221,8 +222,13 @@ export function RegisterStepperFormClient() {
                   >
                     Telefone:
                   </Label>
-                  <Input
+                  {/* Usando customInput={Input} para manter a estilização e o componente do Shadcn UI perfeitamente integrados com a máscara */}
+                  <PatternFormat
+                    customInput={Input}
                     id="phone"
+                    name="phone"
+                    format="(##) #####-####"
+                    mask="_"
                     type="tel"
                     required
                     placeholder="(11) 99999-9999"
