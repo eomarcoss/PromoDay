@@ -153,17 +153,17 @@ O front ficará disponível em `http://localhost:3000`.
 
 Feed de promoções
 
-<!-- ![Feed de promoções](docs/feed.png) -->
+<img width="1897" height="866" alt="image" src="https://github.com/user-attachments/assets/1b0f1aa2-46e2-4422-93ce-c7f943de2da2" />
 
 Resgate de cupom
 
-<!-- ![Resgate de cupom](docs/resgate.png) -->
+<img width="1898" height="863" alt="image" src="https://github.com/user-attachments/assets/35226b06-d74c-41dd-9a92-9ef51a89c2dd" />
 
 Painel do lojista
 
-<!-- ![Painel do lojista](docs/painel-lojista.png) -->
+<img width="1896" height="862" alt="image" src="https://github.com/user-attachments/assets/97ab38a2-46c4-4d9a-a925-9d8d3dbeb4fb" />
 
 ## Deploy
-
+https://promo-day.vercel.app
 * **Front:** Vercel (o `vercel.json` já está configurado).
 * **Back:** em produção, defina `NODE_ENV=production` e atualize a origem permitida no CORS em `back/src/main.ts` com a URL do seu front.
